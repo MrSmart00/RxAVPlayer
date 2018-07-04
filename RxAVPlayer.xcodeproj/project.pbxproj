@@ -10,10 +10,24 @@
 		C568CFAA20EC5F0500A5A78C /* RxAVPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C568CFA020EC5F0500A5A78C /* RxAVPlayer.framework */; };
 		C568CFAF20EC5F0500A5A78C /* RxAVPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C568CFAE20EC5F0500A5A78C /* RxAVPlayerTests.swift */; };
 		C568CFB120EC5F0500A5A78C /* RxAVPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C568CFA320EC5F0500A5A78C /* RxAVPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C5C0819320ECA93C00C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
+		C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
+		C5C0819520ECA98500C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
+		C5C0819620ECA98500C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
 		C5DFF00320EC609B00E9C475 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00120EC609B00E9C475 /* RxSwift.framework */; };
 		C5DFF00420EC609B00E9C475 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00220EC609B00E9C475 /* RxCocoa.framework */; };
 		C5DFF00720EC615100E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
 		C5DFF00820EC615900E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
+		C5DFF04F20EC634E00E9C475 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF04E20EC634E00E9C475 /* AppDelegate.swift */; };
+		C5DFF05120EC634E00E9C475 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF05020EC634E00E9C475 /* ViewController.swift */; };
+		C5DFF05420EC634E00E9C475 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5DFF05220EC634E00E9C475 /* Main.storyboard */; };
+		C5DFF05620EC634F00E9C475 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5DFF05520EC634F00E9C475 /* Assets.xcassets */; };
+		C5DFF05920EC634F00E9C475 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5DFF05720EC634F00E9C475 /* LaunchScreen.storyboard */; };
+		C5DFF06420EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF06320EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift */; };
+		C5DFF06C20EC63C600E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
+		C5DFF06D20EC63C700E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
+		C5DFF07220EC6CAD00E9C475 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00220EC609B00E9C475 /* RxCocoa.framework */; };
+		C5DFF07320EC6CAD00E9C475 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00120EC609B00E9C475 /* RxSwift.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +38,13 @@
 			remoteGlobalIDString = C568CF9F20EC5F0500A5A78C;
 			remoteInfo = RxAVPlayer;
 		};
+		C5DFF06020EC634F00E9C475 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C568CF9720EC5F0500A5A78C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C5DFF04B20EC634E00E9C475;
+			remoteInfo = "Exam-RxAVPlayerApp";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -33,9 +54,22 @@
 		C568CFA920EC5F0500A5A78C /* RxAVPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxAVPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C568CFAE20EC5F0500A5A78C /* RxAVPlayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerTests.swift; sourceTree = "<group>"; };
 		C568CFB020EC5F0500A5A78C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactive.extension.swift; sourceTree = "<group>"; };
 		C5DFF00120EC609B00E9C475 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		C5DFF00220EC609B00E9C475 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayer.swift; sourceTree = "<group>"; };
+		C5DFF04C20EC634E00E9C475 /* Exam-RxAVPlayerApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Exam-RxAVPlayerApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5DFF04E20EC634E00E9C475 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C5DFF05020EC634E00E9C475 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C5DFF05320EC634E00E9C475 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C5DFF05520EC634F00E9C475 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C5DFF05820EC634F00E9C475 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C5DFF05A20EC634F00E9C475 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C5DFF05F20EC634F00E9C475 /* Exam-RxAVPlayerAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Exam-RxAVPlayerAppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5DFF06320EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Exam_RxAVPlayerAppUITests.swift; sourceTree = "<group>"; };
+		C5DFF06520EC634F00E9C475 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C5DFF06E20EC6C9D00E9C475 /* RxCocoa.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = RxCocoa.framework.dSYM; path = Carthage/Build/iOS/RxCocoa.framework.dSYM; sourceTree = "<group>"; };
+		C5DFF06F20EC6C9D00E9C475 /* RxSwift.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = RxSwift.framework.dSYM; path = Carthage/Build/iOS/RxSwift.framework.dSYM; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +90,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C5DFF04920EC634E00E9C475 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5DFF07220EC6CAD00E9C475 /* RxCocoa.framework in Frameworks */,
+				C5DFF07320EC6CAD00E9C475 /* RxSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5DFF05C20EC634F00E9C475 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -64,6 +114,8 @@
 			children = (
 				C568CFA220EC5F0500A5A78C /* RxAVPlayer */,
 				C568CFAD20EC5F0500A5A78C /* RxAVPlayerTests */,
+				C5DFF04D20EC634E00E9C475 /* Exam-RxAVPlayerApp */,
+				C5DFF06220EC634F00E9C475 /* Exam-RxAVPlayerAppUITests */,
 				C568CFA120EC5F0500A5A78C /* Products */,
 				C5DFF00020EC609A00E9C475 /* Frameworks */,
 			);
@@ -74,6 +126,8 @@
 			children = (
 				C568CFA020EC5F0500A5A78C /* RxAVPlayer.framework */,
 				C568CFA920EC5F0500A5A78C /* RxAVPlayerTests.xctest */,
+				C5DFF04C20EC634E00E9C475 /* Exam-RxAVPlayerApp.app */,
+				C5DFF05F20EC634F00E9C475 /* Exam-RxAVPlayerAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -84,6 +138,7 @@
 				C568CFA320EC5F0500A5A78C /* RxAVPlayer.h */,
 				C568CFA420EC5F0500A5A78C /* Info.plist */,
 				C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */,
+				C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */,
 			);
 			path = RxAVPlayer;
 			sourceTree = "<group>";
@@ -100,10 +155,34 @@
 		C5DFF00020EC609A00E9C475 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5DFF06E20EC6C9D00E9C475 /* RxCocoa.framework.dSYM */,
+				C5DFF06F20EC6C9D00E9C475 /* RxSwift.framework.dSYM */,
 				C5DFF00220EC609B00E9C475 /* RxCocoa.framework */,
 				C5DFF00120EC609B00E9C475 /* RxSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C5DFF04D20EC634E00E9C475 /* Exam-RxAVPlayerApp */ = {
+			isa = PBXGroup;
+			children = (
+				C5DFF04E20EC634E00E9C475 /* AppDelegate.swift */,
+				C5DFF05020EC634E00E9C475 /* ViewController.swift */,
+				C5DFF05220EC634E00E9C475 /* Main.storyboard */,
+				C5DFF05520EC634F00E9C475 /* Assets.xcassets */,
+				C5DFF05720EC634F00E9C475 /* LaunchScreen.storyboard */,
+				C5DFF05A20EC634F00E9C475 /* Info.plist */,
+			);
+			path = "Exam-RxAVPlayerApp";
+			sourceTree = "<group>";
+		};
+		C5DFF06220EC634F00E9C475 /* Exam-RxAVPlayerAppUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C5DFF06320EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift */,
+				C5DFF06520EC634F00E9C475 /* Info.plist */,
+			);
+			path = "Exam-RxAVPlayerAppUITests";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +236,43 @@
 			productReference = C568CFA920EC5F0500A5A78C /* RxAVPlayerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		C5DFF04B20EC634E00E9C475 /* Exam-RxAVPlayerApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5DFF06A20EC634F00E9C475 /* Build configuration list for PBXNativeTarget "Exam-RxAVPlayerApp" */;
+			buildPhases = (
+				C5DFF04820EC634E00E9C475 /* Sources */,
+				C5DFF04920EC634E00E9C475 /* Frameworks */,
+				C5DFF04A20EC634E00E9C475 /* Resources */,
+				C5C0818F20EC6D9B00C7ACD0 /* Carthage Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Exam-RxAVPlayerApp";
+			productName = "Exam-RxAVPlayerApp";
+			productReference = C5DFF04C20EC634E00E9C475 /* Exam-RxAVPlayerApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C5DFF05E20EC634F00E9C475 /* Exam-RxAVPlayerAppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C5DFF06B20EC634F00E9C475 /* Build configuration list for PBXNativeTarget "Exam-RxAVPlayerAppUITests" */;
+			buildPhases = (
+				C5DFF05B20EC634F00E9C475 /* Sources */,
+				C5DFF05C20EC634F00E9C475 /* Frameworks */,
+				C5DFF05D20EC634F00E9C475 /* Resources */,
+				C5C0818E20EC6D7400C7ACD0 /* Carthage Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C5DFF06120EC634F00E9C475 /* PBXTargetDependency */,
+			);
+			name = "Exam-RxAVPlayerAppUITests";
+			productName = "Exam-RxAVPlayerAppUITests";
+			productReference = C5DFF05F20EC634F00E9C475 /* Exam-RxAVPlayerAppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -174,6 +290,13 @@
 					C568CFA820EC5F0500A5A78C = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
+					C5DFF04B20EC634E00E9C475 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					C5DFF05E20EC634F00E9C475 = {
+						CreatedOnToolsVersion = 9.4.1;
+						TestTargetID = C5DFF04B20EC634E00E9C475;
+					};
 				};
 			};
 			buildConfigurationList = C568CF9A20EC5F0500A5A78C /* Build configuration list for PBXProject "RxAVPlayer" */;
@@ -182,6 +305,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C568CF9620EC5F0500A5A78C;
 			productRefGroup = C568CFA120EC5F0500A5A78C /* Products */;
@@ -190,6 +314,8 @@
 			targets = (
 				C568CF9F20EC5F0500A5A78C /* RxAVPlayer */,
 				C568CFA820EC5F0500A5A78C /* RxAVPlayerTests */,
+				C5DFF04B20EC634E00E9C475 /* Exam-RxAVPlayerApp */,
+				C5DFF05E20EC634F00E9C475 /* Exam-RxAVPlayerAppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -209,9 +335,56 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C5DFF04A20EC634E00E9C475 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5DFF05920EC634F00E9C475 /* LaunchScreen.storyboard in Resources */,
+				C5DFF05620EC634F00E9C475 /* Assets.xcassets in Resources */,
+				C5DFF05420EC634E00E9C475 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5DFF05D20EC634F00E9C475 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		C5C0818E20EC6D7400C7ACD0 /* Carthage Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Carthage Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		C5C0818F20EC6D9B00C7ACD0 /* Carthage Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
+			);
+			name = "Carthage Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
 		C5DFF00520EC60B000E9C475 /* Carthage Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -238,6 +411,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DFF00720EC615100E9C475 /* RxAVPlayer.swift in Sources */,
+				C5C0819320ECA93C00C7ACD0 /* Reactive.extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,6 +421,28 @@
 			files = (
 				C568CFAF20EC5F0500A5A78C /* RxAVPlayerTests.swift in Sources */,
 				C5DFF00820EC615900E9C475 /* RxAVPlayer.swift in Sources */,
+				C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5DFF04820EC634E00E9C475 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5DFF05120EC634E00E9C475 /* ViewController.swift in Sources */,
+				C5C0819520ECA98500C7ACD0 /* Reactive.extension.swift in Sources */,
+				C5DFF06C20EC63C600E9C475 /* RxAVPlayer.swift in Sources */,
+				C5DFF04F20EC634E00E9C475 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5DFF05B20EC634F00E9C475 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5DFF06420EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift in Sources */,
+				C5DFF06D20EC63C700E9C475 /* RxAVPlayer.swift in Sources */,
+				C5C0819620ECA98500C7ACD0 /* Reactive.extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +454,31 @@
 			target = C568CF9F20EC5F0500A5A78C /* RxAVPlayer */;
 			targetProxy = C568CFAB20EC5F0500A5A78C /* PBXContainerItemProxy */;
 		};
+		C5DFF06120EC634F00E9C475 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C5DFF04B20EC634E00E9C475 /* Exam-RxAVPlayerApp */;
+			targetProxy = C5DFF06020EC634F00E9C475 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C5DFF05220EC634E00E9C475 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C5DFF05320EC634E00E9C475 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C5DFF05720EC634F00E9C475 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C5DFF05820EC634F00E9C475 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C568CFB220EC5F0500A5A78C /* Debug */ = {
@@ -398,6 +618,7 @@
 				);
 				INFOPLIST_FILE = RxAVPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -429,6 +650,7 @@
 				);
 				INFOPLIST_FILE = RxAVPlayer/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -480,6 +702,92 @@
 			};
 			name = Release;
 		};
+		C5DFF06620EC634F00E9C475 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Exam-RxAVPlayerApp/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerApp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C5DFF06720EC634F00E9C475 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Exam-RxAVPlayerApp/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerApp";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C5DFF06820EC634F00E9C475 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				INFOPLIST_FILE = "Exam-RxAVPlayerAppUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Exam-RxAVPlayerApp";
+			};
+			name = Debug;
+		};
+		C5DFF06920EC634F00E9C475 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				INFOPLIST_FILE = "Exam-RxAVPlayerAppUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Exam-RxAVPlayerApp";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -506,6 +814,24 @@
 			buildConfigurations = (
 				C568CFB820EC5F0500A5A78C /* Debug */,
 				C568CFB920EC5F0500A5A78C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C5DFF06A20EC634F00E9C475 /* Build configuration list for PBXNativeTarget "Exam-RxAVPlayerApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5DFF06620EC634F00E9C475 /* Debug */,
+				C5DFF06720EC634F00E9C475 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C5DFF06B20EC634F00E9C475 /* Build configuration list for PBXNativeTarget "Exam-RxAVPlayerAppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C5DFF06820EC634F00E9C475 /* Debug */,
+				C5DFF06920EC634F00E9C475 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

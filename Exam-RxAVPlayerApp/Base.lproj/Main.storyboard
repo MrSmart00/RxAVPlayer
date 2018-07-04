@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Exam_RxAVPlayerApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQs-U2-RYF" customClass="RxAVPlayer" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-pD-KHB">
+                                        <rect key="frame" x="330" y="10" width="35" height="30"/>
+                                        <state key="normal" title="Mute"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhL-xT-MCr">
+                                        <rect key="frame" x="10" y="581" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUe-i8-Iun">
+                                        <rect key="frame" x="323" y="581" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="504-2T-aYo">
+                                        <rect key="frame" x="172" y="527" width="30" height="30"/>
+                                        <state key="normal" title="Play"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CWl-f7-J5I">
+                                        <rect key="frame" x="166.5" y="527" width="42" height="30"/>
+                                        <state key="normal" title="Pause"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w2T-Bc-Nah">
+                                        <rect key="frame" x="164" y="527" width="46" height="30"/>
+                                        <state key="normal" title="Replay"/>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hD7-rj-tCD">
+                                        <rect key="frame" x="166.5" y="616" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Wlh-Mh-0E7">
+                                        <rect key="frame" x="55" y="576" width="265" height="31"/>
+                                    </slider>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
+                                        <rect key="frame" x="335" y="527" width="30" height="30"/>
+                                        <state key="normal" title="Skip"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="hD7-rj-tCD" firstAttribute="centerX" secondItem="eQs-U2-RYF" secondAttribute="centerX" id="0Lc-Ic-Ywh"/>
+                                    <constraint firstAttribute="bottom" secondItem="cUe-i8-Iun" secondAttribute="bottom" constant="45" id="0Rj-9h-dJg"/>
+                                    <constraint firstItem="w2T-Bc-Nah" firstAttribute="centerX" secondItem="eQs-U2-RYF" secondAttribute="centerX" id="CQJ-wN-vbW"/>
+                                    <constraint firstAttribute="bottom" secondItem="504-2T-aYo" secondAttribute="bottom" constant="90" id="K5c-zY-Drf"/>
+                                    <constraint firstItem="EhL-xT-MCr" firstAttribute="leading" secondItem="eQs-U2-RYF" secondAttribute="leading" constant="10" id="Lxq-GN-vmN"/>
+                                    <constraint firstAttribute="bottom" secondItem="hD7-rj-tCD" secondAttribute="bottom" constant="10" id="MvH-Dd-WkD"/>
+                                    <constraint firstAttribute="bottom" secondItem="w2T-Bc-Nah" secondAttribute="bottom" constant="90" id="NTC-G1-2CY"/>
+                                    <constraint firstItem="JQd-pD-KHB" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="10" id="QzN-x6-Xcc"/>
+                                    <constraint firstAttribute="trailing" secondItem="Khg-Qn-NzM" secondAttribute="trailing" constant="10" id="RIl-co-Hxu"/>
+                                    <constraint firstItem="Wlh-Mh-0E7" firstAttribute="leading" secondItem="EhL-xT-MCr" secondAttribute="trailing" constant="5" id="S0n-in-qkH"/>
+                                    <constraint firstItem="504-2T-aYo" firstAttribute="centerX" secondItem="eQs-U2-RYF" secondAttribute="centerX" id="U86-zr-dOP"/>
+                                    <constraint firstAttribute="bottom" secondItem="Khg-Qn-NzM" secondAttribute="bottom" constant="90" id="X7F-68-Ob6"/>
+                                    <constraint firstItem="cUe-i8-Iun" firstAttribute="leading" secondItem="Wlh-Mh-0E7" secondAttribute="trailing" constant="5" id="a5T-PN-Lhg"/>
+                                    <constraint firstItem="EhL-xT-MCr" firstAttribute="centerY" secondItem="Wlh-Mh-0E7" secondAttribute="centerY" id="gqO-Xo-ynq"/>
+                                    <constraint firstAttribute="trailing" secondItem="JQd-pD-KHB" secondAttribute="trailing" constant="10" id="iT2-O9-xI3"/>
+                                    <constraint firstAttribute="trailing" secondItem="cUe-i8-Iun" secondAttribute="trailing" constant="10" id="l4Y-HT-bqz"/>
+                                    <constraint firstItem="cUe-i8-Iun" firstAttribute="centerY" secondItem="Wlh-Mh-0E7" secondAttribute="centerY" id="lr8-Co-P6P"/>
+                                    <constraint firstAttribute="bottom" secondItem="EhL-xT-MCr" secondAttribute="bottom" constant="45" id="pWa-Em-kvw"/>
+                                    <constraint firstAttribute="bottom" secondItem="CWl-f7-J5I" secondAttribute="bottom" constant="90" id="s5f-Kv-YWe"/>
+                                    <constraint firstItem="CWl-f7-J5I" firstAttribute="centerX" secondItem="eQs-U2-RYF" secondAttribute="centerX" id="yn7-11-rza"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="endTimeLabel" destination="cUe-i8-Iun" id="HMe-Cn-CZx"/>
+                                    <outlet property="muteButton" destination="JQd-pD-KHB" id="yyf-Fy-IwK"/>
+                                    <outlet property="pauseButton" destination="CWl-f7-J5I" id="btr-vq-0Cb"/>
+                                    <outlet property="playButton" destination="504-2T-aYo" id="67H-qw-26n"/>
+                                    <outlet property="remainTimeLabel" destination="hD7-rj-tCD" id="gxF-f8-1Ck"/>
+                                    <outlet property="replayButton" destination="w2T-Bc-Nah" id="yla-di-9ja"/>
+                                    <outlet property="seekbar" destination="Wlh-Mh-0E7" id="NlM-wm-qBq"/>
+                                    <outlet property="skipButton" destination="Khg-Qn-NzM" id="XPB-FQ-2Jj"/>
+                                    <outlet property="timeOffsetLabel" destination="EhL-xT-MCr" id="N42-g5-Q0i"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="eQs-U2-RYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3di-UK-jql"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="eQs-U2-RYF" secondAttribute="bottom" id="G0Z-QW-NUf"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eQs-U2-RYF" secondAttribute="trailing" id="OwR-yF-I16"/>
+                            <constraint firstItem="eQs-U2-RYF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="x4O-u9-oPN"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="player" destination="eQs-U2-RYF" id="8dd-36-m8c"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="126.38680659670166"/>
+        </scene>
+    </scenes>
+</document>
