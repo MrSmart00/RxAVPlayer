@@ -27,6 +27,9 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-pD-KHB">
                                                 <rect key="frame" x="330" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
+                                                <connections>
+                                                    <action selector="mute" destination="zAl-k1-8P1" eventType="touchUpInside" id="9pT-ey-iVd"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhL-xT-MCr">
                                                 <rect key="frame" x="10" y="581" width="42" height="21"/>
@@ -199,7 +202,6 @@
                                                 <rect key="frame" x="330" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                                 <connections>
-                                                    <action selector="mute" destination="zAl-k1-8P1" eventType="touchUpInside" id="115-yp-78p"/>
                                                     <action selector="mute" destination="yNb-Gc-RzC" eventType="touchUpInside" id="Nhp-FH-zgf"/>
                                                 </connections>
                                             </button>
