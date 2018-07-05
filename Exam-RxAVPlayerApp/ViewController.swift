@@ -17,6 +17,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         player.autoplay = true
         player.visibleSkipSeconds = 2.0
+        player.dateFormatString = "m:ss"
         player.mute = true
         player.url = URL(string: "https://s3.us-east-2.amazonaws.com/vjs-nuevo/hls/m3u8/playlist.m3u8")
     }
