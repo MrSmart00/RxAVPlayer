@@ -60,7 +60,23 @@ class RxAVPlayer: UIView {
     var visibleSkipSeconds: Float = -1
     var forwordSeconds: Int64 = 10
     var rewindSeconds: Int64 = 10
-
+    var dateFormatString = "mm:ss" {
+        didSet {
+            formatter.dateFormat = dateFormatString
+            allControls.forEach { (control) in
+                if let label = control.currentTimeLabel, (label.text == nil || label.text == "Label") {
+                    label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                }
+                if let label = control.remainingTimeLabel, (label.text == nil || label.text == "Label") {
+                    label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                }
+                if let label = control.totalTimeLabel, (label.text == nil || label.text == "Label") {
+                    label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                }
+            }
+        }
+    }
+    
     override class var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
@@ -132,13 +148,10 @@ class RxAVPlayer: UIView {
         status = .none
         viewStatus = .none
         
-        formatter.dateFormat = "mm:ss"
+        formatter.dateFormat = dateFormatString
 
         allControls.forEach { (control) in
             control.setPlayer(self)
-            control.currentTimeLabel?.text = "00:00"
-            control.remainingTimeLabel?.text = "00:00"
-            control.totalTimeLabel?.text = "00:00"
             if let view = control as? UIView {
                 view.isHidden = true
             }
