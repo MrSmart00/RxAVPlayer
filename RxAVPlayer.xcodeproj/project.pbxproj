@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C53F641D20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
+		C53F641E20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
+		C53F641F20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
+		C53F642020EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
+		C53F642220EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */; };
+		C53F642320EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */; };
+		C53F642420EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */; };
+		C53F642520EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */; };
+		C53F642920EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */; };
+		C53F642A20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */; };
+		C53F642B20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */; };
+		C53F642C20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */; };
 		C568CFAA20EC5F0500A5A78C /* RxAVPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C568CFA020EC5F0500A5A78C /* RxAVPlayer.framework */; };
 		C568CFAF20EC5F0500A5A78C /* RxAVPlayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C568CFAE20EC5F0500A5A78C /* RxAVPlayerTests.swift */; };
 		C568CFB120EC5F0500A5A78C /* RxAVPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C568CFA320EC5F0500A5A78C /* RxAVPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,6 +60,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerControllable.swift; sourceTree = "<group>"; };
+		C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerPauseControlView.swift; sourceTree = "<group>"; };
+		C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerPlayControlView.swift; sourceTree = "<group>"; };
 		C568CFA020EC5F0500A5A78C /* RxAVPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxAVPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C568CFA320EC5F0500A5A78C /* RxAVPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxAVPlayer.h; sourceTree = "<group>"; };
 		C568CFA420EC5F0500A5A78C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -109,6 +124,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C53F642720EE124C003E1C7E /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				C53F642120EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift */,
+				C53F642820EE1287003E1C7E /* RxAVPlayerPlayControlView.swift */,
+				C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */,
+			);
+			path = Controls;
+			sourceTree = "<group>";
+		};
 		C568CF9620EC5F0500A5A78C = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +160,7 @@
 		C568CFA220EC5F0500A5A78C /* RxAVPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				C53F642720EE124C003E1C7E /* Controls */,
 				C568CFA320EC5F0500A5A78C /* RxAVPlayer.h */,
 				C568CFA420EC5F0500A5A78C /* Info.plist */,
 				C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */,
@@ -410,8 +436,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C53F642920EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */,
 				C5DFF00720EC615100E9C475 /* RxAVPlayer.swift in Sources */,
+				C53F641D20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
 				C5C0819320ECA93C00C7ACD0 /* Reactive.extension.swift in Sources */,
+				C53F642220EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,7 +448,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C53F642A20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */,
 				C568CFAF20EC5F0500A5A78C /* RxAVPlayerTests.swift in Sources */,
+				C53F642320EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */,
+				C53F641E20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
 				C5DFF00820EC615900E9C475 /* RxAVPlayer.swift in Sources */,
 				C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */,
 			);
@@ -430,8 +462,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DFF05120EC634E00E9C475 /* ViewController.swift in Sources */,
+				C53F642420EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */,
+				C53F642B20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */,
 				C5C0819520ECA98500C7ACD0 /* Reactive.extension.swift in Sources */,
 				C5DFF06C20EC63C600E9C475 /* RxAVPlayer.swift in Sources */,
+				C53F641F20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
 				C5DFF04F20EC634E00E9C475 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -440,7 +475,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C53F642C20EE1287003E1C7E /* RxAVPlayerPlayControlView.swift in Sources */,
 				C5DFF06420EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift in Sources */,
+				C53F642520EE01B8003E1C7E /* RxAVPlayerPauseControlView.swift in Sources */,
+				C53F642020EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
 				C5DFF06D20EC63C700E9C475 /* RxAVPlayer.swift in Sources */,
 				C5C0819620ECA98500C7ACD0 /* Reactive.extension.swift in Sources */,
 			);
