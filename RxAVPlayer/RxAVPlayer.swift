@@ -58,6 +58,8 @@ class RxAVPlayer: UIView {
         }
     }
     var visibleSkipSeconds: Float = -1
+    var forwordSeconds: Int64 = 10
+    var rewindSeconds: Int64 = 10
 
     override class var layerClass: AnyClass {
         return AVPlayerLayer.self
@@ -351,6 +353,21 @@ class RxAVPlayer: UIView {
         if let pl = player, let time = pl.currentItem?.duration {
             let distanceTime = CMTimeMake(time.value - 1, time.timescale)
             seek(distance: distanceTime, skip: true)
+        }
+    }
+    
+    @objc func rewind() {
+        if let pl = player {
+            let delta = CMTimeGetSeconds(pl.currentTime()) - Float64(rewindSeconds)
+            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
+
+        }
+    }
+    
+    @objc func forward() {
+        if let pl = player {
+            let delta = CMTimeGetSeconds(pl.currentTime()) + Float64(forwordSeconds)
+            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
         }
     }
     

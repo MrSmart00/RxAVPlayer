@@ -36,6 +36,18 @@ class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable {
         }
     }
     
+    @IBAction func forward() {
+        if let p = player {
+            p.forward()
+        }
+    }
+    
+    @IBAction func rewind() {
+        if let p = player {
+            p.rewind()
+        }
+    }
+
     @IBAction func mute() {
         if let p = player {
             p.changeMute()

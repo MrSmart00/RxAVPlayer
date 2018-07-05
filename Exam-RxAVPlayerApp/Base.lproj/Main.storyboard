@@ -127,74 +127,6 @@
                                             <outlet property="totalTimeLabel" destination="b1I-HP-Ktj" id="0a0-73-a3D"/>
                                         </connections>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
-                                                <rect key="frame" x="330" y="10" width="35" height="30"/>
-                                                <state key="normal" title="Mute"/>
-                                                <connections>
-                                                    <action selector="mute" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="CfZ-r5-QR5"/>
-                                                </connections>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
-                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-ZQ-wua">
-                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
-                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
-                                            </slider>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="42" id="UfD-7P-rlB"/>
-                                                </constraints>
-                                                <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="play" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="d38-oj-CzE"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
-                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
-                                                <state key="normal" title="Skip"/>
-                                                <connections>
-                                                    <action selector="skip" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="T9L-ol-FQD"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="Khg-Qn-NzM" secondAttribute="trailing" constant="10" id="1Ib-7k-sbN"/>
-                                            <constraint firstItem="Am0-ZQ-wua" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="6NE-t6-0Tb"/>
-                                            <constraint firstAttribute="trailing" secondItem="5Ay-iS-L8w" secondAttribute="trailing" constant="10" id="BT2-zC-jQ8"/>
-                                            <constraint firstItem="bsQ-Lx-JTI" firstAttribute="leading" secondItem="1Qg-ZJ-SCp" secondAttribute="leading" constant="10" id="BcF-sg-WBM"/>
-                                            <constraint firstAttribute="bottom" secondItem="bsQ-Lx-JTI" secondAttribute="bottom" constant="45" id="JEz-1p-BsQ"/>
-                                            <constraint firstItem="HO3-58-MDl" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="O79-0v-9QN"/>
-                                            <constraint firstItem="Am0-ZQ-wua" firstAttribute="leading" secondItem="lAi-WS-W62" secondAttribute="trailing" constant="5" id="Sq7-nr-JH0"/>
-                                            <constraint firstItem="HO3-58-MDl" firstAttribute="leading" secondItem="Am0-ZQ-wua" secondAttribute="trailing" constant="10" id="WHr-xj-ApK"/>
-                                            <constraint firstItem="HO3-58-MDl" firstAttribute="top" secondItem="Khg-Qn-NzM" secondAttribute="bottom" constant="50" id="Zpk-Jp-gNF"/>
-                                            <constraint firstAttribute="bottom" secondItem="Am0-ZQ-wua" secondAttribute="bottom" constant="45" id="bbB-M7-wDA"/>
-                                            <constraint firstItem="bsQ-Lx-JTI" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="nWc-Lq-pnk"/>
-                                            <constraint firstItem="lAi-WS-W62" firstAttribute="leading" secondItem="bsQ-Lx-JTI" secondAttribute="trailing" constant="5" id="tP1-DR-2cU"/>
-                                            <constraint firstItem="5Ay-iS-L8w" firstAttribute="top" secondItem="1Qg-ZJ-SCp" secondAttribute="top" constant="10" id="u7P-Gb-TKR"/>
-                                            <constraint firstAttribute="trailing" secondItem="HO3-58-MDl" secondAttribute="trailing" constant="10" id="wfe-gG-Elz"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="currentTimeLabel" destination="bsQ-Lx-JTI" id="UGc-Zi-p55"/>
-                                            <outlet property="muteButton" destination="5Ay-iS-L8w" id="ch5-9D-Fs5"/>
-                                            <outlet property="seekBar" destination="lAi-WS-W62" id="ebu-YW-PAg"/>
-                                            <outlet property="skipButton" destination="Khg-Qn-NzM" id="A56-J7-oJi"/>
-                                            <outlet property="totalTimeLabel" destination="Am0-ZQ-wua" id="zfE-5e-Ks7"/>
-                                        </connections>
-                                    </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="RxAVPlayerPlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <subviews>
@@ -239,12 +171,26 @@
                                                     <action selector="skip" destination="yNb-Gc-RzC" eventType="touchUpInside" id="zDW-yn-YGB"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-Xa-0fS">
+                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="526"/>
+                                                <connections>
+                                                    <action selector="rewind" destination="yNb-Gc-RzC" eventType="touchUpInside" id="EO3-x9-JXo"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nc-aY-bd0">
+                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="526"/>
+                                                <connections>
+                                                    <action selector="forward" destination="yNb-Gc-RzC" eventType="touchUpInside" id="W4B-fY-wDc"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="3bV-oL-f3v" firstAttribute="leading" secondItem="3T6-fu-bCB" secondAttribute="trailing" constant="10" id="0Ep-0p-lcB"/>
                                             <constraint firstItem="3T6-fu-bCB" firstAttribute="centerY" secondItem="HYC-id-fxH" secondAttribute="centerY" id="0ld-9N-dIs"/>
+                                            <constraint firstItem="3bV-oL-f3v" firstAttribute="top" secondItem="5nc-aY-bd0" secondAttribute="bottom" constant="50" id="22X-Q1-JZo"/>
                                             <constraint firstItem="3bV-oL-f3v" firstAttribute="centerY" secondItem="HYC-id-fxH" secondAttribute="centerY" id="6jn-UO-tro"/>
+                                            <constraint firstItem="WWn-Xa-0fS" firstAttribute="leading" secondItem="yNb-Gc-RzC" secondAttribute="leading" id="7aD-Pv-wcM"/>
                                             <constraint firstItem="3T6-fu-bCB" firstAttribute="leading" secondItem="HYC-id-fxH" secondAttribute="trailing" constant="5" id="D7C-8S-tv3"/>
                                             <constraint firstAttribute="trailing" secondItem="h8d-ML-jCu" secondAttribute="trailing" constant="10" id="DgB-xU-hT8"/>
                                             <constraint firstItem="3bV-oL-f3v" firstAttribute="top" secondItem="k5i-U5-sPb" secondAttribute="bottom" constant="50" id="OQt-sp-ZHD"/>
@@ -252,10 +198,16 @@
                                             <constraint firstItem="HYC-id-fxH" firstAttribute="leading" secondItem="Wxf-po-GmY" secondAttribute="trailing" constant="5" id="OhW-9S-RFZ"/>
                                             <constraint firstAttribute="trailing" secondItem="k5i-U5-sPb" secondAttribute="trailing" constant="10" id="QBe-q4-DML"/>
                                             <constraint firstItem="h8d-ML-jCu" firstAttribute="top" secondItem="yNb-Gc-RzC" secondAttribute="top" constant="10" id="SX0-1n-pxb"/>
+                                            <constraint firstItem="5nc-aY-bd0" firstAttribute="width" secondItem="WWn-Xa-0fS" secondAttribute="width" id="XWv-3v-ojr"/>
+                                            <constraint firstItem="5nc-aY-bd0" firstAttribute="leading" secondItem="WWn-Xa-0fS" secondAttribute="trailing" id="YPP-pq-MCY"/>
                                             <constraint firstItem="Wxf-po-GmY" firstAttribute="leading" secondItem="yNb-Gc-RzC" secondAttribute="leading" constant="10" id="ahs-IS-eth"/>
+                                            <constraint firstItem="HYC-id-fxH" firstAttribute="top" secondItem="WWn-Xa-0fS" secondAttribute="bottom" constant="50" id="j4Z-sx-0Me"/>
+                                            <constraint firstItem="WWn-Xa-0fS" firstAttribute="top" secondItem="yNb-Gc-RzC" secondAttribute="top" id="jBj-PQ-GIC"/>
                                             <constraint firstAttribute="trailing" secondItem="3bV-oL-f3v" secondAttribute="trailing" constant="10" id="jeA-vj-qf5"/>
+                                            <constraint firstItem="5nc-aY-bd0" firstAttribute="top" secondItem="yNb-Gc-RzC" secondAttribute="top" id="kRL-MP-Sg5"/>
                                             <constraint firstItem="Wxf-po-GmY" firstAttribute="centerY" secondItem="HYC-id-fxH" secondAttribute="centerY" id="pSE-TS-5Or"/>
                                             <constraint firstAttribute="bottom" secondItem="3T6-fu-bCB" secondAttribute="bottom" constant="45" id="pYI-IC-zkg"/>
+                                            <constraint firstAttribute="trailing" secondItem="5nc-aY-bd0" secondAttribute="trailing" id="txC-cW-Dzx"/>
                                         </constraints>
                                         <connections>
                                             <outlet property="currentTimeLabel" destination="Wxf-po-GmY" id="kbM-uF-adM"/>
@@ -263,6 +215,94 @@
                                             <outlet property="seekBar" destination="HYC-id-fxH" id="pzK-M2-SYv"/>
                                             <outlet property="skipButton" destination="k5i-U5-sPb" id="TsN-OT-DKJ"/>
                                             <outlet property="totalTimeLabel" destination="3T6-fu-bCB" id="At3-2w-rVh"/>
+                                        </connections>
+                                    </view>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
+                                                <rect key="frame" x="330" y="10" width="35" height="30"/>
+                                                <state key="normal" title="Mute"/>
+                                                <connections>
+                                                    <action selector="mute" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="CfZ-r5-QR5"/>
+                                                </connections>
+                                            </button>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
+                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-ZQ-wua">
+                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
+                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                            </slider>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
+                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="UfD-7P-rlB"/>
+                                                </constraints>
+                                                <state key="normal" title="Play"/>
+                                                <connections>
+                                                    <action selector="play" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="d38-oj-CzE"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
+                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
+                                                <state key="normal" title="Skip"/>
+                                                <connections>
+                                                    <action selector="skip" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="T9L-ol-FQD"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkt-f7-Jb6">
+                                                <rect key="frame" x="0.0" y="0.0" width="187.5" height="526"/>
+                                                <connections>
+                                                    <action selector="rewind" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="csc-MZ-jWp"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GQd-6F-A7y">
+                                                <rect key="frame" x="187.5" y="0.0" width="187.5" height="526"/>
+                                                <connections>
+                                                    <action selector="forward" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="ykG-PE-LCX"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Khg-Qn-NzM" secondAttribute="trailing" constant="10" id="1Ib-7k-sbN"/>
+                                            <constraint firstItem="Am0-ZQ-wua" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="6NE-t6-0Tb"/>
+                                            <constraint firstAttribute="trailing" secondItem="5Ay-iS-L8w" secondAttribute="trailing" constant="10" id="BT2-zC-jQ8"/>
+                                            <constraint firstItem="bsQ-Lx-JTI" firstAttribute="leading" secondItem="1Qg-ZJ-SCp" secondAttribute="leading" constant="10" id="BcF-sg-WBM"/>
+                                            <constraint firstItem="GQd-6F-A7y" firstAttribute="leading" secondItem="fkt-f7-Jb6" secondAttribute="trailing" id="Fjj-Fa-Ctj"/>
+                                            <constraint firstItem="GQd-6F-A7y" firstAttribute="top" secondItem="1Qg-ZJ-SCp" secondAttribute="top" id="GCs-Gm-yIJ"/>
+                                            <constraint firstAttribute="bottom" secondItem="bsQ-Lx-JTI" secondAttribute="bottom" constant="45" id="JEz-1p-BsQ"/>
+                                            <constraint firstItem="fkt-f7-Jb6" firstAttribute="leading" secondItem="1Qg-ZJ-SCp" secondAttribute="leading" id="Kib-cR-epC"/>
+                                            <constraint firstItem="fkt-f7-Jb6" firstAttribute="top" secondItem="1Qg-ZJ-SCp" secondAttribute="top" id="NrA-pY-Re3"/>
+                                            <constraint firstItem="HO3-58-MDl" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="O79-0v-9QN"/>
+                                            <constraint firstItem="Am0-ZQ-wua" firstAttribute="leading" secondItem="lAi-WS-W62" secondAttribute="trailing" constant="5" id="Sq7-nr-JH0"/>
+                                            <constraint firstItem="lAi-WS-W62" firstAttribute="top" secondItem="fkt-f7-Jb6" secondAttribute="bottom" constant="50" id="VsY-cr-kKW"/>
+                                            <constraint firstItem="HO3-58-MDl" firstAttribute="leading" secondItem="Am0-ZQ-wua" secondAttribute="trailing" constant="10" id="WHr-xj-ApK"/>
+                                            <constraint firstAttribute="trailing" secondItem="GQd-6F-A7y" secondAttribute="trailing" id="WMh-OH-Viv"/>
+                                            <constraint firstItem="HO3-58-MDl" firstAttribute="top" secondItem="Khg-Qn-NzM" secondAttribute="bottom" constant="50" id="Zpk-Jp-gNF"/>
+                                            <constraint firstAttribute="bottom" secondItem="Am0-ZQ-wua" secondAttribute="bottom" constant="45" id="bbB-M7-wDA"/>
+                                            <constraint firstItem="GQd-6F-A7y" firstAttribute="width" secondItem="fkt-f7-Jb6" secondAttribute="width" id="gf0-vw-Sy1"/>
+                                            <constraint firstItem="bsQ-Lx-JTI" firstAttribute="centerY" secondItem="lAi-WS-W62" secondAttribute="centerY" id="nWc-Lq-pnk"/>
+                                            <constraint firstItem="lAi-WS-W62" firstAttribute="leading" secondItem="bsQ-Lx-JTI" secondAttribute="trailing" constant="5" id="tP1-DR-2cU"/>
+                                            <constraint firstItem="5Ay-iS-L8w" firstAttribute="top" secondItem="1Qg-ZJ-SCp" secondAttribute="top" constant="10" id="u7P-Gb-TKR"/>
+                                            <constraint firstAttribute="trailing" secondItem="HO3-58-MDl" secondAttribute="trailing" constant="10" id="wfe-gG-Elz"/>
+                                            <constraint firstItem="GQd-6F-A7y" firstAttribute="height" secondItem="fkt-f7-Jb6" secondAttribute="height" id="xf9-8J-ejy"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="currentTimeLabel" destination="bsQ-Lx-JTI" id="UGc-Zi-p55"/>
+                                            <outlet property="muteButton" destination="5Ay-iS-L8w" id="ch5-9D-Fs5"/>
+                                            <outlet property="seekBar" destination="lAi-WS-W62" id="ebu-YW-PAg"/>
+                                            <outlet property="skipButton" destination="Khg-Qn-NzM" id="A56-J7-oJi"/>
+                                            <outlet property="totalTimeLabel" destination="Am0-ZQ-wua" id="zfE-5e-Ks7"/>
                                         </connections>
                                     </view>
                                 </subviews>
