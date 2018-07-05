@@ -12,6 +12,25 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
+enum PlayerStatus: Int {
+    case none
+    case ready
+    case playing
+    case pause
+    case deadend
+    case failed
+}
+
+enum ViewableStatus: Int {
+    case none
+    case impression
+    case viewable
+    case firstQ
+    case secondQ
+    case thirdQ
+    case completion
+}
+
 class RxAVPlayer: UIView {
 
     @IBOutlet weak var playButton: UIButton?
@@ -23,6 +42,24 @@ class RxAVPlayer: UIView {
     @IBOutlet weak var endTimeLabel: UILabel?
     @IBOutlet weak var skipButton: UIButton?
     @IBOutlet weak var seekbar: UISlider?
+    
+    private let statusSubject = BehaviorSubject<PlayerStatus>(value: .none)
+    var status: PlayerStatus = .none {
+        didSet {
+            if status != oldValue {
+                statusSubject.onNext(status)
+            }
+        }
+    }
+    
+    private let viewStatusSubject = BehaviorSubject<ViewableStatus>(value: .none)
+    var viewStatus: ViewableStatus = .none {
+        didSet {
+            if viewStatus != oldValue {
+                viewStatusSubject.onNext(viewStatus)
+            }
+        }
+    }
     
     var autoplay = false
     var mute: Bool = false {
@@ -48,7 +85,7 @@ class RxAVPlayer: UIView {
     }
     
     private let movieEndSubject = BehaviorSubject<Bool>(value: false)
-    private lazy var progressSubject = BehaviorSubject<Float>(value: 0)
+    private lazy var seekbarSubject = BehaviorSubject<Float>(value: 0)
     private var skipObservable: Observable<Bool>?
     private let disposebag = DisposeBag()
     private var totalDate = Date.distantPast
@@ -56,6 +93,7 @@ class RxAVPlayer: UIView {
     
     var url: URL? {
         didSet {
+            status = .none
             guard let movieURL = url else { return }
             if movieURL.isFileURL {
                 guard let check = try? movieURL.checkResourceIsReachable() else { return }
@@ -73,29 +111,23 @@ class RxAVPlayer: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        status = .none
+        viewStatus = .none
+        
         if let button = muteButton {
-            button.isExclusiveTouch = true
             button.addTarget(self, action: #selector(changeMute), for: .touchUpInside)
         }
         if let button = playButton {
-            button.isExclusiveTouch = true
             button.addTarget(self, action: #selector(play), for: .touchUpInside)
         }
         if let button = pauseButton {
-            button.isExclusiveTouch = true
             button.addTarget(self, action: #selector(pause), for: .touchUpInside)
         }
         if let button = replayButton {
-            button.isExclusiveTouch = true
             button.addTarget(self, action: #selector(replay), for: .touchUpInside)
         }
         if let button = skipButton {
-            button.isExclusiveTouch = true
-            button.isHidden = true
             button.addTarget(self, action: #selector(skip), for: .touchUpInside)
-        }
-        if let seek = seekbar {
-            seek.isExclusiveTouch = true
         }
         formatter.dateFormat = "mm:ss"
         timeOffsetLabel?.text = "00:00"
@@ -135,29 +167,57 @@ class RxAVPlayer: UIView {
                         weakSelf.skipObservable = combine
                     }
                 }
-                
-                let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
-                weakSelf.timeOffsetLabel?.text = weakSelf.formatter.string(from: date)
-                
-                let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-                let delta = round(weakSelf.totalDate.timeIntervalSince(date))
-                let percent = 1.0 - delta / totalInterval
-                weakSelf.progressSubject.onNext(Float(percent))
-                
-                if let remain = weakSelf.remainTimeLabel {
-                    let remainDate = Date(timeIntervalSince1970: delta)
-                    remain.text = weakSelf.formatter.string(from: remainDate)
+                if let p = weakSelf.player, let item = p.currentItem {
+                    weakSelf.manageTimeStatus(current: time, duration: item.duration)
+                    let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
+                    weakSelf.timeOffsetLabel?.text = weakSelf.formatter.string(from: date)
+                    
+                    let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                    let delta = round(weakSelf.totalDate.timeIntervalSince(date))
+                    let percent = 1.0 - delta / totalInterval
+                    weakSelf.seekbarSubject.onNext(Float(percent))
+                    
+                    if let remain = weakSelf.remainTimeLabel {
+                        let remainDate = Date(timeIntervalSince1970: delta)
+                        remain.text = weakSelf.formatter.string(from: remainDate)
+                    }
                 }
             }
+        }
+    }
+    
+    private func manageTimeStatus(current: CMTime, duration: CMTime) {
+        let elapse = CMTimeGetSeconds(current)
+        let completion = CMTimeGetSeconds(duration)
+        
+        let percent = elapse / completion
+        switch percent {
+        case 1:
+            viewStatus = .completion
+        case 0.25..<0.5:
+            viewStatus = .firstQ
+        case 0.5..<0.75:
+            viewStatus = .secondQ
+        case 0.75..<1:
+            viewStatus = .thirdQ
+        default:
+            break
         }
     }
     
     private func bind() {
         if let pl = player, let item = pl.currentItem {
             
-            let obs1 = item.rx.playbackLikelyToKeepUp
-            let obs2 = pl.rx.status.map { ($0 == .readyToPlay) }
+            statusSubject.subscribe(onNext: { (st) in
+                print("PLAYER STATUS : \(st)")
+            }).disposed(by: disposebag)
             
+            viewStatusSubject.subscribe(onNext: { (sc) in
+                print("VIEWABLE SCORE : \(sc)")
+            }).disposed(by: disposebag)
+            
+            let obs1 = item.rx.playbackLikelyToKeepUp
+            let obs2 = pl.rx.status.map { $0 == .readyToPlay }
             Observable.combineLatest([obs1, obs2]).map { (list) -> Bool in
                 for result in list {
                     if !result {
@@ -165,15 +225,24 @@ class RxAVPlayer: UIView {
                     }
                 }
                 return true
-            }.bind { (playable) in
-                if playable {
-                    self.movieEndSubject.onNext(false)
-                    if let total = self.player?.currentItem?.duration {
-                        self.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
-                        self.endTimeLabel?.text = self.formatter.string(from: self.totalDate)
-                    }
-                    if self.autoplay {
-                        pl.play()
+            }.bind { [weak self] (playable) in
+                if let weakSelf = self {
+                    if playable {
+                        if weakSelf.status == .none {
+                            weakSelf.status = .ready
+                            weakSelf.viewStatus = .impression
+                        }
+                        
+                        weakSelf.movieEndSubject.onNext(false)
+                        if let p = weakSelf.player {
+                            if let total = p.currentItem?.duration {
+                                weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
+                                weakSelf.endTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
+                            }
+                            if weakSelf.autoplay {
+                                p.play()
+                            }
+                        }
                     }
                 }
             }.disposed(by: disposebag)
@@ -182,7 +251,7 @@ class RxAVPlayer: UIView {
                 pl.rx.mute.bind(to: button.rx.isSelected).disposed(by: disposebag)
             }
             
-            if let button = playButton {
+            if playButton != nil {
                 let obs1 = pl.rx.rate.map { $0 > 0 }
                 let obs2 = movieEndSubject.map { $0 }
                 Observable.combineLatest([obs1, obs2]).map { (list) -> Bool in
@@ -192,10 +261,17 @@ class RxAVPlayer: UIView {
                         }
                     }
                     return false
-                }.bind(to: button.rx.isHidden).disposed(by: disposebag)
+                }.bind { [weak self] (hidden) in
+                    if let weakSelf = self, let btn = weakSelf.playButton {
+                        btn.isHidden = hidden
+                        if !hidden {
+                            weakSelf.status = .pause
+                        }
+                    }
+                }.disposed(by: disposebag)
             }
             
-            if let button = pauseButton {
+            if pauseButton != nil {
                 let obs1 = pl.rx.rate.map { $0 == 0 }
                 let obs2 = movieEndSubject.map { $0 }
                 Observable.combineLatest([obs1, obs2]).map { (list) -> Bool in
@@ -205,48 +281,74 @@ class RxAVPlayer: UIView {
                         }
                     }
                     return false
-                }.bind(to: button.rx.isHidden).disposed(by: disposebag)
+                }.bind { [weak self] (hidden) in
+                    if let weakSelf = self, let btn = weakSelf.pauseButton {
+                        btn.isHidden = hidden
+                        if !hidden {
+                            weakSelf.status = .playing
+                        }
+                    }
+                }.disposed(by: disposebag)
             }
             
-            if let button = replayButton {
-                movieEndSubject.map { !$0 }.bind(to: button.rx.isHidden).disposed(by: disposebag)
+            if replayButton != nil {
+                movieEndSubject.bind { [weak self] (completion) in
+                    if let weakSelf = self, let btn = weakSelf.replayButton {
+                        btn.isHidden = !completion
+                        if completion {
+                            weakSelf.status = .pause
+                            weakSelf.viewStatus = .completion
+                        }
+                    }
+                }.disposed(by: disposebag)
             }
             
             if let seek = seekbar {
-                progressSubject.bind { (value) in
-                    if !seek.isTracking, let rate = self.player?.rate, rate > 0.0 {
-                        seek.value = value
+                seekbarSubject.bind { [weak self] (value) in
+                    if let weakSelf = self, let sbar = weakSelf.seekbar {
+                        if !sbar.isTracking, let rate = weakSelf.player?.rate, rate > 0.0 {
+                            sbar.value = value
+                        }
                     }
                 }.disposed(by: disposebag)
 
-                seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).subscribe(onNext: {
-                    if self.totalDate.compare(Date.distantPast) != .orderedSame {
-                        self.progressSubject.onNext(seek.value)
-                        let totalInterval = self.totalDate.timeIntervalSince1970
-                        let target = totalInterval * TimeInterval(seek.value)
-                        let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-                        self.seek(distance: time, skip: false)
+                seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
+                    if let weakSelf = self, let sbar = weakSelf.seekbar {
+                        if weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
+                            weakSelf.seekbarSubject.onNext(sbar.value)
+                            let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                            let target = totalInterval * TimeInterval(sbar.value)
+                            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+                            weakSelf.seek(distance: time, skip: false)
+                        }
                     }
-                }).disposed(by: disposebag)
+                }.disposed(by: disposebag)
             }
         }
     }
     
     private func seek(distance: CMTime, skip: Bool) {
-        self.pause()
-        if skip {
-            self.player?.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { (completion) in
-                if completion {
-                    self.play()
-                }
-            })
-        } else {
-            self.player?.seek(to: distance, completionHandler: { (completion) in
-                if completion {
-                    self.play()
-                }
-            })
+        pause()
+        if let pl = player {
+            if skip {
+                pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
+                    if let weakSelf = self {
+                        if completion, !skip {
+                            weakSelf.play()
+                        }
+                    }
+                })
+            } else {
+                player?.seek(to: distance, completionHandler: { [weak self] (completion) in
+                    if let weakSelf = self {
+                        if completion {
+                            weakSelf.play()
+                        }
+                    }
+                })
+            }
         }
+
     }
     
     @objc private func changeMute() {
@@ -256,16 +358,16 @@ class RxAVPlayer: UIView {
     }
     
     @objc private func skip() {
-        if totalDate.compare(Date.distantPast) != .orderedSame {
-            let time = CMTimeMakeWithSeconds(totalDate.timeIntervalSince1970, Int32(NSEC_PER_SEC))
-            self.seek(distance: time, skip: true)
+        if let pl = player, let time = pl.currentItem?.duration {
+            let distanceTime = CMTimeMake(time.value - 1, time.timescale)
+            seek(distance: distanceTime, skip: true)
         }
     }
     
     @objc private func replay() {
         if totalDate.compare(Date.distantPast) != .orderedSame {
             let time = CMTimeMakeWithSeconds(0, Int32(NSEC_PER_SEC))
-            self.seek(distance: time, skip: false)
+            seek(distance: time, skip: false)
         }
     }
     
