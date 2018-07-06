@@ -6,7 +6,6 @@
 //  Copyright © 2018年 HINOMORI HIROYA. All rights reserved.
 //
 
-import AVFoundation
 import UIKit
 
 protocol RxAVPlayerControllable {
