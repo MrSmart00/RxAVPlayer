@@ -11,7 +11,7 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
-enum PlayerStatus: Int {
+enum RxPlayerStatus: Int {
     case none
     case ready
     case playing
@@ -21,7 +21,7 @@ enum PlayerStatus: Int {
     case failed
 }
 
-enum ViewableStatus: Int {
+enum RxPlayerProgressStatus: Int {
     case none
     case impression
     case viewable
@@ -33,8 +33,8 @@ enum ViewableStatus: Int {
 
 class RxAVPlayer: UIView {
 
-    let statusSubject = BehaviorSubject<PlayerStatus>(value: .none)
-    var status: PlayerStatus = .none {
+    let statusSubject = BehaviorSubject<RxPlayerStatus>(value: .none)
+    var status: RxPlayerStatus = .none {
         didSet {
             if status != oldValue {
                 statusSubject.onNext(status)
@@ -42,8 +42,8 @@ class RxAVPlayer: UIView {
         }
     }
     
-    let viewStatusSubject = BehaviorSubject<ViewableStatus>(value: .none)
-    var viewStatus: ViewableStatus = .none {
+    let viewStatusSubject = BehaviorSubject<RxPlayerProgressStatus>(value: .none)
+    var viewStatus: RxPlayerProgressStatus = .none {
         didSet {
             if viewStatus != oldValue {
                 viewStatusSubject.onNext(viewStatus)
@@ -221,7 +221,7 @@ class RxAVPlayer: UIView {
         if let pl = player, let item = pl.currentItem {
             statusSubject.subscribe(onNext: { [weak self] (st) in
                 if let weakSelf = self {
-                    print("VIEWABLE SCORE : \(st)")
+                    print("PLAYER STATUS : \(st)")
                     weakSelf.allControls.forEach({ (control) in
                         if let view = control as? UIView {
                             view.isHidden = true
@@ -243,7 +243,7 @@ class RxAVPlayer: UIView {
             }).disposed(by: disposebag)
             
             viewStatusSubject.subscribe(onNext: { (sc) in
-                print("VIEWABLE SCORE : \(sc)")
+                print("VIEWABLE STATUS : \(sc)")
             }).disposed(by: disposebag)
             
             let obs1 = item.rx.playbackLikelyToKeepUp
@@ -285,11 +285,11 @@ class RxAVPlayer: UIView {
                 }
                 
                 if let seek = control.seekBar {
-                    seekbarSubject.bind { [weak self] (value) in
-                        if let weakSelf = self, weakSelf.status != .seeking, let sbar = control.seekBar, !sbar.isTracking {
+                    Observable.combineLatest(statusSubject, seekbarSubject, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
+                        if status != .seeking, let sbar = seek, !sbar.isTracking {
                             sbar.value = value
                         }
-                    }.disposed(by: disposebag)
+                    }).disposed(by: disposebag)
                     
                     seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
                         if let weakSelf = self, let sbar = control.seekBar {

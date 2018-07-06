@@ -164,13 +164,6 @@
                                                     <action selector="pause" destination="yNb-Gc-RzC" eventType="touchUpInside" id="bN5-pn-7KZ"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5i-U5-sPb">
-                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
-                                                <state key="normal" title="Skip"/>
-                                                <connections>
-                                                    <action selector="skip" destination="yNb-Gc-RzC" eventType="touchUpInside" id="zDW-yn-YGB"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-Xa-0fS">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="526"/>
                                                 <connections>
@@ -181,6 +174,13 @@
                                                 <rect key="frame" x="187.5" y="0.0" width="187.5" height="526"/>
                                                 <connections>
                                                     <action selector="forward" destination="yNb-Gc-RzC" eventType="touchUpInside" id="W4B-fY-wDc"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5i-U5-sPb">
+                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
+                                                <state key="normal" title="Skip"/>
+                                                <connections>
+                                                    <action selector="skip" destination="yNb-Gc-RzC" eventType="touchUpInside" id="zDW-yn-YGB"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -252,13 +252,6 @@
                                                     <action selector="play" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="d38-oj-CzE"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
-                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
-                                                <state key="normal" title="Skip"/>
-                                                <connections>
-                                                    <action selector="skip" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="T9L-ol-FQD"/>
-                                                </connections>
-                                            </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkt-f7-Jb6">
                                                 <rect key="frame" x="0.0" y="0.0" width="187.5" height="526"/>
                                                 <connections>
@@ -269,6 +262,13 @@
                                                 <rect key="frame" x="187.5" y="0.0" width="187.5" height="526"/>
                                                 <connections>
                                                     <action selector="forward" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="ykG-PE-LCX"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
+                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
+                                                <state key="normal" title="Skip"/>
+                                                <connections>
+                                                    <action selector="skip" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="T9L-ol-FQD"/>
                                                 </connections>
                                             </button>
                                         </subviews>
