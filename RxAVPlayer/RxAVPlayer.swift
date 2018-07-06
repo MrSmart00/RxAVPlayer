@@ -64,15 +64,18 @@ class RxAVPlayer: UIView {
         didSet {
             formatter.dateFormat = dateFormatString
             allControls.forEach { (control) in
-                if let label = control.currentTimeLabel, (label.text == nil || label.text == "Label") {
-                    label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
-                }
                 if let label = control.remainingTimeLabel, (label.text == nil || label.text == "Label") {
                     label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
                 }
-                if let label = control.totalTimeLabel, (label.text == nil || label.text == "Label") {
-                    label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                if let timecontrol = control as? RxAVPlayerTimeControllable {
+                    if let label = timecontrol.currentTimeLabel, (label.text == nil || label.text == "Label") {
+                        label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                    }
+                    if let label = timecontrol.totalTimeLabel, (label.text == nil || label.text == "Label") {
+                        label.text = formatter.string(from: Date(timeIntervalSince1970: 0))
+                    }
                 }
+
             }
         }
     }
@@ -171,12 +174,10 @@ class RxAVPlayer: UIView {
     private func registerTimeObserver(_ player: AVPlayer) {
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 10), queue: DispatchQueue.main) { [weak self] (time) in
             if let weakSelf = self {
-                if time.value == 0, weakSelf.visibleSkipSeconds > -1 {
-                    Observable<Int>.timer(RxTimeInterval(weakSelf.visibleSkipSeconds), scheduler: MainScheduler.asyncInstance).bind(onNext: { [weak self] (_) in
-                        if let weakSelf = self {
-                            weakSelf.skipBehavior.onNext(true)
-                        }
-                    }).disposed(by: weakSelf.disposebag)
+
+                if CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds), !weakSelf.skipBehavior.isDisposed {
+                    weakSelf.skipBehavior.onNext(true)
+                    weakSelf.skipBehavior.onCompleted()
                 }
 
                 if let p = weakSelf.player, let item = p.currentItem {
@@ -190,7 +191,9 @@ class RxAVPlayer: UIView {
                     let remainDate = Date(timeIntervalSince1970: delta)
                     
                     weakSelf.allControls.forEach { (control) in
-                        control.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                        if let timecontrol = control as? RxAVPlayerTimeControllable {
+                            timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                        }
                         control.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
                     }
                 }
@@ -221,7 +224,6 @@ class RxAVPlayer: UIView {
         if let pl = player, let item = pl.currentItem {
             statusSubject.subscribe(onNext: { [weak self] (st) in
                 if let weakSelf = self {
-                    print("PLAYER STATUS : \(st)")
                     weakSelf.allControls.forEach({ (control) in
                         if let view = control as? UIView {
                             view.isHidden = true
@@ -240,10 +242,6 @@ class RxAVPlayer: UIView {
                         break
                     }
                 }
-            }).disposed(by: disposebag)
-            
-            viewStatusSubject.subscribe(onNext: { (sc) in
-                print("VIEWABLE STATUS : \(sc)")
             }).disposed(by: disposebag)
             
             let obs1 = item.rx.playbackLikelyToKeepUp
@@ -268,7 +266,9 @@ class RxAVPlayer: UIView {
                             if let total = p.currentItem?.duration {
                                 weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
                                 weakSelf.allControls.forEach { (control) in
-                                    control.totalTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
+                                    if let timecontrol = control as? RxAVPlayerTimeControllable {
+                                        timecontrol.totalTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
+                                    }
                                 }
                             }
                             if weakSelf.autoplay {
@@ -284,7 +284,7 @@ class RxAVPlayer: UIView {
                     pl.rx.mute.bind(to: button.rx.isSelected).disposed(by: disposebag)
                 }
                 
-                if let seek = control.seekBar {
+                if let timecontrol = control as? RxAVPlayerTimeControllable, let seek = timecontrol.seekBar {
                     Observable.combineLatest(statusSubject, seekbarSubject, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
                         if status != .seeking, let sbar = seek, !sbar.isTracking {
                             sbar.value = value
@@ -292,7 +292,7 @@ class RxAVPlayer: UIView {
                     }).disposed(by: disposebag)
                     
                     seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
-                        if let weakSelf = self, let sbar = control.seekBar {
+                        if let weakSelf = self, let sbar = timecontrol.seekBar {
                             if weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
                                 weakSelf.seekbarSubject.onNext(sbar.value)
                                 let totalInterval = weakSelf.totalDate.timeIntervalSince1970

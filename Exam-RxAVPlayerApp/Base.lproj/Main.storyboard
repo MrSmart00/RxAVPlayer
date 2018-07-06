@@ -79,54 +79,6 @@
                                             <outlet property="totalTimeLabel" destination="cUe-i8-Iun" id="XVj-Lc-dsI"/>
                                         </connections>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nhk-CM-qxq" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hnr-Xs-8ie">
-                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1I-HP-Ktj">
-                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R94-LG-97u">
-                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
-                                            </slider>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a5-fx-SXL">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="42" id="yVk-ou-wZ0"/>
-                                                </constraints>
-                                                <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="play" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Imh-cl-tIA"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstItem="b1I-HP-Ktj" firstAttribute="centerY" secondItem="R94-LG-97u" secondAttribute="centerY" id="2Ul-Og-4NX"/>
-                                            <constraint firstAttribute="bottom" secondItem="b1I-HP-Ktj" secondAttribute="bottom" constant="45" id="BRK-Xf-7n3"/>
-                                            <constraint firstItem="b1I-HP-Ktj" firstAttribute="leading" secondItem="R94-LG-97u" secondAttribute="trailing" constant="5" id="EbD-vR-YME"/>
-                                            <constraint firstAttribute="trailing" secondItem="6a5-fx-SXL" secondAttribute="trailing" constant="10" id="Io2-5B-Bun"/>
-                                            <constraint firstItem="hnr-Xs-8ie" firstAttribute="leading" secondItem="Nhk-CM-qxq" secondAttribute="leading" constant="10" id="L5s-Tn-HTi"/>
-                                            <constraint firstItem="6a5-fx-SXL" firstAttribute="leading" secondItem="b1I-HP-Ktj" secondAttribute="trailing" constant="10" id="RG3-bL-8Tt"/>
-                                            <constraint firstItem="R94-LG-97u" firstAttribute="leading" secondItem="hnr-Xs-8ie" secondAttribute="trailing" constant="5" id="UqJ-uW-asD"/>
-                                            <constraint firstAttribute="bottom" secondItem="hnr-Xs-8ie" secondAttribute="bottom" constant="45" id="fIw-Ir-LtR"/>
-                                            <constraint firstItem="hnr-Xs-8ie" firstAttribute="centerY" secondItem="R94-LG-97u" secondAttribute="centerY" id="iNG-jB-xH2"/>
-                                            <constraint firstItem="6a5-fx-SXL" firstAttribute="centerY" secondItem="R94-LG-97u" secondAttribute="centerY" id="uHr-2H-b5S"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="currentTimeLabel" destination="hnr-Xs-8ie" id="X6I-z8-eh6"/>
-                                            <outlet property="seekBar" destination="R94-LG-97u" id="SBR-dz-DT1"/>
-                                            <outlet property="totalTimeLabel" destination="b1I-HP-Ktj" id="0a0-73-a3D"/>
-                                        </connections>
-                                    </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="RxAVPlayerPlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                                         <subviews>
@@ -152,9 +104,8 @@
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
                                                 <connections>
-                                                    <action selector="changeSeek" destination="yNb-Gc-RzC" eventType="valueChanged" id="8yE-yN-qrJ"/>
-                                                    <action selector="changeSeek" destination="1Qg-ZJ-SCp" eventType="valueChanged" id="9Ry-aL-U87"/>
                                                     <action selector="changeSeek" destination="zAl-k1-8P1" eventType="valueChanged" id="D4s-Ew-KiM"/>
+                                                    <action selector="seek:" destination="yNb-Gc-RzC" eventType="valueChanged" id="vR5-tR-0c7"/>
                                                 </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-oL-f3v">
@@ -211,7 +162,9 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="currentTimeLabel" destination="Wxf-po-GmY" id="kbM-uF-adM"/>
+                                            <outlet property="forwardButton" destination="5nc-aY-bd0" id="J47-cq-CV0"/>
                                             <outlet property="muteButton" destination="h8d-ML-jCu" id="hHK-mz-rQB"/>
+                                            <outlet property="rewindButton" destination="WWn-Xa-0fS" id="Pak-7d-Fs7"/>
                                             <outlet property="seekBar" destination="HYC-id-fxH" id="pzK-M2-SYv"/>
                                             <outlet property="skipButton" destination="k5i-U5-sPb" id="TsN-OT-DKJ"/>
                                             <outlet property="totalTimeLabel" destination="3T6-fu-bCB" id="At3-2w-rVh"/>
@@ -241,6 +194,9 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                                <connections>
+                                                    <action selector="seek:" destination="1Qg-ZJ-SCp" eventType="valueChanged" id="OKj-Yz-IuX"/>
+                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>
@@ -299,10 +255,45 @@
                                         </constraints>
                                         <connections>
                                             <outlet property="currentTimeLabel" destination="bsQ-Lx-JTI" id="UGc-Zi-p55"/>
+                                            <outlet property="forwardButton" destination="GQd-6F-A7y" id="xme-U8-uvf"/>
                                             <outlet property="muteButton" destination="5Ay-iS-L8w" id="ch5-9D-Fs5"/>
+                                            <outlet property="rewindButton" destination="fkt-f7-Jb6" id="fKE-cY-39h"/>
                                             <outlet property="seekBar" destination="lAi-WS-W62" id="ebu-YW-PAg"/>
                                             <outlet property="skipButton" destination="Khg-Qn-NzM" id="A56-J7-oJi"/>
                                             <outlet property="totalTimeLabel" destination="Am0-ZQ-wua" id="zfE-5e-Ks7"/>
+                                        </connections>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nhk-CM-qxq" customClass="EndcardControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtE-0R-cEL">
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                                <connections>
+                                                    <action selector="touchContent" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Ay7-0G-Kjn"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a5-fx-SXL">
+                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="42" id="yVk-ou-wZ0"/>
+                                                </constraints>
+                                                <state key="normal" title="Play"/>
+                                                <connections>
+                                                    <action selector="play" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Imh-cl-tIA"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="TtE-0R-cEL" secondAttribute="bottom" id="9Ij-VH-WlR"/>
+                                            <constraint firstItem="TtE-0R-cEL" firstAttribute="top" secondItem="Nhk-CM-qxq" secondAttribute="top" id="9xx-sT-Kd5"/>
+                                            <constraint firstAttribute="trailing" secondItem="6a5-fx-SXL" secondAttribute="trailing" constant="10" id="Io2-5B-Bun"/>
+                                            <constraint firstAttribute="bottom" secondItem="6a5-fx-SXL" secondAttribute="bottom" constant="41" id="OvL-1E-ywL"/>
+                                            <constraint firstItem="TtE-0R-cEL" firstAttribute="leading" secondItem="Nhk-CM-qxq" secondAttribute="leading" id="V0w-ln-vQK"/>
+                                            <constraint firstAttribute="trailing" secondItem="TtE-0R-cEL" secondAttribute="trailing" id="klk-On-Eak"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="contentButton" destination="TtE-0R-cEL" id="MGE-CA-CMZ"/>
                                         </connections>
                                     </view>
                                 </subviews>

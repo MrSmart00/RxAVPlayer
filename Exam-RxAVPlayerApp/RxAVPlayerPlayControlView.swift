@@ -11,7 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable {
+class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable {
+    
     var player: RxAVPlayer?
     
     @IBOutlet weak var muteButton: UIButton?
@@ -23,6 +24,10 @@ class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable {
     @IBOutlet weak var totalTimeLabel: UILabel?
     
     var remainingTimeLabel: UILabel?
+
+    @IBOutlet weak var forwardButton: UIButton?
+    
+    @IBOutlet weak var rewindButton: UIButton?
 
     @IBOutlet weak var skipButton: UIButton?
     
@@ -59,12 +64,15 @@ class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable {
         }
     }
     
-    @IBAction func changeSeek() {
-        if let bar = seekBar {
-            seek(bar.value)
+    @IBAction func seek(_ value: Float) {
+        if let bar = seekBar , let p = player {
+            let totalInterval = p.totalDate.timeIntervalSince1970
+            let target = totalInterval * TimeInterval(bar.value)
+            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+            p.seek(distance: time, skip: false)
         }
     }
-    
+
     @IBAction func skip() {
         if let p = player {
             p.skip()
