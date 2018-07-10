@@ -28,6 +28,9 @@ class ViewController: UIViewController {
         player.closeObservable.subscribe(onNext: { (_) in
             print("close!!")
         }).disposed(by: disposebag)
+        player.touchObservable.bind { (userinfo) in
+            print(userinfo)
+        }.disposed(by: disposebag)
     }
 
     override func didReceiveMemoryWarning() {

@@ -13,12 +13,6 @@ class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, R
     
     @IBOutlet weak var contentButton: UIButton?
     
-    var touchableUserInfo: Any?
-    
-    @IBAction func touchContent() {
-        print(player?.userInfo)
-    }
-    
     var player: RxAVPlayer?
     
     var muteButton: UIButton?

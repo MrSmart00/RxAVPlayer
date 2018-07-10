@@ -45,6 +45,9 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wlh-Mh-0E7">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                                <connections>
+                                                    <action selector="seek:" destination="zAl-k1-8P1" eventType="valueChanged" id="bjR-Jf-zpW"/>
+                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="504-2T-aYo">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>
@@ -104,7 +107,6 @@
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
                                                 <connections>
-                                                    <action selector="changeSeek" destination="zAl-k1-8P1" eventType="valueChanged" id="D4s-Ew-KiM"/>
                                                     <action selector="seek:" destination="yNb-Gc-RzC" eventType="valueChanged" id="vR5-tR-0c7"/>
                                                 </connections>
                                             </slider>
@@ -268,9 +270,6 @@
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtE-0R-cEL">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
-                                                <connections>
-                                                    <action selector="touchContent" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Ay7-0G-Kjn"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a5-fx-SXL">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>

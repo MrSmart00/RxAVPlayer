@@ -156,18 +156,22 @@ import RxCocoa
                             endcard.endcardImage?.image = image
                         }
                     }
-                }.resume()
+                    }.resume()
             }
         }
     }
     
     var userInfo: Any?
-
+    private lazy var touchSubject = PublishSubject<Any?>()
+    var touchObservable: Observable<Any?> {
+        return touchSubject
+    }
+    
     private lazy var closeSubject = PublishSubject<Void>()
     var closeObservable: Observable<Void> {
         return closeSubject
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         status = .none
@@ -244,9 +248,9 @@ import RxCocoa
             statusSubject.subscribe(onNext: { [weak self] (st) in
                 guard let weakSelf = self else { return }
                 weakSelf.allControls.forEach({ (control) in
-                if let view = control as? UIView {
-                view.isHidden = true
-                }
+                    if let view = control as? UIView {
+                        view.isHidden = true
+                    }
                 })
                 switch st {
                 case .none, .ready:
@@ -295,7 +299,7 @@ import RxCocoa
                         }
                     }
                 }.disposed(by: disposebag)
-
+            
             allControls.forEach { (control) in
                 if let button = control.muteButton {
                     pl.rx.mute.bind(to: button.rx.isSelected).disposed(by: disposebag)
@@ -322,14 +326,20 @@ import RxCocoa
                         }
                         }.disposed(by: disposebag)
                 }
+                if let touchControl = control as? RxAVPlayerTouchable {
+                    touchControl.contentButton?.rx.controlEvent(.touchUpInside).bind(onNext: { [weak self] (_) in
+                        guard let weakSelf = self else { return }
+                        weakSelf.touchSubject.onNext(weakSelf.userInfo)
+                    }).disposed(by: disposebag)
+                }
                 if let closeControl = control as? RxAVPlayerClosable {
                     closeControl.closeButton?.rx.controlEvent(.touchUpInside).bind(onNext: { [weak self] (_) in
                         guard let weakSelf = self else { return }
-                        weakSelf.closeSubject.onNext(())
+                        weakSelf.closeSubject.onNext()
                     }).disposed(by: disposebag)
                 }
             }
-
+            
             let obs3 = pl.rx.rate.map { $0 > 0 }
             let obs4 = movieEndSubject.map { $0 }
             Observable.combineLatest([obs3, obs4]).map { (list) -> Bool in
@@ -355,7 +365,7 @@ import RxCocoa
                 if completion {
                     weakSelf.status = .deadend
                 }
-            }.disposed(by: disposebag)
+                }.disposed(by: disposebag)
         }
     }
     

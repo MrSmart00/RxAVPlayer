@@ -11,8 +11,5 @@ import UIKit
 protocol RxAVPlayerTouchable {
     
     var contentButton: UIButton? { get }
-    var touchableUserInfo: Any? { get set }
-    
-    func touchContent()
     
 }
