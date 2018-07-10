@@ -282,17 +282,24 @@
                                                     <action selector="play" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Imh-cl-tIA"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIf-uj-DjQ">
+                                                <rect key="frame" x="326" y="10" width="39" height="30"/>
+                                                <state key="normal" title="Close"/>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="dIf-uj-DjQ" secondAttribute="trailing" constant="10" id="0Mv-iu-YK4"/>
                                             <constraint firstAttribute="bottom" secondItem="TtE-0R-cEL" secondAttribute="bottom" id="9Ij-VH-WlR"/>
                                             <constraint firstItem="TtE-0R-cEL" firstAttribute="top" secondItem="Nhk-CM-qxq" secondAttribute="top" id="9xx-sT-Kd5"/>
                                             <constraint firstAttribute="trailing" secondItem="6a5-fx-SXL" secondAttribute="trailing" constant="10" id="Io2-5B-Bun"/>
                                             <constraint firstAttribute="bottom" secondItem="6a5-fx-SXL" secondAttribute="bottom" constant="41" id="OvL-1E-ywL"/>
                                             <constraint firstItem="TtE-0R-cEL" firstAttribute="leading" secondItem="Nhk-CM-qxq" secondAttribute="leading" id="V0w-ln-vQK"/>
                                             <constraint firstAttribute="trailing" secondItem="TtE-0R-cEL" secondAttribute="trailing" id="klk-On-Eak"/>
+                                            <constraint firstItem="dIf-uj-DjQ" firstAttribute="top" secondItem="Nhk-CM-qxq" secondAttribute="top" constant="10" id="mmZ-yd-xFa"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="closeButton" destination="dIf-uj-DjQ" id="5Wk-Lm-4GM"/>
                                             <outlet property="contentButton" destination="TtE-0R-cEL" id="MGE-CA-CMZ"/>
                                         </connections>
                                     </view>

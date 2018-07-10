@@ -8,9 +8,13 @@
 
 import UIKit
 
+import RxSwift
+
 class ViewController: UIViewController {
 
     @IBOutlet weak var player: RxAVPlayer!
+    
+    private let disposebag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +22,12 @@ class ViewController: UIViewController {
         player.autoplay = true
         player.visibleSkipSeconds = 2.0
         player.dateFormatString = "m:ss"
+        player.userInfo = "aaaa"
         player.mute = true
         player.url = URL(string: "https://s3.us-east-2.amazonaws.com/vjs-nuevo/hls/m3u8/playlist.m3u8")
+        player.closeObservable.subscribe(onNext: { (_) in
+            print("close!!")
+        }).disposed(by: disposebag)
     }
 
     override func didReceiveMemoryWarning() {

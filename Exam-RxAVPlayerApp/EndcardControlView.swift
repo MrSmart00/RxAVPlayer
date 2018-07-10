@@ -8,13 +8,15 @@
 
 import UIKit
 
-class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable {
+class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, RxAVPlayerClosable {
+    @IBOutlet weak var closeButton: UIButton?
+    
     @IBOutlet weak var contentButton: UIButton?
     
     var touchableUserInfo: Any?
     
     @IBAction func touchContent() {
-        print(touchableUserInfo)
+        print(player?.userInfo)
     }
     
     var player: RxAVPlayer?
