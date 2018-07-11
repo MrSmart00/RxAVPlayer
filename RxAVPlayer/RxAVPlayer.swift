@@ -95,6 +95,14 @@ import RxCocoa
     var skipObservable: Observable<Bool> {
         return skipVisibleBehavior
     }
+    private lazy var touchSubject = PublishSubject<Any?>()
+    var touchObservable: Observable<Any?> {
+        return touchSubject
+    }
+    private lazy var closeSubject = PublishSubject<Void>()
+    var closeObservable: Observable<Void> {
+        return closeSubject
+    }
     
     private var viewableObservable: Observable<Int>?
     
@@ -163,15 +171,7 @@ import RxCocoa
     }
     
     var userInfo: Any?
-    private lazy var touchSubject = PublishSubject<Any?>()
-    var touchObservable: Observable<Any?> {
-        return touchSubject
-    }
-    
-    private lazy var closeSubject = PublishSubject<Void>()
-    var closeObservable: Observable<Void> {
-        return closeSubject
-    }
+    private lazy var notifications = [NSObjectProtocol]()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -184,14 +184,54 @@ import RxCocoa
                 view.isHidden = true
             }
         }
+        registerNotifications()
+    }
+    
+    deinit {
+        removeNotifications()
+    }
+    
+    private func registerNotifications() {
+        let obs1 = NotificationCenter.default.addObserver(forName: .AVAudioSessionInterruption, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            guard let status = try? weakSelf.statusSubject.value() else { return }
+            if status == .playing {
+                guard let interruption = notify.userInfo?[AVAudioSessionInterruptionTypeKey] as? AVAudioSessionInterruptionType else { return }
+                switch interruption {
+                case .began:
+                    weakSelf.statusSubject.onNext(.pause)
+                case .ended:
+                    weakSelf.play()
+                }
+            }
+            print(notify)
+        }
+        notifications.append(obs1)
         
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+        let obs2 = NotificationCenter.default.addObserver(forName: .AVAudioSessionRouteChange, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            guard let status = try? weakSelf.statusSubject.value() else { return }
+            if status == .playing {
+                weakSelf.play()
+            }
+        }
+        notifications.append(obs2)
+        
+        let obs3 = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
             guard let weakSelf = self else { return }
             weakSelf.movieEndSubject.onNext(true)
         }
+        notifications.append(obs3)
         
-        NotificationCenter.default.addObserver(forName: .AVPlayerItemPlaybackStalled, object: nil, queue: OperationQueue.main) { (notify) in
+        let obs4 = NotificationCenter.default.addObserver(forName: .AVPlayerItemPlaybackStalled, object: nil, queue: OperationQueue.main) { (notify) in
             
+        }
+        notifications.append(obs4)
+    }
+    
+    private func removeNotifications() {
+        notifications.forEach { (obs) in
+            NotificationCenter.default.removeObserver(obs)
         }
     }
     
