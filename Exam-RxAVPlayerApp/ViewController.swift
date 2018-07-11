@@ -25,9 +25,18 @@ class ViewController: UIViewController {
         player.userInfo = "aaaa"
         player.mute = true
         player.url = URL(string: "https://hogehoge/playlist.m3u8")
+        Observable.combineLatest(player.statusObservable, player.progressObservable) { (status, progress) -> (RxPlayerStatus, RxPlayerProgressStatus) in
+            return (status, progress)
+        }.bind { (status, progress) in
+            print("\(status.rawValue): \(progress.rawValue)")
+        }.disposed(by: disposebag)
+
         player.closeObservable.subscribe(onNext: { (_) in
             print("close!!")
         }).disposed(by: disposebag)
+        player.touchObservable.bind { (userinfo) in
+            print(userinfo)
+        }.disposed(by: disposebag)
     }
 
     override func didReceiveMemoryWarning() {

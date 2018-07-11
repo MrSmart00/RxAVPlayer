@@ -39,6 +39,9 @@
 		C5A617D620EF709E005D1FC8 /* RxAVPlayerClosable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617D420EF709E005D1FC8 /* RxAVPlayerClosable.swift */; };
 		C5A617D720EF709E005D1FC8 /* RxAVPlayerClosable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617D420EF709E005D1FC8 /* RxAVPlayerClosable.swift */; };
 		C5A617D820EF709E005D1FC8 /* RxAVPlayerClosable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617D420EF709E005D1FC8 /* RxAVPlayerClosable.swift */; };
+		C5A617F120F45C95005D1FC8 /* ObserverType.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617AD20EF5962005D1FC8 /* ObserverType.extension.swift */; };
+		C5A617F220F45C95005D1FC8 /* ObserverType.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617AD20EF5962005D1FC8 /* ObserverType.extension.swift */; };
+		C5A617F320F45C96005D1FC8 /* ObserverType.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5A617AD20EF5962005D1FC8 /* ObserverType.extension.swift */; };
 		C5C0819320ECA93C00C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
 		C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
 		C5C0819520ECA98500C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
@@ -487,6 +490,7 @@
 				C568CFAF20EC5F0500A5A78C /* RxAVPlayerTests.swift in Sources */,
 				C53F641E20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
 				C5A617BD20EF5CDB005D1FC8 /* RxAVPlayerTimeControllable.swift in Sources */,
+				C5A617F120F45C95005D1FC8 /* ObserverType.extension.swift in Sources */,
 				C5DFF00820EC615900E9C475 /* RxAVPlayer.swift in Sources */,
 				C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */,
 				C5A617B520EF5A35005D1FC8 /* RxAVPlayerTouchable.swift in Sources */,
@@ -498,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5DFF05120EC634E00E9C475 /* ViewController.swift in Sources */,
+				C5A617F220F45C95005D1FC8 /* ObserverType.extension.swift in Sources */,
 				C5A617B620EF5A35005D1FC8 /* RxAVPlayerTouchable.swift in Sources */,
 				C5A617D720EF709E005D1FC8 /* RxAVPlayerClosable.swift in Sources */,
 				C5A617BE20EF5CDB005D1FC8 /* RxAVPlayerTimeControllable.swift in Sources */,
@@ -520,6 +525,7 @@
 				C5A617B220EF59F3005D1FC8 /* RxAVPlayerPlayControlView.swift in Sources */,
 				C5A617C420EF6260005D1FC8 /* EndcardControlView.swift in Sources */,
 				C5DFF06420EC634F00E9C475 /* Exam_RxAVPlayerAppUITests.swift in Sources */,
+				C5A617F320F45C96005D1FC8 /* ObserverType.extension.swift in Sources */,
 				C5A617D820EF709E005D1FC8 /* RxAVPlayerClosable.swift in Sources */,
 				C5A617BF20EF5CDB005D1FC8 /* RxAVPlayerTimeControllable.swift in Sources */,
 				C53F642020EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */,
