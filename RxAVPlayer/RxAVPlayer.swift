@@ -187,6 +187,28 @@ import RxCocoa
         registerNotifications()
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    func initialize() {
+        formatter.dateFormat = dateFormatString
+        
+        allControls.forEach { (control) in
+            control.setPlayer(self)
+            if let view = control as? UIView {
+                view.isHidden = true
+            }
+        }
+        registerNotifications()
+    }
+    
     deinit {
         removeNotifications()
     }
@@ -293,20 +315,35 @@ import RxCocoa
         if let pl = player, let item = pl.currentItem {
             statusSubject.subscribe(onNext: { [weak self] (st) in
                 guard let weakSelf = self else { return }
-                weakSelf.allControls.forEach({ (control) in
-                    if let view = control as? UIView {
-                        view.isHidden = true
-                    }
-                })
                 switch st {
                 case .none, .ready:
-                    (weakSelf.initialControlView ?? weakSelf.pauseControlView)?.isHidden = false
-                case .playing, .seeking:
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
+                    weakSelf.initialControlView?.isHidden = false
+                case .playing:
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
                     weakSelf.playControlView?.isHidden = false
                 case .pause:
-                    (weakSelf.pauseControlView ?? weakSelf.initialControlView)?.isHidden = false
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
+                    weakSelf.pauseControlView?.isHidden = false
                 case .deadend:
-                    (weakSelf.deadendControlView ?? weakSelf.initialControlView ?? weakSelf.pauseControlView)?.isHidden = false
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
+                    weakSelf.deadendControlView?.isHidden = false
                 default:
                     break
                 }
@@ -419,7 +456,7 @@ import RxCocoa
     
     func seek(distance: CMTime, skip: Bool) {
         var needsPlay = false
-        if let status = try? statusSubject.value(), status != .deadend {
+        if let status = try? statusSubject.value() {
             if status != .skipping {
                 statusSubject.onNext(.seeking)
             }
