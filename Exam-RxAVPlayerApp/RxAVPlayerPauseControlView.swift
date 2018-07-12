@@ -65,12 +65,12 @@ class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTime
     }
     
     @IBAction func seek(_ value: Float) {
-        if let bar = seekBar , let p = player {
-            let totalInterval = p.totalDate.timeIntervalSince1970
-            let target = totalInterval * TimeInterval(bar.value)
-            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-            p.seek(distance: time, skip: false)
-        }
+//        if let bar = seekBar , let p = player {
+//            let totalInterval = p.totalDate.timeIntervalSince1970
+//            let target = totalInterval * TimeInterval(bar.value)
+//            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+//            p.seek(distance: time, skip: false)
+//        }
     }
 
     @IBAction func skip() {

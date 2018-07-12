@@ -284,6 +284,8 @@ import RxCocoa
                 
                 weakSelf.allControls.forEach { (control) in
                     if let timecontrol = control as? RxAVPlayerTimeControllable {
+                        guard let tracking = timecontrol.seekBar?.isTracking, !tracking else { return }
+                        guard let status = try? weakSelf.statusSubject.value(), status != .seeking else { return }
                         timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
                     }
                     control.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
@@ -378,6 +380,7 @@ import RxCocoa
                                     }
                                 }
                                 if weakSelf.autoplay, status != .deadend {
+                                    weakSelf.autoplay = false
                                     p.play()
                                 }
                             }
@@ -389,7 +392,7 @@ import RxCocoa
                 if let button = control.muteButton {
                     pl.rx.mute.bind(to: button.rx.isSelected).disposed(by: disposebag)
                 }
-                
+
                 if let timecontrol = control as? RxAVPlayerTimeControllable, let seek = timecontrol.seekBar {
                     Observable.combineLatest(statusSubject, seekbarSubject, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
                         guard let weakSeak = seek else { return }
@@ -398,19 +401,34 @@ import RxCocoa
                         }
                     }).disposed(by: disposebag)
                     
+                    seek.rx.controlEvent([.valueChanged]).bind { [weak self] in
+                        guard let weakSelf = self else { return }
+                        if let sbar = timecontrol.seekBar {
+                            weakSelf.seekbarSubject.onNext(sbar.value)
+                            weakSelf.allControls.forEach { (control) in
+                                if let timecontrol = control as? RxAVPlayerTimeControllable {
+                                    let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                                    let target = totalInterval * TimeInterval(sbar.value)
+                                    let date = Date(timeIntervalSince1970: target)
+                                    timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                                }
+                            }
+                        }
+                    }.disposed(by: disposebag)
+                    
                     seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
                         guard let weakSelf = self else { return }
                         if let sbar = timecontrol.seekBar {
                             if weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
-                                weakSelf.seekbarSubject.onNext(sbar.value)
                                 let totalInterval = weakSelf.totalDate.timeIntervalSince1970
                                 let target = totalInterval * TimeInterval(sbar.value)
                                 let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-                                weakSelf.seek(distance: time, skip: false)
+                                weakSelf.seek(distance: time)
                             }
                         }
-                        }.disposed(by: disposebag)
+                    }.disposed(by: disposebag)
                 }
+
                 if let touchControl = control as? RxAVPlayerTouchable {
                     touchControl.contentButton?.rx.controlEvent(.touchUpInside).bind(onNext: { [weak self] (_) in
                         guard let weakSelf = self else { return }
@@ -434,16 +452,16 @@ import RxCocoa
                     }
                 }
                 return false
-                }.bind { [weak self] (playing) in
-                    guard let weakSelf = self else { return }
-                    if let status = try? weakSelf.statusSubject.value(), status != .deadend, status != .none {
-                        if playing {
-                            weakSelf.statusSubject.onNext(.playing)
-                        } else {
-                            weakSelf.statusSubject.onNext(.pause)
-                        }
+            }.bind { [weak self] (playing) in
+                guard let weakSelf = self else { return }
+                if let status = try? weakSelf.statusSubject.value(), status != .deadend, status != .none {
+                    if playing {
+                        weakSelf.statusSubject.onNext(.playing)
+                    } else {
+                        weakSelf.statusSubject.onNext(.pause)
                     }
-                }.disposed(by: disposebag)
+                }
+            }.disposed(by: disposebag)
             
             movieEndSubject.bind { [weak self] (completion) in
                 guard let weakSelf = self else { return }
@@ -453,8 +471,7 @@ import RxCocoa
                 }.disposed(by: disposebag)
         }
     }
-    
-    func seek(distance: CMTime, skip: Bool) {
+    func seek(distance: CMTime) {
         var needsPlay = false
         if let status = try? statusSubject.value() {
             if status != .skipping {
@@ -463,65 +480,51 @@ import RxCocoa
             needsPlay = true
         }
         if let pl = player {
-            if skip {
-                pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
-                    guard let weakSelf = self else { return }
-                    if completion {
-                        if needsPlay {
-                            weakSelf.play()
-                        } else {
-                            weakSelf.pause()
-                        }
+            pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
+                guard let weakSelf = self else { return }
+                if completion {
+                    if needsPlay {
+                        weakSelf.play()
+                    } else {
+                        weakSelf.pause()
                     }
-                })
-            } else {
-                pl.seek(to: distance, completionHandler: { [weak self] (completion) in
-                    guard let weakSelf = self else { return }
-                    if completion {
-                        if needsPlay {
-                            weakSelf.play()
-                        } else {
-                            weakSelf.pause()
-                        }
-                    }
-                })
-            }
-        }
-        
-    }
-    
-    @objc func changeMute() {
-        if let pl = player {
-            pl.isMuted = !pl.isMuted
+                }
+            })
         }
     }
-    
+
     @objc func skip() {
         if let pl = player, let time = pl.currentItem?.duration {
             statusSubject.onNext(.skipping)
             let distanceTime = CMTimeMake(time.value - 1, time.timescale)
-            seek(distance: distanceTime, skip: true)
+            seek(distance: distanceTime)
         }
     }
     
     @objc func rewind() {
         if let pl = player {
             let delta = CMTimeGetSeconds(pl.currentTime()) - Float64(rewindSeconds)
-            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
+            seek(distance: CMTimeMake(Int64(delta), 1))
         }
     }
     
     @objc func forward() {
         if let pl = player {
             let delta = CMTimeGetSeconds(pl.currentTime()) + Float64(forwordSeconds)
-            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
+            seek(distance: CMTimeMake(Int64(delta), 1))
         }
     }
     
     @objc func replay() {
         if totalDate.compare(Date.distantPast) != .orderedSame {
-            let time = CMTimeMakeWithSeconds(0, Int32(NSEC_PER_SEC))
-            seek(distance: time, skip: false)
+            let time = CMTimeMakeWithSeconds(0, 1)
+            seek(distance: time)
+        }
+    }
+
+    @objc func changeMute() {
+        if let pl = player {
+            pl.isMuted = !pl.isMuted
         }
     }
     
