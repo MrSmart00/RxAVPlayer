@@ -7,11 +7,23 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, RxAVPlayerClosable {
+    
+    private let disposebag = DisposeBag()
+    
+    func bind() {
+        guard let player = self.player else { return }
+        playButton.rx.controlEvent([.touchUpInside]).bind(to: player.rx.play()).disposed(by: disposebag)
+    }
+
     @IBOutlet weak var closeButton: UIButton?
     
     @IBOutlet weak var contentButton: UIButton?
+    
+    @IBOutlet weak var playButton: UIButton!
     
     var player: RxAVPlayer?
     
@@ -19,18 +31,4 @@ class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, R
     
     var remainingTimeLabel: UILabel?
     
-    func setPlayer(_ player: RxAVPlayer?) {
-        self.player = player
-    }
-    
-    func mute() {
-
-    }
-    
-    @IBAction func play() {
-        if let p = player {
-            p.play()
-        }
-    }
-
 }

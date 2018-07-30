@@ -27,9 +27,6 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-pD-KHB">
                                                 <rect key="frame" x="330" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
-                                                <connections>
-                                                    <action selector="mute" destination="zAl-k1-8P1" eventType="touchUpInside" id="9pT-ey-iVd"/>
-                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhL-xT-MCr">
                                                 <rect key="frame" x="10" y="581" width="42" height="21"/>
@@ -45,9 +42,6 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wlh-Mh-0E7">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
-                                                <connections>
-                                                    <action selector="seek:" destination="zAl-k1-8P1" eventType="valueChanged" id="bjR-Jf-zpW"/>
-                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="504-2T-aYo">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>
@@ -55,9 +49,6 @@
                                                     <constraint firstAttribute="width" constant="42" id="IgH-cW-XXq"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="play" destination="zAl-k1-8P1" eventType="touchUpInside" id="897-xk-u4s"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -78,6 +69,7 @@
                                         <connections>
                                             <outlet property="currentTimeLabel" destination="EhL-xT-MCr" id="hkr-iy-s8i"/>
                                             <outlet property="muteButton" destination="JQd-pD-KHB" id="C1B-Zq-ylY"/>
+                                            <outlet property="playButton" destination="504-2T-aYo" id="Nzj-ih-Sm8"/>
                                             <outlet property="seekBar" destination="Wlh-Mh-0E7" id="Mnm-Xc-t2q"/>
                                             <outlet property="totalTimeLabel" destination="cUe-i8-Iun" id="XVj-Lc-dsI"/>
                                         </connections>
@@ -88,9 +80,6 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8d-ML-jCu">
                                                 <rect key="frame" x="330" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
-                                                <connections>
-                                                    <action selector="mute" destination="yNb-Gc-RzC" eventType="touchUpInside" id="Nhp-FH-zgf"/>
-                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wxf-po-GmY">
                                                 <rect key="frame" x="10" y="581" width="42" height="21"/>
@@ -106,35 +95,20 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
-                                                <connections>
-                                                    <action selector="seek:" destination="yNb-Gc-RzC" eventType="valueChanged" id="vR5-tR-0c7"/>
-                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-oL-f3v">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>
                                                 <state key="normal" title="Pause"/>
-                                                <connections>
-                                                    <action selector="pause" destination="yNb-Gc-RzC" eventType="touchUpInside" id="bN5-pn-7KZ"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-Xa-0fS">
                                                 <rect key="frame" x="0.0" y="50" width="187.5" height="476"/>
-                                                <connections>
-                                                    <action selector="rewind" destination="yNb-Gc-RzC" eventType="touchUpInside" id="EO3-x9-JXo"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nc-aY-bd0">
                                                 <rect key="frame" x="187.5" y="50" width="187.5" height="476"/>
-                                                <connections>
-                                                    <action selector="forward" destination="yNb-Gc-RzC" eventType="touchUpInside" id="W4B-fY-wDc"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5i-U5-sPb">
                                                 <rect key="frame" x="335" y="496" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
-                                                <connections>
-                                                    <action selector="skip" destination="yNb-Gc-RzC" eventType="touchUpInside" id="zDW-yn-YGB"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -166,6 +140,7 @@
                                             <outlet property="currentTimeLabel" destination="Wxf-po-GmY" id="kbM-uF-adM"/>
                                             <outlet property="forwardButton" destination="5nc-aY-bd0" id="J47-cq-CV0"/>
                                             <outlet property="muteButton" destination="h8d-ML-jCu" id="hHK-mz-rQB"/>
+                                            <outlet property="pauseButton" destination="3bV-oL-f3v" id="pZZ-Vh-p89"/>
                                             <outlet property="rewindButton" destination="WWn-Xa-0fS" id="Pak-7d-Fs7"/>
                                             <outlet property="seekBar" destination="HYC-id-fxH" id="pzK-M2-SYv"/>
                                             <outlet property="skipButton" destination="k5i-U5-sPb" id="TsN-OT-DKJ"/>
@@ -178,9 +153,6 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
                                                 <rect key="frame" x="330" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
-                                                <connections>
-                                                    <action selector="mute" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="CfZ-r5-QR5"/>
-                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
                                                 <rect key="frame" x="10" y="581" width="42" height="21"/>
@@ -196,9 +168,6 @@
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
                                                 <rect key="frame" x="55" y="576" width="213" height="31"/>
-                                                <connections>
-                                                    <action selector="seek:" destination="1Qg-ZJ-SCp" eventType="valueChanged" id="OKj-Yz-IuX"/>
-                                                </connections>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
                                                 <rect key="frame" x="323" y="576" width="42" height="30"/>
@@ -206,28 +175,16 @@
                                                     <constraint firstAttribute="width" constant="42" id="UfD-7P-rlB"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="play" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="d38-oj-CzE"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkt-f7-Jb6">
                                                 <rect key="frame" x="0.0" y="50" width="187.5" height="476"/>
-                                                <connections>
-                                                    <action selector="rewind" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="csc-MZ-jWp"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GQd-6F-A7y">
                                                 <rect key="frame" x="187.5" y="50" width="187.5" height="476"/>
-                                                <connections>
-                                                    <action selector="forward" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="ykG-PE-LCX"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
                                                 <rect key="frame" x="335" y="496" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
-                                                <connections>
-                                                    <action selector="skip" destination="1Qg-ZJ-SCp" eventType="touchUpInside" id="T9L-ol-FQD"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -259,6 +216,7 @@
                                             <outlet property="currentTimeLabel" destination="bsQ-Lx-JTI" id="UGc-Zi-p55"/>
                                             <outlet property="forwardButton" destination="GQd-6F-A7y" id="xme-U8-uvf"/>
                                             <outlet property="muteButton" destination="5Ay-iS-L8w" id="ch5-9D-Fs5"/>
+                                            <outlet property="playButton" destination="HO3-58-MDl" id="a84-ud-2Fo"/>
                                             <outlet property="rewindButton" destination="fkt-f7-Jb6" id="fKE-cY-39h"/>
                                             <outlet property="seekBar" destination="lAi-WS-W62" id="ebu-YW-PAg"/>
                                             <outlet property="skipButton" destination="Khg-Qn-NzM" id="A56-J7-oJi"/>
@@ -277,9 +235,6 @@
                                                     <constraint firstAttribute="width" constant="42" id="yVk-ou-wZ0"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="play" destination="Nhk-CM-qxq" eventType="touchUpInside" id="Imh-cl-tIA"/>
-                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIf-uj-DjQ">
                                                 <rect key="frame" x="326" y="10" width="39" height="30"/>
@@ -300,6 +255,7 @@
                                         <connections>
                                             <outlet property="closeButton" destination="dIf-uj-DjQ" id="5Wk-Lm-4GM"/>
                                             <outlet property="contentButton" destination="TtE-0R-cEL" id="MGE-CA-CMZ"/>
+                                            <outlet property="playButton" destination="6a5-fx-SXL" id="HHz-xS-RrR"/>
                                         </connections>
                                     </view>
                                 </subviews>
@@ -340,7 +296,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="player" destination="eQs-U2-RYF" id="8dd-36-m8c"/>
+                        <outlet property="player" destination="eQs-U2-RYF" id="hwY-LV-YAF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

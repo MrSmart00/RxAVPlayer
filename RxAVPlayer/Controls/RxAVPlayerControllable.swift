@@ -11,10 +11,9 @@ import UIKit
 protocol RxAVPlayerControllable {
     
     var player: RxAVPlayer? { get set }
-    
     var muteButton: UIButton? { get }
     var remainingTimeLabel: UILabel? { get }
     
-    func setPlayer(_ player: RxAVPlayer?)
-    func mute()
+    func bind()
+    
 }
