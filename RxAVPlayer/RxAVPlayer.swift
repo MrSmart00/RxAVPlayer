@@ -95,10 +95,11 @@ import RxCocoa
         return seekRelay.asObservable()
     }
     
-    private var skipVisibleBehavior = BehaviorSubject<Bool>(value: false)
+    private var skipVisibleRelay = BehaviorRelay<Bool>(value: false)
     var skipObservable: Observable<Bool> {
-        return skipVisibleBehavior
+        return skipVisibleRelay.asObservable()
     }
+    
     private lazy var touchRelay = PublishRelay<Any?>()
     var touchObservable: Observable<Any?> {
         return touchRelay.asObservable()
@@ -112,42 +113,32 @@ import RxCocoa
     
     @IBOutlet weak var initialControlView: UIView? {
         didSet {
-            var control = initialControlView as? RxAVPlayerControllable
-            if control != nil {
-                control?.player = self
-            }
+            setPlayer(controlView: initialControlView)
         }
     }
     @IBOutlet weak var playControlView: UIView? {
         didSet {
-            var control = playControlView as? RxAVPlayerControllable
-            if control != nil {
-                control?.player = self
-            }
+            setPlayer(controlView: playControlView)
         }
     }
     @IBOutlet weak var pauseControlView: UIView? {
         didSet {
-            var control = pauseControlView as? RxAVPlayerControllable
-            if control != nil {
-                control?.player = self
-            }
+            setPlayer(controlView: pauseControlView)
         }
     }
     @IBOutlet weak var deadendControlView: UIView? {
         didSet {
-            var control = deadendControlView as? RxAVPlayerControllable
-            if control != nil {
-                control?.player = self
-            }
+            setPlayer(controlView: deadendControlView)
         }
     }
     @IBOutlet weak var failedControlView: UIView? {
         didSet {
-            var control = failedControlView as? RxAVPlayerControllable
-            if control != nil {
-                control?.player = self
-            }
+            setPlayer(controlView: failedControlView)
+        }
+    }
+    @IBOutlet weak var stalledControlView: UIView? {
+        didSet {
+            setPlayer(controlView: stalledControlView)
         }
     }
     
@@ -165,6 +156,9 @@ import RxCocoa
         if let view = deadendControlView as? RxAVPlayerControllable {
             list.append(view)
         }
+        if let view = stalledControlView as? RxAVPlayerControllable {
+            list.append(view)
+        }
         if let view = failedControlView as? RxAVPlayerControllable {
             list.append(view)
         }
@@ -174,7 +168,7 @@ import RxCocoa
     var url: URL? {
         didSet {
             statusRelay.accept(.none)
-            skipVisibleBehavior = BehaviorSubject<Bool>(value: false)
+            skipVisibleRelay = BehaviorRelay<Bool>(value: false)
             guard let movieURL = url else {
                 statusRelay.accept(.failed)
                 return
@@ -231,6 +225,13 @@ import RxCocoa
         registerNotifications()
     }
     
+    private func setPlayer(controlView: UIView?) {
+        var control = controlView as? RxAVPlayerControllable
+        if control != nil {
+            control?.player = self
+        }
+    }
+    
     private func registerNotifications() {
         NotificationCenter.default.rx.notification(.AVAudioSessionInterruption).bind { [weak self] (notify) in
             guard let weakSelf = self else { return }
@@ -255,16 +256,47 @@ import RxCocoa
         
         NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime).bind { [weak self] (notify) in
             guard let weakSelf = self else { return }
+            guard let item = notify.object as? AVPlayerItem, item == weakSelf.player?.currentItem else { return }
             weakSelf.movieEndRelay.accept()
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.AVPlayerItemFailedToPlayToEndTime).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            weakSelf.statusRelay.accept(.failed)
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.AVPlayerItemPlaybackStalled).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if let control = weakSelf.stalledControlView {
+                weakSelf.allControls.forEach({ (control) in
+                    if let view = control as? UIView {
+                        view.isHidden = true
+                    }
+                })
+                control.isHidden = false
+            }
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.UIApplicationDidEnterBackground).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if weakSelf.statusRelay.value == .playing {
+                weakSelf.pause()
+            }
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.UIApplicationWillEnterForeground).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if weakSelf.statusRelay.value == .pause {
+                weakSelf.play()
+            }
             }.disposed(by: disposebag)
     }
     
     private func registerTimeObserver(_ player: AVPlayer) {
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 10), queue: DispatchQueue.main) { [weak self] (time) in
             guard let weakSelf = self else { return }
-            if CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds), !weakSelf.skipVisibleBehavior.isDisposed {
-                weakSelf.skipVisibleBehavior.onNext(true)
-                weakSelf.skipVisibleBehavior.onCompleted()
+            if !weakSelf.skipVisibleRelay.value, CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds) {
+                weakSelf.skipVisibleRelay.accept(true)
             }
             if weakSelf.viewableObservable == nil {
                 let timerObs = Observable<Int>.timer(1.0, scheduler: MainScheduler.asyncInstance)
@@ -322,45 +354,41 @@ import RxCocoa
     
     private func bind() {
         if let pl = player, let item = pl.currentItem {
-            allControls.forEach { (control) in
-                control.bind()
-            }
-            
             statusRelay.subscribe(onNext: { [weak self] (st) in
                 guard let weakSelf = self else { return }
+                var targetView: UIView?
                 switch st {
                 case .none, .ready:
-                    weakSelf.allControls.forEach({ (control) in
-                        if let view = control as? UIView {
-                            view.isHidden = true
-                        }
-                    })
-                    weakSelf.initialControlView?.isHidden = false
+                    targetView = weakSelf.initialControlView
                 case .playing:
-                    weakSelf.allControls.forEach({ (control) in
-                        if let view = control as? UIView {
-                            view.isHidden = true
-                        }
-                    })
-                    weakSelf.playControlView?.isHidden = false
+                    targetView = weakSelf.playControlView
                 case .pause:
-                    weakSelf.allControls.forEach({ (control) in
-                        if let view = control as? UIView {
-                            view.isHidden = true
-                        }
-                    })
-                    weakSelf.pauseControlView?.isHidden = false
+                    targetView = weakSelf.pauseControlView
                 case .deadend:
-                    weakSelf.allControls.forEach({ (control) in
-                        if let view = control as? UIView {
-                            view.isHidden = true
-                        }
-                    })
-                    weakSelf.deadendControlView?.isHidden = false
+                    targetView = weakSelf.deadendControlView
+                case .failed:
+                    targetView = weakSelf.failedControlView
                 default:
                     break
                 }
+                if let control = targetView {
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
+                    control.isHidden = false
+                }
             }).disposed(by: disposebag)
+            
+            item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
+                guard let weakSelf = self else { return }
+                if let item = weakSelf.player?.currentItem, !item.isPlaybackBufferFull {
+                    if !empty {
+                        weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
+                    }
+                }
+                }.disposed(by: disposebag)
             
             let obs1 = item.rx.playbackLikelyToKeepUp
             let obs2 = pl.rx.status.map { $0 == .readyToPlay }
@@ -464,18 +492,18 @@ import RxCocoa
                 guard let weakSelf = self else { return }
                 if progressive {
                     weakSelf.statusRelay.accept(.playing)
-                } else if weakSelf.statusRelay.value != .deadend {
+                } else if weakSelf.statusRelay.value != .deadend, weakSelf.statusRelay.value != .none {
                     weakSelf.statusRelay.accept(.pause)
                 }
                 }.disposed(by: disposebag)
             
-            movieEndRelay.bind { [weak self] in
+            movieEndRelay.subscribe(onNext: { [weak self] in
                 guard let weakSelf = self else { return }
                 weakSelf.statusRelay.accept(.deadend)
                 if weakSelf.progressRelay.value != .completion {
                     weakSelf.progressRelay.accept(.completion)
                 }
-                }.disposed(by: disposebag)
+            }).disposed(by: disposebag)
         }
     }
     
@@ -536,6 +564,8 @@ import RxCocoa
     }
     
     func pause() {
-        player?.pause()
+        if statusRelay.value == .playing {
+            player?.pause()
+        }
     }
 }
