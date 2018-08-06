@@ -41,3 +41,43 @@ extension Reactive where Base: AVPlayerItem {
         return observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferEmpty)).map { $0 ?? false }
     }
 }
+
+extension Reactive where Base: RxAVPlayer {
+    
+    func play() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.play()
+        }
+    }
+    
+    func pause() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.pause()
+        }
+    }
+    
+    func forward() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.forward()
+        }
+    }
+
+    func rewind() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.rewind()
+        }
+    }
+    
+    func changeMute() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.changeMute()
+        }
+    }
+
+    func skip() -> Binder<Void> {
+        return Binder(self.base) { player, _ in
+            player.skip()
+        }
+    }
+
+}

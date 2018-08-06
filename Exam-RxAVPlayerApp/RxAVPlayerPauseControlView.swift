@@ -13,69 +13,34 @@ import RxCocoa
 
 class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable {
     
-    var player: RxAVPlayer?
-    
-    @IBOutlet weak var muteButton: UIButton?
-    
-    @IBOutlet weak var seekBar: UISlider?
+    private let disposebag = DisposeBag()
 
+    func bind() {
+        guard let player = self.player else { return }
+        muteButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.changeMute()).disposed(by: disposebag)
+        forwardButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.forward()).disposed(by: disposebag)
+        rewindButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.rewind()).disposed(by: disposebag)
+        skipButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.skip()).disposed(by: disposebag)
+        playButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.play()).disposed(by: disposebag)
+    }
+
+    @IBOutlet weak var seekBar: UISlider?
+    
     @IBOutlet weak var currentTimeLabel: UILabel?
     
     @IBOutlet weak var totalTimeLabel: UILabel?
     
-    var remainingTimeLabel: UILabel?
-
-    @IBOutlet weak var skipButton: UIButton?
-
     @IBOutlet weak var forwardButton: UIButton?
     
     @IBOutlet weak var rewindButton: UIButton?
-
-    private let disposebag = DisposeBag()
-
-    func setPlayer(_ player: RxAVPlayer?) {
-        self.player = player
-        if let button = skipButton {
-            self.player?.skipObservable.map { !$0 }.bind(to: button.rx.isHidden).disposed(by: disposebag)
-        }
-    }
     
-    @IBAction func forward() {
-        if let p = player {
-            p.forward()
-        }
-    }
+    var player: RxAVPlayer?
     
-    @IBAction func rewind() {
-        if let p = player {
-            p.rewind()
-        }
-    }
-
-    @IBAction func mute() {
-        if let p = player {
-            p.changeMute()
-        }
-    }
-
-    @IBAction func play() {
-        if let p = player {
-            p.play()
-        }
-    }
+    @IBOutlet weak var muteButton: UIButton?
     
-    @IBAction func seek(_ value: Float) {
-        if let bar = seekBar , let p = player {
-            let totalInterval = p.totalDate.timeIntervalSince1970
-            let target = totalInterval * TimeInterval(bar.value)
-            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-            p.seek(distance: time, skip: false)
-        }
-    }
-
-    @IBAction func skip() {
-        if let p = player {
-            p.skip()
-        }
-    }
+    var remainingTimeLabel: UILabel?
+    
+    @IBOutlet weak var skipButton: UIButton?
+    
+    @IBOutlet weak var playButton: UIButton?
 }

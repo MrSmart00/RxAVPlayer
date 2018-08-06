@@ -8,9 +8,22 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 extension ObserverType where E == Void {
     public func onNext() {
         onNext(())
+    }
+}
+
+extension PublishRelay where E == Void {
+    public func accept() {
+        accept(())
+    }
+}
+
+extension BehaviorRelay where E == Void {
+    public func accept() {
+        accept(())
     }
 }

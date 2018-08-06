@@ -16,8 +16,4 @@ protocol RxAVPlayerTimeControllable {
     var forwardButton: UIButton? { get }
     var rewindButton: UIButton? { get }
 
-    func seek(_ value: Float)
-    func forward()
-    func rewind()
-    
 }

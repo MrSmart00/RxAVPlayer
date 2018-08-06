@@ -17,7 +17,6 @@ import RxCocoa
     case playing
     case pause
     case seeking
-    case skipping
     case deadend
     case failed
 }
@@ -48,7 +47,7 @@ import RxCocoa
             pl.player = newValue
         }
     }
-    
+    var offset: CGFloat = 0.0
     var autoplay = false
     var mute: Bool = false {
         didSet {
@@ -81,37 +80,69 @@ import RxCocoa
     private let formatter = DateFormatter()
     
     private let disposebag = DisposeBag()
-    private let statusSubject = BehaviorSubject<RxPlayerStatus>(value: .none)
+    private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .none)
     var statusObservable: Observable<RxPlayerStatus> {
-        return statusSubject
+        return statusRelay.asObservable()
     }
-    private let progressSubject = BehaviorSubject<RxPlayerProgressStatus>(value: .none)
+    private let progressRelay = BehaviorRelay<RxPlayerProgressStatus>(value: .none)
     var progressObservable: Observable<RxPlayerProgressStatus> {
-        return progressSubject
+        return progressRelay.asObservable()
     }
-    private let movieEndSubject = BehaviorSubject<Bool>(value: false)
-    private lazy var seekbarSubject = BehaviorSubject<Float>(value: 0)
-    private lazy var skipVisibleBehavior = BehaviorSubject<Bool>(value: false)
+    
+    private let movieEndRelay = PublishRelay<Void>()
+    private lazy var seekRelay = BehaviorRelay<Float>(value: 0)
+    var seekObservable: Observable<Float> {
+        return seekRelay.asObservable()
+    }
+    
+    private var skipVisibleRelay = BehaviorRelay<Bool>(value: false)
     var skipObservable: Observable<Bool> {
-        return skipVisibleBehavior
+        return skipVisibleRelay.asObservable()
     }
-    private lazy var touchSubject = PublishSubject<Any?>()
+    
+    private lazy var touchRelay = PublishRelay<Any?>()
     var touchObservable: Observable<Any?> {
-        return touchSubject
+        return touchRelay.asObservable()
     }
-    private lazy var closeSubject = PublishSubject<Void>()
+    private lazy var closeRelay = PublishRelay<Void>()
     var closeObservable: Observable<Void> {
-        return closeSubject
+        return closeRelay.asObservable()
     }
     
     private var viewableObservable: Observable<Int>?
     
-    @IBOutlet weak var initialControlView: UIView?
-    @IBOutlet weak var playControlView: UIView?
-    @IBOutlet weak var pauseControlView: UIView?
-    @IBOutlet weak var deadendControlView: UIView?
+    @IBOutlet weak var initialControlView: UIView? {
+        didSet {
+            setPlayer(controlView: initialControlView)
+        }
+    }
+    @IBOutlet weak var playControlView: UIView? {
+        didSet {
+            setPlayer(controlView: playControlView)
+        }
+    }
+    @IBOutlet weak var pauseControlView: UIView? {
+        didSet {
+            setPlayer(controlView: pauseControlView)
+        }
+    }
+    @IBOutlet weak var deadendControlView: UIView? {
+        didSet {
+            setPlayer(controlView: deadendControlView)
+        }
+    }
+    @IBOutlet weak var failedControlView: UIView? {
+        didSet {
+            setPlayer(controlView: failedControlView)
+        }
+    }
+    @IBOutlet weak var stalledControlView: UIView? {
+        didSet {
+            setPlayer(controlView: stalledControlView)
+        }
+    }
     
-    private var allControls: [RxAVPlayerControllable] {
+    var allControls: [RxAVPlayerControllable] {
         var list = [RxAVPlayerControllable]()
         if let view = initialControlView as? RxAVPlayerControllable {
             list.append(view)
@@ -125,23 +156,30 @@ import RxCocoa
         if let view = deadendControlView as? RxAVPlayerControllable {
             list.append(view)
         }
+        if let view = stalledControlView as? RxAVPlayerControllable {
+            list.append(view)
+        }
+        if let view = failedControlView as? RxAVPlayerControllable {
+            list.append(view)
+        }
         return list
     }
     
     var url: URL? {
         didSet {
-            statusSubject.onNext(.none)
+            statusRelay.accept(.none)
+            skipVisibleRelay = BehaviorRelay<Bool>(value: false)
             guard let movieURL = url else {
-                statusSubject.onNext(.failed)
+                statusRelay.accept(.failed)
                 return
             }
             if movieURL.isFileURL {
                 guard let check = try? movieURL.checkResourceIsReachable() else {
-                    statusSubject.onNext(.failed)
+                    statusRelay.accept(.failed)
                     return
                 }
                 guard check else {
-                    statusSubject.onNext(.failed)
+                    statusRelay.accept(.failed)
                     return
                 }
             }
@@ -171,81 +209,99 @@ import RxCocoa
     }
     
     var userInfo: Any?
-    private lazy var notifications = [NSObjectProtocol]()
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        initialize()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    func initialize() {
         formatter.dateFormat = dateFormatString
-        
-        allControls.forEach { (control) in
-            control.setPlayer(self)
-            if let view = control as? UIView {
-                view.isHidden = true
-            }
-        }
         registerNotifications()
     }
     
-    deinit {
-        removeNotifications()
+    private func setPlayer(controlView: UIView?) {
+        var control = controlView as? RxAVPlayerControllable
+        if control != nil {
+            control?.player = self
+        }
     }
     
     private func registerNotifications() {
-        let obs1 = NotificationCenter.default.addObserver(forName: .AVAudioSessionInterruption, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(.AVAudioSessionInterruption).bind { [weak self] (notify) in
             guard let weakSelf = self else { return }
-            guard let status = try? weakSelf.statusSubject.value() else { return }
+            let status = weakSelf.statusRelay.value
             if status == .playing {
                 guard let interruption = notify.userInfo?[AVAudioSessionInterruptionTypeKey] as? AVAudioSessionInterruptionType else { return }
                 switch interruption {
                 case .began:
-                    weakSelf.statusSubject.onNext(.pause)
+                    weakSelf.statusRelay.accept(.pause)
                 case .ended:
                     weakSelf.play()
                 }
             }
-            print(notify)
-        }
-        notifications.append(obs1)
+            }.disposed(by: disposebag)
         
-        let obs2 = NotificationCenter.default.addObserver(forName: .AVAudioSessionRouteChange, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(.AVAudioSessionRouteChange).bind { [weak self] (notify) in
             guard let weakSelf = self else { return }
-            guard let status = try? weakSelf.statusSubject.value() else { return }
-            if status == .playing {
+            if weakSelf.statusRelay.value == .playing {
                 weakSelf.play()
             }
-        }
-        notifications.append(obs2)
+            }.disposed(by: disposebag)
         
-        let obs3 = NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: nil, queue: OperationQueue.main) { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime).bind { [weak self] (notify) in
             guard let weakSelf = self else { return }
-            weakSelf.movieEndSubject.onNext(true)
-        }
-        notifications.append(obs3)
+            guard let item = notify.object as? AVPlayerItem, item == weakSelf.player?.currentItem else { return }
+            weakSelf.movieEndRelay.accept()
+            }.disposed(by: disposebag)
         
-        let obs4 = NotificationCenter.default.addObserver(forName: .AVPlayerItemPlaybackStalled, object: nil, queue: OperationQueue.main) { (notify) in
-            
-        }
-        notifications.append(obs4)
-    }
-    
-    private func removeNotifications() {
-        notifications.forEach { (obs) in
-            NotificationCenter.default.removeObserver(obs)
-        }
+        NotificationCenter.default.rx.notification(.AVPlayerItemFailedToPlayToEndTime).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            weakSelf.statusRelay.accept(.failed)
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.AVPlayerItemPlaybackStalled).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if let control = weakSelf.stalledControlView {
+                weakSelf.allControls.forEach({ (control) in
+                    if let view = control as? UIView {
+                        view.isHidden = true
+                    }
+                })
+                control.isHidden = false
+            }
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.UIApplicationDidEnterBackground).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if weakSelf.statusRelay.value == .playing {
+                weakSelf.pause()
+            }
+            }.disposed(by: disposebag)
+        
+        NotificationCenter.default.rx.notification(.UIApplicationWillEnterForeground).bind { [weak self] (notify) in
+            guard let weakSelf = self else { return }
+            if weakSelf.statusRelay.value == .pause {
+                weakSelf.play()
+            }
+            }.disposed(by: disposebag)
     }
     
     private func registerTimeObserver(_ player: AVPlayer) {
         player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 10), queue: DispatchQueue.main) { [weak self] (time) in
             guard let weakSelf = self else { return }
-            if CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds), !weakSelf.skipVisibleBehavior.isDisposed {
-                weakSelf.skipVisibleBehavior.onNext(true)
-                weakSelf.skipVisibleBehavior.onCompleted()
+            if !weakSelf.skipVisibleRelay.value, CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds) {
+                weakSelf.skipVisibleRelay.accept(true)
             }
             if weakSelf.viewableObservable == nil {
                 let timerObs = Observable<Int>.timer(1.0, scheduler: MainScheduler.asyncInstance)
                 timerObs.subscribe(onNext: { (_) in
-                    weakSelf.progressSubject.onNext(.viewable)
+                    weakSelf.progressRelay.accept(.viewable)
                 }).disposed(by: weakSelf.disposebag)
                 weakSelf.viewableObservable = timerObs
             }
@@ -255,16 +311,21 @@ import RxCocoa
                 let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
                 let totalInterval = weakSelf.totalDate.timeIntervalSince1970
                 let delta = round(weakSelf.totalDate.timeIntervalSince(date))
-                let percent = 1.0 - delta / totalInterval
-                weakSelf.seekbarSubject.onNext(Float(percent))
                 
                 let remainDate = Date(timeIntervalSince1970: delta)
-                
+                var hasSeekbar = false
                 weakSelf.allControls.forEach { (control) in
                     if let timecontrol = control as? RxAVPlayerTimeControllable {
+                        guard let tracking = timecontrol.seekBar?.isTracking, !tracking else { return }
+                        guard weakSelf.statusRelay.value != .seeking else { return }
                         timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                        hasSeekbar = true
                     }
                     control.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
+                }
+                if hasSeekbar {
+                    let percent = 1.0 - delta / totalInterval
+                    weakSelf.seekRelay.accept(Float(percent))
                 }
             }
         }
@@ -277,13 +338,15 @@ import RxCocoa
         let percent = elapse / completion
         switch percent {
         case 1:
-            progressSubject.onNext(.completion)
+            if progressRelay.value != .completion {
+                progressRelay.accept(.completion)
+            }
         case 0.25..<0.5:
-            progressSubject.onNext(.firstQ)
+            progressRelay.accept(.firstQ)
         case 0.5..<0.75:
-            progressSubject.onNext(.secondQ)
+            progressRelay.accept(.secondQ)
         case 0.75..<1:
-            progressSubject.onNext(.thirdQ)
+            progressRelay.accept(.thirdQ)
         default:
             break
         }
@@ -291,26 +354,41 @@ import RxCocoa
     
     private func bind() {
         if let pl = player, let item = pl.currentItem {
-            statusSubject.subscribe(onNext: { [weak self] (st) in
+            statusRelay.subscribe(onNext: { [weak self] (st) in
                 guard let weakSelf = self else { return }
-                weakSelf.allControls.forEach({ (control) in
-                    if let view = control as? UIView {
-                        view.isHidden = true
-                    }
-                })
+                var targetView: UIView?
                 switch st {
                 case .none, .ready:
-                    (weakSelf.initialControlView ?? weakSelf.pauseControlView)?.isHidden = false
-                case .playing, .seeking:
-                    weakSelf.playControlView?.isHidden = false
+                    targetView = weakSelf.initialControlView
+                case .playing:
+                    targetView = weakSelf.playControlView
                 case .pause:
-                    (weakSelf.pauseControlView ?? weakSelf.initialControlView)?.isHidden = false
+                    targetView = weakSelf.pauseControlView
                 case .deadend:
-                    (weakSelf.deadendControlView ?? weakSelf.initialControlView ?? weakSelf.pauseControlView)?.isHidden = false
+                    targetView = weakSelf.deadendControlView
+                case .failed:
+                    targetView = weakSelf.failedControlView
                 default:
                     break
                 }
+                if let control = targetView {
+                    weakSelf.allControls.forEach({ (control) in
+                        if let view = control as? UIView {
+                            view.isHidden = true
+                        }
+                    })
+                    control.isHidden = false
+                }
             }).disposed(by: disposebag)
+            
+            item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
+                guard let weakSelf = self else { return }
+                if let item = weakSelf.player?.currentItem, !item.isPlaybackBufferFull {
+                    if !empty {
+                        weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
+                    }
+                }
+                }.disposed(by: disposebag)
             
             let obs1 = item.rx.playbackLikelyToKeepUp
             let obs2 = pl.rx.status.map { $0 == .readyToPlay }
@@ -324,25 +402,32 @@ import RxCocoa
                 }.bind { [weak self] (playable) in
                     guard let weakSelf = self else { return }
                     if playable {
-                        if let status = try? weakSelf.statusSubject.value() {
-                            if status == .none {
-                                weakSelf.statusSubject.onNext(.ready)
-                                weakSelf.progressSubject.onNext(.impression)
-                            }
-                            
-                            weakSelf.movieEndSubject.onNext(false)
-                            if let p = weakSelf.player {
-                                if let total = p.currentItem?.duration {
-                                    weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
-                                    weakSelf.allControls.forEach { (control) in
-                                        if let timecontrol = control as? RxAVPlayerTimeControllable {
-                                            timecontrol.totalTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
-                                        }
+                        let status = weakSelf.statusRelay.value
+                        if status == .none, weakSelf.offset == 0 {
+                            weakSelf.statusRelay.accept(.ready)
+                            weakSelf.progressRelay.accept(.impression)
+                        }
+                        
+                        if let p = weakSelf.player {
+                            if let total = p.currentItem?.duration {
+                                weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
+                                weakSelf.allControls.forEach { (control) in
+                                    if let timecontrol = control as? RxAVPlayerTimeControllable {
+                                        timecontrol.totalTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
                                     }
                                 }
-                                if weakSelf.autoplay, status != .deadend {
-                                    p.play()
-                                }
+                            }
+                            if weakSelf.offset > 0 {
+                                let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                                let target = totalInterval * TimeInterval(weakSelf.offset)
+                                let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+                                weakSelf.seek(distance: time)
+                                weakSelf.autoplay = false
+                                weakSelf.offset = 0
+                                weakSelf.statusRelay.accept(.ready)
+                                weakSelf.progressRelay.accept(.impression)
+                            } else if weakSelf.autoplay, status != .deadend {
+                                weakSelf.play()
                             }
                         }
                     }
@@ -354,150 +439,133 @@ import RxCocoa
                 }
                 
                 if let timecontrol = control as? RxAVPlayerTimeControllable, let seek = timecontrol.seekBar {
-                    Observable.combineLatest(statusSubject, seekbarSubject, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
+                    Observable.combineLatest(statusRelay, seekRelay, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
                         guard let weakSeak = seek else { return }
                         if status != .seeking, !weakSeak.isTracking {
                             weakSeak.value = value
                         }
                     }).disposed(by: disposebag)
                     
+                    seek.rx.controlEvent([.valueChanged]).bind { [weak self] in
+                        guard let weakSelf = self else { return }
+                        if let sbar = timecontrol.seekBar {
+                            weakSelf.seekRelay.accept(sbar.value)
+                            weakSelf.allControls.forEach { (control) in
+                                if let timecontrol = control as? RxAVPlayerTimeControllable {
+                                    let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                                    let target = totalInterval * TimeInterval(sbar.value)
+                                    let date = Date(timeIntervalSince1970: target)
+                                    timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                                }
+                            }
+                        }
+                        }.disposed(by: disposebag)
+                    
                     seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
                         guard let weakSelf = self else { return }
                         if let sbar = timecontrol.seekBar {
                             if weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
-                                weakSelf.seekbarSubject.onNext(sbar.value)
                                 let totalInterval = weakSelf.totalDate.timeIntervalSince1970
                                 let target = totalInterval * TimeInterval(sbar.value)
                                 let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-                                weakSelf.seek(distance: time, skip: false)
+                                weakSelf.seek(distance: time)
                             }
                         }
                         }.disposed(by: disposebag)
                 }
+                
                 if let touchControl = control as? RxAVPlayerTouchable {
                     touchControl.contentButton?.rx.controlEvent(.touchUpInside).bind(onNext: { [weak self] (_) in
                         guard let weakSelf = self else { return }
-                        weakSelf.touchSubject.onNext(weakSelf.userInfo)
+                        weakSelf.touchRelay.accept(weakSelf.userInfo)
                     }).disposed(by: disposebag)
                 }
                 if let closeControl = control as? RxAVPlayerClosable {
                     closeControl.closeButton?.rx.controlEvent(.touchUpInside).bind(onNext: { [weak self] (_) in
                         guard let weakSelf = self else { return }
-                        weakSelf.closeSubject.onNext()
+                        weakSelf.closeRelay.accept()
                     }).disposed(by: disposebag)
                 }
             }
             
-            let obs3 = pl.rx.rate.map { $0 > 0 }
-            let obs4 = movieEndSubject.map { $0 }
-            Observable.combineLatest([obs3, obs4]).map { (list) -> Bool in
-                for result in list {
-                    if result {
-                        return true
-                    }
+            pl.rx.rate.map { $0 > 0 }.bind { [weak self] (progressive) in
+                guard let weakSelf = self else { return }
+                if progressive {
+                    weakSelf.statusRelay.accept(.playing)
+                } else if weakSelf.statusRelay.value != .deadend, weakSelf.statusRelay.value != .none {
+                    weakSelf.statusRelay.accept(.pause)
                 }
-                return false
-                }.bind { [weak self] (playing) in
-                    guard let weakSelf = self else { return }
-                    if let status = try? weakSelf.statusSubject.value(), status != .deadend, status != .none {
-                        if playing {
-                            weakSelf.statusSubject.onNext(.playing)
-                        } else {
-                            weakSelf.statusSubject.onNext(.pause)
-                        }
-                    }
                 }.disposed(by: disposebag)
             
-            movieEndSubject.bind { [weak self] (completion) in
+            movieEndRelay.subscribe(onNext: { [weak self] in
+                guard let weakSelf = self else { return }
+                weakSelf.statusRelay.accept(.deadend)
+                if weakSelf.progressRelay.value != .completion {
+                    weakSelf.progressRelay.accept(.completion)
+                }
+            }).disposed(by: disposebag)
+        }
+    }
+    
+    func seek(distance: CMTime) {
+        statusRelay.accept(.seeking)
+        if let pl = player {
+            pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
                 guard let weakSelf = self else { return }
                 if completion {
-                    weakSelf.statusSubject.onNext(.deadend)
+                    weakSelf.play()
                 }
-                }.disposed(by: disposebag)
+            })
         }
     }
     
-    func seek(distance: CMTime, skip: Bool) {
-        var needsPlay = false
-        if let status = try? statusSubject.value(), status != .deadend {
-            if status != .skipping {
-                statusSubject.onNext(.seeking)
-            }
-            needsPlay = true
+    func skip() {
+        if let pl = player, let time = pl.currentItem?.duration {
+            let distanceTime = CMTimeMake(time.value - 1, time.timescale)
+            seek(distance: distanceTime)
         }
+    }
+    
+    func rewind() {
         if let pl = player {
-            if skip {
-                pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
-                    guard let weakSelf = self else { return }
-                    if completion {
-                        if needsPlay {
-                            weakSelf.play()
-                        } else {
-                            weakSelf.pause()
-                        }
-                    }
-                })
-            } else {
-                pl.seek(to: distance, completionHandler: { [weak self] (completion) in
-                    guard let weakSelf = self else { return }
-                    if completion {
-                        if needsPlay {
-                            weakSelf.play()
-                        } else {
-                            weakSelf.pause()
-                        }
-                    }
-                })
-            }
+            let delta = CMTimeGetSeconds(pl.currentTime()) - Float64(rewindSeconds)
+            seek(distance: CMTimeMake(Int64(delta), 1))
         }
-        
     }
     
-    @objc func changeMute() {
+    func forward() {
+        if let pl = player {
+            let delta = CMTimeGetSeconds(pl.currentTime()) + Float64(forwordSeconds)
+            seek(distance: CMTimeMake(Int64(delta), 1))
+        }
+    }
+    
+    func replay() {
+        if totalDate.compare(Date.distantPast) != .orderedSame {
+            let time = CMTimeMakeWithSeconds(0, 1)
+            seek(distance: time)
+        }
+    }
+    
+    func changeMute() {
         if let pl = player {
             pl.isMuted = !pl.isMuted
         }
     }
     
-    @objc func skip() {
-        if let pl = player, let time = pl.currentItem?.duration {
-            statusSubject.onNext(.skipping)
-            let distanceTime = CMTimeMake(time.value - 1, time.timescale)
-            seek(distance: distanceTime, skip: true)
-        }
-    }
-    
-    @objc func rewind() {
-        if let pl = player {
-            let delta = CMTimeGetSeconds(pl.currentTime()) - Float64(rewindSeconds)
-            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
-        }
-    }
-    
-    @objc func forward() {
-        if let pl = player {
-            let delta = CMTimeGetSeconds(pl.currentTime()) + Float64(forwordSeconds)
-            seek(distance: CMTimeMake(Int64(delta), 1), skip: false)
-        }
-    }
-    
-    @objc func replay() {
-        if totalDate.compare(Date.distantPast) != .orderedSame {
-            let time = CMTimeMakeWithSeconds(0, Int32(NSEC_PER_SEC))
-            seek(distance: time, skip: false)
-        }
-    }
-    
-    @objc func play() {
-        if let status = try? statusSubject.value(), status == .deadend {
-            statusSubject.onNext(.none)
+    func play() {
+        if statusRelay.value == .deadend {
+            statusRelay.accept(.none)
             replay()
         } else {
+            autoplay = false
             player?.play()
         }
     }
     
-    @objc func pause() {
-        player?.pause()
+    func pause() {
+        if statusRelay.value == .playing {
+            player?.pause()
+        }
     }
 }

@@ -16,21 +16,21 @@ class ViewController: UIViewController {
     
     private let disposebag = DisposeBag()
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         player.autoplay = true
         player.visibleSkipSeconds = 2.0
-        player.dateFormatString = "m:ss"
-        player.userInfo = "aaaa"
+        player.dateFormatString = "mm:ss"
+        player.userInfo = "あああああああああああああああああああああああああああああああああああ"
         player.mute = true
         player.url = URL(string: "https://hogehoge/playlist.m3u8")
         Observable.combineLatest(player.statusObservable, player.progressObservable) { (status, progress) -> (RxPlayerStatus, RxPlayerProgressStatus) in
             return (status, progress)
-        }.bind { (status, progress) in
-            print("\(status.rawValue): \(progress.rawValue)")
-        }.disposed(by: disposebag)
-
+            }.bind { (status, progress) in
+                print("\(status.rawValue): \(progress.rawValue)")
+            }.disposed(by: disposebag)
+        
         player.closeObservable.subscribe(onNext: { (_) in
             print("close!!")
         }).disposed(by: disposebag)
@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             print(userinfo)
         }.disposed(by: disposebag)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

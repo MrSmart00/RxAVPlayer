@@ -11,4 +11,5 @@ import UIKit
 protocol RxAVPlayerClosable {
     
     var closeButton: UIButton? { get }
+    
 }
