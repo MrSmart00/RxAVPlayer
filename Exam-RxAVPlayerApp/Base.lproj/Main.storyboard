@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,36 +15,36 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Exam_RxAVPlayerApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQs-U2-RYF" customClass="RxAVPlayer" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAl-k1-8P1" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-pD-KHB">
-                                                <rect key="frame" x="330" y="10" width="35" height="30"/>
+                                                <rect key="frame" x="275" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhL-xT-MCr">
-                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUe-i8-Iun">
-                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wlh-Mh-0E7">
-                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="504-2T-aYo">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="42" id="IgH-cW-XXq"/>
                                                 </constraints>
@@ -75,39 +75,39 @@
                                         </connections>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="RxAVPlayerPlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8d-ML-jCu">
-                                                <rect key="frame" x="330" y="10" width="35" height="30"/>
+                                                <rect key="frame" x="275" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wxf-po-GmY">
-                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3T6-fu-bCB">
-                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
-                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-oL-f3v">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
                                                 <state key="normal" title="Pause"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-Xa-0fS">
-                                                <rect key="frame" x="0.0" y="50" width="187.5" height="476"/>
+                                                <rect key="frame" x="0.0" y="50" width="160" height="377"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nc-aY-bd0">
-                                                <rect key="frame" x="187.5" y="50" width="187.5" height="476"/>
+                                                <rect key="frame" x="160" y="50" width="160" height="377"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5i-U5-sPb">
-                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
+                                                <rect key="frame" x="280" y="397" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
                                             </button>
                                         </subviews>
@@ -148,42 +148,42 @@
                                         </connections>
                                     </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
-                                                <rect key="frame" x="330" y="10" width="35" height="30"/>
+                                                <rect key="frame" x="275" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
-                                                <rect key="frame" x="10" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-ZQ-wua">
-                                                <rect key="frame" x="271" y="581" width="42" height="21"/>
+                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
-                                                <rect key="frame" x="55" y="576" width="213" height="31"/>
+                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="42" id="UfD-7P-rlB"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkt-f7-Jb6">
-                                                <rect key="frame" x="0.0" y="50" width="187.5" height="476"/>
+                                                <rect key="frame" x="0.0" y="50" width="160" height="377"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GQd-6F-A7y">
-                                                <rect key="frame" x="187.5" y="50" width="187.5" height="476"/>
+                                                <rect key="frame" x="160" y="50" width="160" height="377"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
-                                                <rect key="frame" x="335" y="496" width="30" height="30"/>
+                                                <rect key="frame" x="280" y="397" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
                                             </button>
                                         </subviews>
@@ -224,20 +224,20 @@
                                         </connections>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nhk-CM-qxq" customClass="EndcardControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtE-0R-cEL">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6a5-fx-SXL">
-                                                <rect key="frame" x="323" y="576" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="42" id="yVk-ou-wZ0"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dIf-uj-DjQ">
-                                                <rect key="frame" x="326" y="10" width="39" height="30"/>
+                                                <rect key="frame" x="271" y="10" width="39" height="30"/>
                                                 <state key="normal" title="Close"/>
                                             </button>
                                         </subviews>
@@ -261,23 +261,28 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" id="1e9-hP-SPy"/>
-                                    <constraint firstAttribute="trailing" secondItem="zAl-k1-8P1" secondAttribute="trailing" id="2MK-KV-pQB"/>
-                                    <constraint firstAttribute="bottom" secondItem="yNb-Gc-RzC" secondAttribute="bottom" id="3RP-w9-lxa"/>
-                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="leading" secondItem="eQs-U2-RYF" secondAttribute="leading" id="40d-6v-WPN"/>
-                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" id="Adp-Di-7vp"/>
-                                    <constraint firstAttribute="bottom" secondItem="1Qg-ZJ-SCp" secondAttribute="bottom" id="FdF-U9-OwT"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="leading" secondItem="eQs-U2-RYF" secondAttribute="leading" id="JBx-uM-W3w"/>
-                                    <constraint firstAttribute="trailing" secondItem="yNb-Gc-RzC" secondAttribute="trailing" id="bME-fF-IDg"/>
-                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" id="fOA-JZ-EMm"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" id="j25-FJ-aJP"/>
-                                    <constraint firstAttribute="trailing" secondItem="1Qg-ZJ-SCp" secondAttribute="trailing" id="j2g-5Y-BAY"/>
-                                    <constraint firstAttribute="bottom" secondItem="zAl-k1-8P1" secondAttribute="bottom" id="k1P-Lw-ctd"/>
-                                    <constraint firstAttribute="trailing" secondItem="Nhk-CM-qxq" secondAttribute="trailing" id="qce-kY-T3d"/>
-                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="leading" secondItem="eQs-U2-RYF" secondAttribute="leading" id="szG-wD-ymP"/>
-                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="leading" secondItem="eQs-U2-RYF" secondAttribute="leading" id="vSM-lV-4hw"/>
-                                    <constraint firstAttribute="bottom" secondItem="Nhk-CM-qxq" secondAttribute="bottom" id="wQS-Mq-clj"/>
+                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="0XA-Ov-yIM"/>
+                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="1hl-6S-By6"/>
+                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="6Mq-sC-JFJ"/>
+                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="CAD-4V-ssk"/>
+                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="G7B-2q-D9q"/>
+                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="HC7-Qc-0uw"/>
+                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="KXx-hb-Nna"/>
+                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="RoB-TZ-86h"/>
+                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="SRk-85-i4D"/>
+                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="Smi-j8-w2R"/>
+                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="TZb-Ig-E4B"/>
+                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="WsJ-PB-lfq"/>
+                                    <constraint firstItem="hV0-6f-6sV" firstAttribute="bottom" secondItem="zAl-k1-8P1" secondAttribute="bottom" id="Y9s-qW-t3R"/>
+                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="ZCz-PV-HBU"/>
+                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="cuy-2A-Au4"/>
+                                    <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="e22-LX-QNN"/>
+                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="gBb-PN-34T"/>
+                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="mvA-pq-gfH"/>
+                                    <constraint firstItem="Nhk-CM-qxq" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="ny2-Mg-irx"/>
+                                    <constraint firstItem="yNb-Gc-RzC" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="uwt-Hx-pVI"/>
                                 </constraints>
+                                <viewLayoutGuide key="safeArea" id="hV0-6f-6sV"/>
                                 <connections>
                                     <outlet property="deadendControlView" destination="Nhk-CM-qxq" id="igF-zu-wuL"/>
                                     <outlet property="initialControlView" destination="zAl-k1-8P1" id="DUm-Js-n7B"/>
@@ -291,7 +296,7 @@
                             <constraint firstItem="eQs-U2-RYF" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3di-UK-jql"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="eQs-U2-RYF" secondAttribute="bottom" id="G0Z-QW-NUf"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="eQs-U2-RYF" secondAttribute="trailing" id="OwR-yF-I16"/>
-                            <constraint firstItem="eQs-U2-RYF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="x4O-u9-oPN"/>
+                            <constraint firstItem="eQs-U2-RYF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="XFC-jR-tkV"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>

@@ -15,15 +15,6 @@ class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeC
     
     private let disposebag = DisposeBag()
 
-    func bind() {
-        guard let player = self.player else { return }
-        muteButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.changeMute()).disposed(by: disposebag)
-        forwardButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.forward()).disposed(by: disposebag)
-        rewindButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.rewind()).disposed(by: disposebag)
-        skipButton?.rx.controlEvent([.touchUpInside]).bind(to: player.rx.skip()).disposed(by: disposebag)
-        pauseButton.rx.controlEvent([.touchUpInside]).bind(to: player.rx.pause()).disposed(by: disposebag)
-    }
-
     var player: RxAVPlayer?
     
     @IBOutlet weak var muteButton: UIButton?
@@ -43,5 +34,13 @@ class RxAVPlayerPlayControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeC
     @IBOutlet weak var skipButton: UIButton?
     
     @IBOutlet weak var pauseButton: UIButton!
-
+    
+    override func awakeFromNib() {
+        guard let player = self.player else { return }
+        muteButton?.rx.tap.bind(to: player.rx.changeMute()).disposed(by: disposebag)
+        forwardButton?.rx.tap.bind(to: player.rx.forward()).disposed(by: disposebag)
+        rewindButton?.rx.tap.bind(to: player.rx.rewind()).disposed(by: disposebag)
+        skipButton?.rx.tap.bind(to: player.rx.skip()).disposed(by: disposebag)
+        pauseButton.rx.tap.bind(to: player.rx.pause()).disposed(by: disposebag)
+    }
 }

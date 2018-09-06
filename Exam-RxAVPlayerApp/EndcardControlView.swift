@@ -14,11 +14,6 @@ class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, R
     
     private let disposebag = DisposeBag()
     
-    func bind() {
-        guard let player = self.player else { return }
-        playButton.rx.controlEvent([.touchUpInside]).bind(to: player.rx.play()).disposed(by: disposebag)
-    }
-
     @IBOutlet weak var closeButton: UIButton?
     
     @IBOutlet weak var contentButton: UIButton?
@@ -31,4 +26,8 @@ class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, R
     
     var remainingTimeLabel: UILabel?
     
+    override func awakeFromNib() {
+        guard let player = self.player else { return }
+        playButton.rx.tap.bind(to: player.rx.play()).disposed(by: disposebag)
+    }
 }
