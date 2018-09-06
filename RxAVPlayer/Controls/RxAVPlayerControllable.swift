@@ -8,11 +8,16 @@
 
 import UIKit
 
+enum RxAVPlayerControlStatus {
+    case none
+    case initialize
+    case play
+    case pause
+    case finish
+    case stall
+    case fail
+}
 protocol RxAVPlayerControllable {
-    
+    var status: RxAVPlayerControlStatus { get }
     var player: RxAVPlayer? { get set }
-    
-    var muteButton: UIButton? { get }
-    var remainingTimeLabel: UILabel? { get }
-    
 }

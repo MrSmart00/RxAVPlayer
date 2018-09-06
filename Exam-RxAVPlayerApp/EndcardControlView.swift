@@ -10,7 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, RxAVPlayerClosable {
+class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerClosable {
+    var status: RxAVPlayerControlStatus = .finish
     
     private let disposebag = DisposeBag()
     

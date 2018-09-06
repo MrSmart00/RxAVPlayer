@@ -21,59 +21,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQs-U2-RYF" customClass="RxAVPlayer" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zAl-k1-8P1" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JQd-pD-KHB">
-                                                <rect key="frame" x="275" y="10" width="35" height="30"/>
-                                                <state key="normal" title="Mute"/>
-                                            </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EhL-xT-MCr">
-                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cUe-i8-Iun">
-                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wlh-Mh-0E7">
-                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
-                                            </slider>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="504-2T-aYo">
-                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="42" id="IgH-cW-XXq"/>
-                                                </constraints>
-                                                <state key="normal" title="Play"/>
-                                            </button>
-                                        </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <constraints>
-                                            <constraint firstItem="cUe-i8-Iun" firstAttribute="leading" secondItem="Wlh-Mh-0E7" secondAttribute="trailing" constant="5" id="BLm-Xk-P3b"/>
-                                            <constraint firstItem="EhL-xT-MCr" firstAttribute="leading" secondItem="zAl-k1-8P1" secondAttribute="leading" constant="10" id="CVJ-pZ-3CG"/>
-                                            <constraint firstAttribute="trailing" secondItem="JQd-pD-KHB" secondAttribute="trailing" constant="10" id="Cfl-Vs-CLi"/>
-                                            <constraint firstItem="Wlh-Mh-0E7" firstAttribute="leading" secondItem="EhL-xT-MCr" secondAttribute="trailing" constant="5" id="GZQ-Bq-obH"/>
-                                            <constraint firstItem="cUe-i8-Iun" firstAttribute="centerY" secondItem="Wlh-Mh-0E7" secondAttribute="centerY" id="P3c-tI-Fff"/>
-                                            <constraint firstItem="EhL-xT-MCr" firstAttribute="centerY" secondItem="Wlh-Mh-0E7" secondAttribute="centerY" id="Pe3-38-JnG"/>
-                                            <constraint firstAttribute="trailing" secondItem="504-2T-aYo" secondAttribute="trailing" constant="10" id="Q62-4T-JNN"/>
-                                            <constraint firstItem="JQd-pD-KHB" firstAttribute="top" secondItem="zAl-k1-8P1" secondAttribute="top" constant="10" id="Ua3-mT-XKw"/>
-                                            <constraint firstAttribute="bottom" secondItem="cUe-i8-Iun" secondAttribute="bottom" constant="45" id="WeS-H3-6DD"/>
-                                            <constraint firstItem="504-2T-aYo" firstAttribute="centerY" secondItem="Wlh-Mh-0E7" secondAttribute="centerY" id="Xbc-Ej-oXk"/>
-                                            <constraint firstAttribute="bottom" secondItem="EhL-xT-MCr" secondAttribute="bottom" constant="45" id="eJt-UX-WNV"/>
-                                            <constraint firstItem="504-2T-aYo" firstAttribute="leading" secondItem="cUe-i8-Iun" secondAttribute="trailing" constant="10" id="he4-Hr-1lF"/>
-                                        </constraints>
-                                        <connections>
-                                            <outlet property="currentTimeLabel" destination="EhL-xT-MCr" id="hkr-iy-s8i"/>
-                                            <outlet property="muteButton" destination="JQd-pD-KHB" id="C1B-Zq-ylY"/>
-                                            <outlet property="playButton" destination="504-2T-aYo" id="Nzj-ih-Sm8"/>
-                                            <outlet property="seekBar" destination="Wlh-Mh-0E7" id="Mnm-Xc-t2q"/>
-                                            <outlet property="totalTimeLabel" destination="cUe-i8-Iun" id="XVj-Lc-dsI"/>
-                                        </connections>
-                                    </view>
                                     <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="RxAVPlayerPlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
@@ -147,7 +94,7 @@
                                             <outlet property="totalTimeLabel" destination="3T6-fu-bCB" id="At3-2w-rVh"/>
                                         </connections>
                                     </view>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
@@ -264,30 +211,24 @@
                                     <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="0XA-Ov-yIM"/>
                                     <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="1hl-6S-By6"/>
                                     <constraint firstItem="yNb-Gc-RzC" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="6Mq-sC-JFJ"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="CAD-4V-ssk"/>
                                     <constraint firstItem="Nhk-CM-qxq" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="G7B-2q-D9q"/>
                                     <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="HC7-Qc-0uw"/>
                                     <constraint firstItem="yNb-Gc-RzC" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="KXx-hb-Nna"/>
                                     <constraint firstItem="Nhk-CM-qxq" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="RoB-TZ-86h"/>
                                     <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="bottom" secondItem="hV0-6f-6sV" secondAttribute="bottom" id="SRk-85-i4D"/>
                                     <constraint firstItem="Nhk-CM-qxq" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="Smi-j8-w2R"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="TZb-Ig-E4B"/>
                                     <constraint firstItem="Nhk-CM-qxq" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="WsJ-PB-lfq"/>
-                                    <constraint firstItem="hV0-6f-6sV" firstAttribute="bottom" secondItem="zAl-k1-8P1" secondAttribute="bottom" id="Y9s-qW-t3R"/>
                                     <constraint firstItem="yNb-Gc-RzC" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="ZCz-PV-HBU"/>
                                     <constraint firstItem="yNb-Gc-RzC" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="cuy-2A-Au4"/>
                                     <constraint firstItem="1Qg-ZJ-SCp" firstAttribute="top" secondItem="hV0-6f-6sV" secondAttribute="top" priority="750" id="e22-LX-QNN"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="leading" secondItem="hV0-6f-6sV" secondAttribute="leading" id="gBb-PN-34T"/>
-                                    <constraint firstItem="zAl-k1-8P1" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="mvA-pq-gfH"/>
                                     <constraint firstItem="Nhk-CM-qxq" firstAttribute="trailing" secondItem="hV0-6f-6sV" secondAttribute="trailing" id="ny2-Mg-irx"/>
                                     <constraint firstItem="yNb-Gc-RzC" firstAttribute="top" secondItem="eQs-U2-RYF" secondAttribute="top" constant="20" id="uwt-Hx-pVI"/>
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="hV0-6f-6sV"/>
                                 <connections>
-                                    <outlet property="deadendControlView" destination="Nhk-CM-qxq" id="igF-zu-wuL"/>
-                                    <outlet property="initialControlView" destination="zAl-k1-8P1" id="DUm-Js-n7B"/>
-                                    <outlet property="pauseControlView" destination="1Qg-ZJ-SCp" id="xoQ-Lm-ywH"/>
-                                    <outlet property="playControlView" destination="yNb-Gc-RzC" id="XrR-I1-y7C"/>
+                                    <outletCollection property="controls" destination="yNb-Gc-RzC" collectionClass="NSMutableArray" id="3Ho-UP-Uut"/>
+                                    <outletCollection property="controls" destination="1Qg-ZJ-SCp" collectionClass="NSMutableArray" id="eoN-Hn-4FG"/>
+                                    <outletCollection property="controls" destination="Nhk-CM-qxq" collectionClass="NSMutableArray" id="I3x-8C-x7k"/>
                                 </connections>
                             </view>
                         </subviews>

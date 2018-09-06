@@ -55,29 +55,4 @@ extension Reactive where Base: RxAVPlayer {
             player.pause()
         }
     }
-    
-    func forward() -> Binder<Void> {
-        return Binder(self.base) { player, _ in
-            player.forward()
-        }
-    }
-
-    func rewind() -> Binder<Void> {
-        return Binder(self.base) { player, _ in
-            player.rewind()
-        }
-    }
-    
-    func changeMute() -> Binder<Void> {
-        return Binder(self.base) { player, _ in
-            player.changeMute()
-        }
-    }
-
-    func skip() -> Binder<Void> {
-        return Binder(self.base) { player, _ in
-            player.skip()
-        }
-    }
-
 }

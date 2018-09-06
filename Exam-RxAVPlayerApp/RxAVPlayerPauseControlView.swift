@@ -11,7 +11,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable {
+class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable, RxAVPlayerSoundMutable, RxAVPlayerSkippable {
+    var status: RxAVPlayerControlStatus = .pause    
     
     private let disposebag = DisposeBag()
 
@@ -37,10 +38,23 @@ class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTime
     
     override func awakeFromNib() {
         guard let player = self.player else { return }
-        muteButton?.rx.tap.bind(to: player.rx.changeMute()).disposed(by: disposebag)
-        forwardButton?.rx.tap.bind(to: player.rx.forward()).disposed(by: disposebag)
-        rewindButton?.rx.tap.bind(to: player.rx.rewind()).disposed(by: disposebag)
-        skipButton?.rx.tap.bind(to: player.rx.skip()).disposed(by: disposebag)
+        muteButton?.rx.tap.bind { [weak self] in
+            self?.changeMute()
+        }.disposed(by: disposebag)
+        forwardButton?.rx.tap.bind { [weak self] in
+            self?.forward(10)
+        }.disposed(by: disposebag)
+        rewindButton?.rx.tap.bind { [weak self] in
+            self?.rewind(10)
+        }.disposed(by: disposebag)
+        skipButton?.rx.tap.bind { [weak self] in
+            self?.skip()
+        }.disposed(by: disposebag)
+
         playButton?.rx.tap.bind(to: player.rx.play()).disposed(by: disposebag)
+        
+        if let btn = skipButton {
+            player.skipObservable.map { !$0 }.bind(to: btn.rx.isHidden).disposed(by: disposebag)
+        }
     }
 }
