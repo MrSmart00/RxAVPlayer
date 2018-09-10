@@ -106,10 +106,7 @@ class RxAVPlayer: UIView {
         return skipVisibleRelay.asObservable()
     }
     
-    private lazy var closeRelay = PublishRelay<Void>()
-    var closeObservable: Observable<Void> {
-        return closeRelay.asObservable()
-    }
+    lazy var customEventRelay = PublishRelay<Any>()
     
     private var viewableObservable: Observable<Int>?
     
@@ -453,12 +450,6 @@ class RxAVPlayer: UIView {
                     weakSelf.seek(distance: time)
                 }
             }.disposed(by: disposebag)
-        }
-        
-        if let closeControl = control as? RxAVPlayerClosable {
-            closeControl.closeButton?.rx.tap.bind(onNext: { [weak self] (_) in
-                self?.closeRelay.accept()
-            }).disposed(by: disposebag)
         }
     }
     
