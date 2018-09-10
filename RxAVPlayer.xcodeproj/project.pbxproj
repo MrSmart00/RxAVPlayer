@@ -54,6 +54,10 @@
 		C5D214E42141205700FC9174 /* RxAVPlayerSkippable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D214E22141205700FC9174 /* RxAVPlayerSkippable.swift */; };
 		C5D214E52141205700FC9174 /* RxAVPlayerSkippable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D214E22141205700FC9174 /* RxAVPlayerSkippable.swift */; };
 		C5D214E62141205700FC9174 /* RxAVPlayerSkippable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D214E22141205700FC9174 /* RxAVPlayerSkippable.swift */; };
+		C5D214E92141547500FC9174 /* RxBlocking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D214E72141547500FC9174 /* RxBlocking.framework */; };
+		C5D214EA2141547500FC9174 /* RxTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D214E82141547500FC9174 /* RxTest.framework */; };
+		C5D214EC214155DF00FC9174 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00220EC609B00E9C475 /* RxCocoa.framework */; };
+		C5D214ED214155DF00FC9174 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00120EC609B00E9C475 /* RxSwift.framework */; };
 		C5DFF00320EC609B00E9C475 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00120EC609B00E9C475 /* RxSwift.framework */; };
 		C5DFF00420EC609B00E9C475 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00220EC609B00E9C475 /* RxCocoa.framework */; };
 		C5DFF00720EC615100E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
@@ -106,6 +110,8 @@
 		C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactive.extension.swift; sourceTree = "<group>"; };
 		C5D214D8214115B100FC9174 /* RxAVPlayerSoundMutable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerSoundMutable.swift; sourceTree = "<group>"; };
 		C5D214E22141205700FC9174 /* RxAVPlayerSkippable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerSkippable.swift; sourceTree = "<group>"; };
+		C5D214E72141547500FC9174 /* RxBlocking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBlocking.framework; path = Carthage/Build/iOS/RxBlocking.framework; sourceTree = "<group>"; };
+		C5D214E82141547500FC9174 /* RxTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxTest.framework; path = Carthage/Build/iOS/RxTest.framework; sourceTree = "<group>"; };
 		C5DFF00120EC609B00E9C475 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		C5DFF00220EC609B00E9C475 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayer.swift; sourceTree = "<group>"; };
@@ -137,6 +143,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5D214EC214155DF00FC9174 /* RxCocoa.framework in Frameworks */,
+				C5D214ED214155DF00FC9174 /* RxSwift.framework in Frameworks */,
+				C5D214E92141547500FC9174 /* RxBlocking.framework in Frameworks */,
+				C5D214EA2141547500FC9174 /* RxTest.framework in Frameworks */,
 				C568CFAA20EC5F0500A5A78C /* RxAVPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -230,6 +240,8 @@
 		C5DFF00020EC609A00E9C475 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C5D214E72141547500FC9174 /* RxBlocking.framework */,
+				C5D214E82141547500FC9174 /* RxTest.framework */,
 				C5DFF06E20EC6C9D00E9C475 /* RxCocoa.framework.dSYM */,
 				C5DFF06F20EC6C9D00E9C475 /* RxSwift.framework.dSYM */,
 				C5DFF00220EC609B00E9C475 /* RxCocoa.framework */,
@@ -303,6 +315,7 @@
 				C568CFA520EC5F0500A5A78C /* Sources */,
 				C568CFA620EC5F0500A5A78C /* Frameworks */,
 				C568CFA720EC5F0500A5A78C /* Resources */,
+				C5D214EB2141549200FC9174 /* Carthage Script */,
 			);
 			buildRules = (
 			);
@@ -458,6 +471,28 @@
 			);
 			name = "Carthage Script";
 			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+		C5D214EB2141549200FC9174 /* Carthage Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxBlocking.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxTest.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/RxCocoa.framework",
+			);
+			name = "Carthage Script";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxBlocking.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxTest.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxSwift.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/RxCocoa.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -788,6 +823,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxAVPlayerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -807,6 +846,10 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DHY6ZSRL6G;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxAVPlayerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

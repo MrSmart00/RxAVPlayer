@@ -11,8 +11,9 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
-@objc enum RxPlayerStatus: Int {
-    case none
+@objc
+enum RxPlayerStatus: Int {
+    case prepare
     case ready
     case playing
     case pause
@@ -21,8 +22,9 @@ import RxCocoa
     case failed
 }
 
-@objc enum RxPlayerProgressStatus: Int {
-    case none
+@objc
+enum RxPlayerProgressStatus: Int {
+    case prepare
     case impression
     case viewable
     case firstQ
@@ -84,11 +86,11 @@ class RxAVPlayer: UIView {
     private let formatter = DateFormatter()
     
     private let disposebag = DisposeBag()
-    private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .none)
+    private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
     var statusObservable: Observable<RxPlayerStatus> {
         return statusRelay.asObservable()
     }
-    private let progressRelay = BehaviorRelay<RxPlayerProgressStatus>(value: .none)
+    private let progressRelay = BehaviorRelay<RxPlayerProgressStatus>(value: .prepare)
     var progressObservable: Observable<RxPlayerProgressStatus> {
         return progressRelay.asObservable()
     }
@@ -123,7 +125,7 @@ class RxAVPlayer: UIView {
     
     var url: URL? {
         didSet {
-            statusRelay.accept(.none)
+            statusRelay.accept(.prepare)
             skipVisibleRelay.accept(false)
             guard let movieURL = url else {
                 statusRelay.accept(.failed)
@@ -306,6 +308,8 @@ class RxAVPlayer: UIView {
         case 0.75..<1:
             progressRelay.accept(.thirdQ)
         default:
+            let currentProgress = progressRelay.value
+            progressRelay.accept(currentProgress)
             break
         }
     }
@@ -317,7 +321,7 @@ class RxAVPlayer: UIView {
             item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
                 guard let weakSelf = self else { return }
                 if let item = weakSelf.player?.currentItem, !item.isPlaybackBufferFull {
-                    if !empty {
+                    if !empty, weakSelf.player?.currentTime() != kCMTimeZero {
                         weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
                     }
                 }
@@ -330,7 +334,7 @@ class RxAVPlayer: UIView {
             pl.rx.rate.map { $0 > 0 }.bind { [weak self] (progressive) in
                 if progressive {
                     self?.statusRelay.accept(.playing)
-                } else if self?.statusRelay.value != .deadend, self?.statusRelay.value != .none {
+                } else if self?.statusRelay.value != .deadend, self?.statusRelay.value != .prepare {
                     self?.statusRelay.accept(.pause)
                 }
             }.disposed(by: disposebag)
@@ -348,7 +352,7 @@ class RxAVPlayer: UIView {
         statusRelay.subscribe(onNext: { [weak self] (status) in
             var target: RxAVPlayerControlStatus = .none
             switch status {
-            case .none, .ready:
+            case .prepare, .ready:
                 target = .initialize
             case .playing:
                 target = .play
@@ -384,7 +388,7 @@ class RxAVPlayer: UIView {
                 guard let weakSelf = self else { return }
                 if playable {
                     let status = weakSelf.statusRelay.value
-                    if status == .none, weakSelf.offset == 0 {
+                    if status == .prepare, weakSelf.offset == 0 {
                         weakSelf.statusRelay.accept(.ready)
                         weakSelf.progressRelay.accept(.impression)
                     }
@@ -471,7 +475,7 @@ class RxAVPlayer: UIView {
     
     func play() {
         if statusRelay.value == .deadend {
-            statusRelay.accept(.none)
+            statusRelay.accept(.prepare)
             if totalDate.compare(Date.distantPast) != .orderedSame {
                 let time = CMTimeMakeWithSeconds(0, 1)
                 seek(distance: time)
