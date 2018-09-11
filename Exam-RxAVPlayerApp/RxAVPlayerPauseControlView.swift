@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 
 class RxAVPlayerPauseControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable, RxAVPlayerSoundMutable, RxAVPlayerSkippable {
-    var status: RxAVPlayerControlStatus = .pause    
+    var category: PlayerControlCategory = [.initialize, .pause]
     
     private let disposebag = DisposeBag()
 

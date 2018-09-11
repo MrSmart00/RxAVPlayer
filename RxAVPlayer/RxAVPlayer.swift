@@ -18,19 +18,9 @@ enum RxPlayerStatus: Int {
     case playing
     case pause
     case seeking
+    case stalled
     case deadend
     case failed
-}
-
-@objc
-enum RxPlayerProgressStatus: Int {
-    case prepare
-    case impression
-    case viewable
-    case firstQ
-    case secondQ
-    case thirdQ
-    case completion
 }
 
 @objcMembers
@@ -90,8 +80,8 @@ class RxAVPlayer: UIView {
     var statusObservable: Observable<RxPlayerStatus> {
         return statusRelay.asObservable()
     }
-    private let progressRelay = BehaviorRelay<RxPlayerProgressStatus>(value: .prepare)
-    var progressObservable: Observable<RxPlayerProgressStatus> {
+    private let progressRelay = PublishRelay<CMTime>()
+    var progressObservable: Observable<CMTime> {
         return progressRelay.asObservable()
     }
     
@@ -107,8 +97,6 @@ class RxAVPlayer: UIView {
     }
     
     lazy var customEventRelay = PublishRelay<Any>()
-    
-    private var viewableObservable: Observable<Int>?
     
     @IBOutlet var controls: [UIView]? {
         didSet {
@@ -151,7 +139,7 @@ class RxAVPlayer: UIView {
     var endcardImageURL: URL? {
         didSet {
             guard let endControl = controls?.filter({ (view) -> Bool in
-                if let control = view as? RxAVPlayerControllable, control.status == .finish {
+                if let control = view as? RxAVPlayerControllable, control.category.contains(.finish) {
                     return true
                 }
                 return false
@@ -230,13 +218,7 @@ class RxAVPlayer: UIView {
         }.disposed(by: disposebag)
         
         NotificationCenter.default.rx.notification(.AVPlayerItemPlaybackStalled).bind { [weak self] (notify) in
-            self?.controls?.forEach({ (view) in
-                if let control = view as? RxAVPlayerControllable, control.status == .stall {
-                    view.isHidden = false
-                } else {
-                    view.isHidden = true
-                }
-            })
+            self?.statusRelay.accept(.stalled)
         }.disposed(by: disposebag)
 
         NotificationCenter.default.rx.notification(.UIApplicationDidEnterBackground).bind { [weak self] (notify) in
@@ -258,59 +240,29 @@ class RxAVPlayer: UIView {
             if !weakSelf.skipVisibleRelay.value, CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds) {
                 weakSelf.skipVisibleRelay.accept(true)
             }
-            if weakSelf.viewableObservable == nil {
-                let timerObs = Observable<Int>.timer(1.0, scheduler: MainScheduler.asyncInstance)
-                timerObs.subscribe(onNext: { (_) in
-                    weakSelf.progressRelay.accept(.viewable)
-                }).disposed(by: weakSelf.disposebag)
-                weakSelf.viewableObservable = timerObs
-            }
-            
-            if let p = weakSelf.player, let item = p.currentItem {
-                weakSelf.manageTimeStatus(current: time, duration: item.duration)
-                let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
-                let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-                let delta = round(weakSelf.totalDate.timeIntervalSince(date))
-                let remainDate = Date(timeIntervalSince1970: delta)
-                var hasSeekbar = false
-                weakSelf.controls?.forEach({ (view) in
-                    if let timecontrol = view as? RxAVPlayerTimeControllable {
-                        guard let tracking = timecontrol.seekBar?.isTracking, !tracking else { return }
-                        guard weakSelf.statusRelay.value != .seeking else { return }
-                        timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
-                        timecontrol.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
-                        hasSeekbar = true
-                    }
-                })
-                if hasSeekbar {
-                    let percent = 1.0 - delta / totalInterval
-                    weakSelf.seekRelay.accept(Float(percent))
+            weakSelf.progressRelay.accept(time)
+            let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
+            let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+            let delta = round(weakSelf.totalDate.timeIntervalSince(date))
+            let remainDate = Date(timeIntervalSince1970: delta)
+            var hasSeekbar = false
+            weakSelf.controls?.forEach({ (view) in
+                if let timecontrol = view as? RxAVPlayerTimeControllable {
+                    guard let tracking = timecontrol.seekBar?.isTracking, !tracking else { return }
+                    guard weakSelf.statusRelay.value != .seeking else { return }
+                    timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                    timecontrol.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
+                    hasSeekbar = true
                 }
+            })
+            if hasSeekbar {
+                let percent = 1.0 - delta / totalInterval
+                weakSelf.seekRelay.accept(Float(percent))
             }
+
         }
     }
     
-    private func manageTimeStatus(current: CMTime, duration: CMTime) {
-        let elapse = CMTimeGetSeconds(current)
-        let completion = CMTimeGetSeconds(duration)
-        
-        let percent = elapse / completion
-        switch percent {
-        case 1 where progressRelay.value != .completion:
-            progressRelay.accept(.completion)
-        case 0.25..<0.5:
-            progressRelay.accept(.firstQ)
-        case 0.5..<0.75:
-            progressRelay.accept(.secondQ)
-        case 0.75..<1:
-            progressRelay.accept(.thirdQ)
-        default:
-            let currentProgress = progressRelay.value
-            progressRelay.accept(currentProgress)
-            break
-        }
-    }
-
     private func bind() {
         if let pl = player, let item = pl.currentItem {
             bindStatus()
@@ -338,37 +290,38 @@ class RxAVPlayer: UIView {
             
             movieEndRelay.subscribe(onNext: { [weak self] in
                 self?.statusRelay.accept(.deadend)
-                if self?.progressRelay.value != .completion {
-                    self?.progressRelay.accept(.completion)
-                }
             }).disposed(by: disposebag)
         }
     }
-    
+
     private func bindStatus() {
         statusRelay.subscribe(onNext: { [weak self] (status) in
-            var target: RxAVPlayerControlStatus = .none
+            var category: PlayerControlCategory?
             switch status {
             case .prepare, .ready:
-                target = .initialize
+                category = .initialize
             case .playing:
-                target = .play
+                category = .play
             case .pause:
-                target = .pause
+                category = .pause
             case .deadend:
-                target = .finish
+                category = .finish
             case .failed:
-                target = .fail
+                category = .failed
+            case .stalled:
+                category = .stall
             default:
                 return
             }
-            self?.controls?.forEach({ (view) in
-                if let control = view as? RxAVPlayerControllable, control.status == target {
-                    view.isHidden = false
-                } else {
-                    view.isHidden = true
-                }
-            })
+            if let targetCategory = category {
+                self?.controls?.forEach({ (view) in
+                    if let control = view as? RxAVPlayerControllable, control.category.contains(targetCategory) {
+                        view.isHidden = false
+                    } else {
+                        view.isHidden = true
+                    }
+                })
+            }
         }).disposed(by: disposebag)
     }
 
@@ -387,7 +340,6 @@ class RxAVPlayer: UIView {
                     let status = weakSelf.statusRelay.value
                     if status == .prepare, weakSelf.offset == 0 {
                         weakSelf.statusRelay.accept(.ready)
-                        weakSelf.progressRelay.accept(.impression)
                     }
                     
                     if let p = weakSelf.player {
@@ -407,7 +359,6 @@ class RxAVPlayer: UIView {
                             weakSelf.autoplay = false
                             weakSelf.offset = 0
                             weakSelf.statusRelay.accept(.ready)
-                            weakSelf.progressRelay.accept(.impression)
                         } else if weakSelf.autoplay, status != .deadend {
                             weakSelf.play()
                         }

@@ -19,7 +19,7 @@ class RxAVPlayerTests: XCTestCase {
     let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     let disposebag = DisposeBag()
     let testURL = URL(string: "http://hogehoge/index.m3u8")
-    
+
     override func setUp() {
         super.setUp()
         player.autoplay = true
@@ -34,12 +34,24 @@ class RxAVPlayerTests: XCTestCase {
     func testCheckStatus() {
         let expection = expectation(description: "Player Status Check")
         player.url = testURL
-        bindStatus(exp: nil)
+        bindStatus(exp: expection)
+        waitForExpectations(timeout: 300, handler: nil)
+    }
+
+    func testCheckProgress() {
+        let expection = expectation(description: "Player Progress Check")
+        player.url = testURL
         bindProgressStatus(exp: expection)
-        bindSkippable(exp: nil, seconds: 3)
         waitForExpectations(timeout: 300, handler: nil)
     }
     
+    func testCheckSkippable() {
+        let expection = expectation(description: "Player Skippable Check")
+        player.url = testURL
+        bindSkippable(exp: expection, seconds: 3)
+        waitForExpectations(timeout: 4, handler: nil)
+    }
+
     func bindStatus(exp: XCTestExpectation?) {
         player.statusObservable.subscribe(onNext: { (status) in
             print("@@@  \(status.rawValue)")
@@ -55,18 +67,17 @@ class RxAVPlayerTests: XCTestCase {
         }.disposed(by: disposebag)
     }
     
-    func check() {
-        
-    }
-    
     func bindProgressStatus(exp: XCTestExpectation?) {
-        var prev: RxPlayerProgressStatus = .prepare
-        player.progressObservable.subscribe(onNext: { (status) in
-            XCTAssertTrue(status.rawValue >= prev.rawValue, "Illegal Stream.")
-            prev = status
-            if status == RxPlayerProgressStatus.completion {
+        var prev: CMTime = kCMTimeZero
+        player.progressObservable.subscribe(onNext: { (time) in
+            print(time)
+            if time.timescale == prev.timescale, time != kCMTimeZero {
+                XCTAssertFalse(prev > time, "Illegal Stream.  \(time) : \(prev)")
+            }
+            if let duration = self.player.player?.currentItem?.duration, 0 > CMTimeCompare(duration, time)  {
                 exp?.fulfill()
             }
+            prev = time
         }, onError: { (error) in
             XCTAssertNotNil(error, error.localizedDescription)
         }, onCompleted: {

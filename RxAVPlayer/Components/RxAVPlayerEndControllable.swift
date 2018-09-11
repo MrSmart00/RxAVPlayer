@@ -8,10 +8,7 @@
 
 import UIKit
 
-protocol RxAVPlayerEndControllable {
-    
+protocol RxAVPlayerEndControllable: RxAVPlayerControllable {
     var imageURL: URL? { get set }
-    
     var endcardImage: UIImageView? { get }
-    
 }

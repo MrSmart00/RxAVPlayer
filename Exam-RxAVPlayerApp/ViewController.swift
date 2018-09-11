@@ -12,7 +12,7 @@ import RxSwift
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var player: RxAVPlayer!
+    @IBOutlet weak var player: CustomPlayer!
     
     private let disposebag = DisposeBag()
     
@@ -25,12 +25,16 @@ class ViewController: UIViewController {
         player.userInfo = "あああああああああああああああああああああああああああああああああああ"
         player.mute = true
         player.url = URL(string: "https://s3.us-east-2.amazonaws.com/vjs-nuevo/hls/m3u8/playlist.m3u8")
-        Observable.combineLatest(player.statusObservable, player.progressObservable) { (status, progress) -> (RxPlayerStatus, RxPlayerProgressStatus) in
-            return (status, progress)
-        }.bind { (status, progress) in
-            print("\(status.rawValue): \(progress.rawValue)")
-        }.disposed(by: disposebag)
         
+        player.statusObservable.bind { (status) in
+            print("🍺  \(status.rawValue)")
+        }.disposed(by: disposebag)
+        player.currentStatusObservable.bind { (status) in
+            print("🍻  \(status.rawValue)")
+        }.disposed(by: disposebag)
+        player.viewableObservable.bind { (_) in
+            print("🍻🍻🍻🍻🍻")
+        }.disposed(by: disposebag)
         player.customEventRelay.subscribe(onNext: { (value) in
             print(value)
         }).disposed(by: disposebag)

@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 class EndcardControlView: UIView, RxAVPlayerControllable {
-    var status: RxAVPlayerControlStatus = .finish
+    var category: PlayerControlCategory = [.finish]
     
     private let disposebag = DisposeBag()
     
