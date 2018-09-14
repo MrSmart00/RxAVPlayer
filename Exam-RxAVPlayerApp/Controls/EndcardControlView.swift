@@ -10,7 +10,8 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, RxAVPlayerClosable {
+class EndcardControlView: UIView, RxAVPlayerControllable {
+    var category: PlayerControlCategory = [.finish]
     
     private let disposebag = DisposeBag()
     
@@ -26,8 +27,19 @@ class EndcardControlView: UIView, RxAVPlayerControllable, RxAVPlayerTouchable, R
     
     var remainingTimeLabel: UILabel?
     
+    var count: Int = 0
+    
     override func awakeFromNib() {
         guard let player = self.player else { return }
         playButton.rx.tap.bind(to: player.rx.play()).disposed(by: disposebag)
+        
+        closeButton?.rx.tap.subscribe(onNext: { [weak self] (_) in
+            self?.player?.customEventRelay.accept(["close": "hogehoge \(self?.count)"])
+            self?.count += 1
+        }).disposed(by: disposebag)
+        contentButton?.rx.tap.subscribe(onNext: { [weak self] (_) in
+            self?.player?.customEventRelay.accept(["touch": "hugahugahuga"])
+        }).disposed(by: disposebag)
+
     }
 }
