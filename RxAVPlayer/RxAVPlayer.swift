@@ -42,38 +42,14 @@ class RxAVPlayer: UIView {
     }
     private var periodicTimeObserver: Any?
     
-    var offset: CGFloat = 0.0
+    var offset: Float = 0.0
     var autoplay = false
     var mute: Bool = false {
         didSet {
             player?.isMuted = mute
         }
     }
-    var visibleSkipSeconds: Float = -1
-    
-    var dateFormatString = "mm:ss" {
-        didSet {
-            formatter.dateFormat = dateFormatString
-            let defaultText = formatter.string(from: Date(timeIntervalSince1970: 0))
-            if let cntls = controls {
-                for control in cntls where control is RxAVPlayerTimeControllable {
-                    if let timecontrol = control as? RxAVPlayerTimeControllable {
-                        if let label = timecontrol.remainingTimeLabel, (label.text == nil || label.text == "Label") {
-                            label.text = defaultText
-                        }
-                        if let label = timecontrol.currentTimeLabel, (label.text == nil || label.text == "Label") {
-                            label.text = defaultText
-                        }
-                        if let label = timecontrol.totalTimeLabel, (label.text == nil || label.text == "Label") {
-                            label.text = defaultText
-                        }
-                    }
-                }
-            }
-        }
-    }
     private(set) var totalDate = Date.distantPast
-    private let formatter = DateFormatter()
     
     private let disposebag = DisposeBag()
     private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
@@ -91,11 +67,6 @@ class RxAVPlayer: UIView {
         return seekRelay.asObservable()
     }
     
-    private var skipVisibleRelay = BehaviorRelay<Bool>(value: false)
-    var skipObservable: Observable<Bool> {
-        return skipVisibleRelay.asObservable()
-    }
-    
     lazy var customEventRelay = PublishRelay<Any>()
     
     @IBOutlet var controls: [UIView]? {
@@ -111,17 +82,12 @@ class RxAVPlayer: UIView {
     var url: URL? {
         didSet {
             statusRelay.accept(.prepare)
-            skipVisibleRelay.accept(false)
             guard let movieURL = url else {
                 statusRelay.accept(.failed)
                 return
             }
             if movieURL.isFileURL {
-                guard let check = try? movieURL.checkResourceIsReachable() else {
-                    statusRelay.accept(.failed)
-                    return
-                }
-                guard check else {
+                guard let check = try? movieURL.checkResourceIsReachable(), check else {
                     statusRelay.accept(.failed)
                     return
                 }
@@ -136,37 +102,16 @@ class RxAVPlayer: UIView {
         }
     }
     
-    var endcardImageURL: URL? {
-        didSet {
-            guard let endControl = controls?.filter({ (view) -> Bool in
-                if let control = view as? RxAVPlayerControllable, control.category.contains(.finish) {
-                    return true
-                }
-                return false
-            }).first else { return }
-            
-            if let url = endcardImageURL, endControl is RxAVPlayerEndControllable {
-                URLSession(configuration: .default).dataTask(with: url) { [weak endControl] (data, _, error) in
-                    if let imgdata = data, let image = UIImage(data: imgdata), let endcard = endControl as? RxAVPlayerEndControllable {
-                        DispatchQueue.main.async {
-                            endcard.endcardImage?.image = image
-                        }
-                    }
-                }.resume()
-            }
-        }
-    }
-
     var userInfo: Any?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        initialize()
+        registerNotifications()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        initialize()
+        registerNotifications()
     }
     
     override func removeFromSuperview() {
@@ -174,11 +119,6 @@ class RxAVPlayer: UIView {
             player?.removeTimeObserver(observer)
         }
         super.removeFromSuperview()
-    }
-    
-    func initialize() {
-        formatter.dateFormat = dateFormatString
-        registerNotifications()
     }
     
     private func setPlayer(controlView: UIView?) {
@@ -237,32 +177,28 @@ class RxAVPlayer: UIView {
     private func registerTimeObserver(_ player: AVPlayer) {
         periodicTimeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 10), queue: DispatchQueue.main) { [weak self] (time) in
             guard let weakSelf = self else { return }
-            if !weakSelf.skipVisibleRelay.value, CMTimeGetSeconds(time) > Float64(weakSelf.visibleSkipSeconds) {
-                weakSelf.skipVisibleRelay.accept(true)
-            }
             weakSelf.progressRelay.accept(time)
-            let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
-            let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-            let delta = round(weakSelf.totalDate.timeIntervalSince(date))
-            let remainDate = Date(timeIntervalSince1970: delta)
             var hasSeekbar = false
-            weakSelf.controls?.forEach({ (view) in
-                if let timecontrol = view as? RxAVPlayerTimeControllable {
-                    guard let tracking = timecontrol.seekBar?.isTracking, !tracking else { return }
-                    guard weakSelf.statusRelay.value != .seeking else { return }
-                    timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
-                    timecontrol.remainingTimeLabel?.text = weakSelf.formatter.string(from: remainDate)
-                    hasSeekbar = true
+            if let controls = weakSelf.controls {
+                for view in controls where view is RxAVPlayerTimeControllable {
+                    if let control = view as? RxAVPlayerTimeControllable {
+                        control.updateDate(time)
+                        if control.seekBar != nil {
+                            hasSeekbar = true
+                        }
+                    }
                 }
-            })
+            }
             if hasSeekbar {
+                let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
+                let totalInterval = weakSelf.totalDate.timeIntervalSince1970
+                let delta = round(weakSelf.totalDate.timeIntervalSince(date))
                 let percent = 1.0 - delta / totalInterval
                 weakSelf.seekRelay.accept(Float(percent))
             }
-
         }
     }
-    
+
     private func bind() {
         if let pl = player, let item = pl.currentItem {
             bindStatus()
@@ -347,15 +283,12 @@ class RxAVPlayer: UIView {
                             weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
                             weakSelf.controls?.forEach({ (view) in
                                 if let timecontrol = view as? RxAVPlayerTimeControllable {
-                                    timecontrol.totalTimeLabel?.text = weakSelf.formatter.string(from: weakSelf.totalDate)
+                                    timecontrol.updateDate(kCMTimeZero)
                                 }
                             })
                         }
                         if weakSelf.offset > 0 {
-                            let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-                            let target = totalInterval * TimeInterval(weakSelf.offset)
-                            let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-                            weakSelf.seek(distance: time)
+                            weakSelf.seek(weakSelf.offset)
                             weakSelf.autoplay = false
                             weakSelf.offset = 0
                             weakSelf.statusRelay.accept(.ready)
@@ -383,10 +316,7 @@ class RxAVPlayer: UIView {
                     weakSelf.seekRelay.accept(sbar.value)
                     weakSelf.controls?.forEach({ (view) in
                         if let timecontrol = view as? RxAVPlayerTimeControllable {
-                            let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-                            let target = totalInterval * TimeInterval(sbar.value)
-                            let date = Date(timeIntervalSince1970: target)
-                            timecontrol.currentTimeLabel?.text = weakSelf.formatter.string(from: date)
+                            timecontrol.updateDate(sbar.value)
                         }
                     })
                 }
@@ -395,13 +325,17 @@ class RxAVPlayer: UIView {
             seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
                 guard let weakSelf = self else { return }
                 if let sbar = timecontrol.seekBar, weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
-                    let totalInterval = weakSelf.totalDate.timeIntervalSince1970
-                    let target = totalInterval * TimeInterval(sbar.value)
-                    let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
-                    weakSelf.seek(distance: time)
+                    weakSelf.seek(sbar.value)
                 }
             }.disposed(by: disposebag)
         }
+    }
+    
+    func seek(_ percent: Float) {
+        let totalInterval = totalDate.timeIntervalSince1970
+        let target = totalInterval * TimeInterval(percent)
+        let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+        seek(distance: time)
     }
     
     func seek(distance: CMTime) {

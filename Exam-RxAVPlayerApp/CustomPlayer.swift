@@ -34,8 +34,17 @@ class CustomPlayer: RxAVPlayer {
         return viewableRelay.asObservable()
     }
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        bind()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        bind()
+    }
+    
+    private func bind() {
         progressObservable.subscribe(onNext: { [weak self] (time) in
             guard let weakSelf = self else { return }
             if let status = weakSelf.translateStatus(current: time) {

@@ -21,27 +21,33 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQs-U2-RYF" customClass="CustomPlayer" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <subviews>
-                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="RxAVPlayerPlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNb-Gc-RzC" customClass="PlayControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h8d-ML-jCu">
                                                 <rect key="frame" x="275" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wxf-po-GmY">
-                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wxf-po-GmY">
+                                                <rect key="frame" x="10" y="482" width="50" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="zc2-L5-KXg"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3T6-fu-bCB">
-                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3T6-fu-bCB">
+                                                <rect key="frame" x="208" y="482" width="50" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="oQ2-Ek-m1Z"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
-                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
+                                                <rect key="frame" x="63" y="477" width="142" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-oL-f3v">
                                                 <rect key="frame" x="268" y="477" width="42" height="30"/>
@@ -94,27 +100,33 @@
                                             <outlet property="totalTimeLabel" destination="3T6-fu-bCB" id="At3-2w-rVh"/>
                                         </connections>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="RxAVPlayerPauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Qg-ZJ-SCp" customClass="PauseControlView" customModule="Exam_RxAVPlayerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Ay-iS-L8w">
                                                 <rect key="frame" x="275" y="10" width="35" height="30"/>
                                                 <state key="normal" title="Mute"/>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
-                                                <rect key="frame" x="10" y="482" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsQ-Lx-JTI">
+                                                <rect key="frame" x="10" y="482" width="50" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="qgn-TY-JPZ"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-ZQ-wua">
-                                                <rect key="frame" x="216" y="482" width="42" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="justified" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Am0-ZQ-wua">
+                                                <rect key="frame" x="208" y="482" width="50" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="Trt-El-pMr"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
-                                                <rect key="frame" x="55" y="477" width="158" height="31"/>
+                                                <rect key="frame" x="63" y="477" width="142" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
                                                 <rect key="frame" x="268" y="477" width="42" height="30"/>
