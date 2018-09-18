@@ -28,7 +28,7 @@ class RxAVPlayerTests: XCTestCase {
     
     let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     let disposebag = DisposeBag()
-    let testURL = URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8")
+    let testURL = URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
 
     override func setUp() {
         super.setUp()
@@ -55,7 +55,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testStart() {
@@ -76,7 +76,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 2, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testAutoStart() {
@@ -93,7 +93,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testPause() {
@@ -124,7 +124,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testSeek() {
@@ -134,8 +134,10 @@ class RxAVPlayerTests: XCTestCase {
         player.statusObservable.subscribe(onNext: { (status) in
             switch status {
             case .playing:
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-                    self?.player.seek(0.999)
+                if !seeked {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+                        self?.player.seek(0.9)
+                    }
                 }
             case .seeking:
                 seeked = true
@@ -163,9 +165,10 @@ class RxAVPlayerTests: XCTestCase {
     
     func testOffsetTimePlay() {
         let expection = expectation(description: "Player Offset Check")
-        player.offset = 0.999
+        player.offset = 0.9
         var seeked = false
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
+            print(status.rawValue)
             switch status {
             case .ready:
                 self?.player.play()
@@ -213,7 +216,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1200, handler: nil)
+        waitForExpectations(timeout: 150, handler: nil)
     }
     
     func testAutoAllThrough() {
@@ -237,7 +240,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1200, handler: nil)
+        waitForExpectations(timeout: 150, handler: nil)
     }
     
     func testPerformanceDownloadM3U8() {

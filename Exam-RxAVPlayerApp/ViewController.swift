@@ -20,11 +20,9 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         
         player.autoplay = true
-//        player.visibleSkipSeconds = 2.0
-//        player.dateFormatString = "mm:ss"
         player.userInfo = "あああああああああああああああああああああああああああああああああああ"
         player.mute = true
-        player.url = URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8")
+        player.url = URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
         
         player.statusObservable.bind { (status) in
             print("🍺  \(status.rawValue)")
