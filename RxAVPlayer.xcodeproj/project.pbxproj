@@ -46,6 +46,7 @@
 		C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
 		C5C0819520ECA98500C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
 		C5C0819620ECA98500C7ACD0 /* Reactive.extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */; };
+		C5C3E42D2150CCDB007EE82B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C5C3E42C2150CCDB007EE82B /* README.md */; };
 		C5DFF00320EC609B00E9C475 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00120EC609B00E9C475 /* RxSwift.framework */; };
 		C5DFF00420EC609B00E9C475 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DFF00220EC609B00E9C475 /* RxCocoa.framework */; };
 		C5DFF00720EC615100E9C475 /* RxAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */; };
@@ -96,6 +97,7 @@
 		C5A617C020EF6260005D1FC8 /* EndcardControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndcardControlView.swift; sourceTree = "<group>"; };
 		C5A617D420EF709E005D1FC8 /* RxAVPlayerClosable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerClosable.swift; sourceTree = "<group>"; };
 		C5C0819220ECA93C00C7ACD0 /* Reactive.extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reactive.extension.swift; sourceTree = "<group>"; };
+		C5C3E42C2150CCDB007EE82B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C5DFF00120EC609B00E9C475 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		C5DFF00220EC609B00E9C475 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
 		C5DFF00620EC615100E9C475 /* RxAVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayer.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		C568CF9620EC5F0500A5A78C = {
 			isa = PBXGroup;
 			children = (
+				C5C3E42C2150CCDB007EE82B /* README.md */,
 				C568CFA220EC5F0500A5A78C /* RxAVPlayer */,
 				C568CFAD20EC5F0500A5A78C /* RxAVPlayerTests */,
 				C5DFF04D20EC634E00E9C475 /* Exam-RxAVPlayerApp */,
@@ -383,6 +386,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5C3E42D2150CCDB007EE82B /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
