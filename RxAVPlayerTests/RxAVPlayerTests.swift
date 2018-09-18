@@ -28,7 +28,7 @@ class RxAVPlayerTests: XCTestCase {
     
     let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
     let disposebag = DisposeBag()
-    let testURL = URL(string: "https://s3.us-east-2.amazonaws.com/vjs-nuevo/hls/m3u8/playlist.m3u8")
+    let testURL = URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8")
 
     override func setUp() {
         super.setUp()
@@ -135,7 +135,7 @@ class RxAVPlayerTests: XCTestCase {
             switch status {
             case .playing:
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-                    self?.player.seek(0.99)
+                    self?.player.seek(0.999)
                 }
             case .seeking:
                 seeked = true
@@ -158,12 +158,12 @@ class RxAVPlayerTests: XCTestCase {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
         
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 30, handler: nil)
     }
     
     func testOffsetTimePlay() {
         let expection = expectation(description: "Player Offset Check")
-        player.offset = 0.99
+        player.offset = 0.999
         var seeked = false
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
             switch status {
@@ -188,7 +188,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 30, handler: nil)
     }
 
     func testAllThrough() {
@@ -213,7 +213,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 300, handler: nil)
+        waitForExpectations(timeout: 1200, handler: nil)
     }
     
     func testAutoAllThrough() {
@@ -237,7 +237,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 300, handler: nil)
+        waitForExpectations(timeout: 1200, handler: nil)
     }
     
     func testPerformanceDownloadM3U8() {

@@ -24,7 +24,7 @@ class ViewController: UIViewController {
 //        player.dateFormatString = "mm:ss"
         player.userInfo = "あああああああああああああああああああああああああああああああああああ"
         player.mute = true
-        player.url = URL(string: "https://s3.us-east-2.amazonaws.com/vjs-nuevo/hls/m3u8/playlist.m3u8")
+        player.url = URL(string: "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8")
         
         player.statusObservable.bind { (status) in
             print("🍺  \(status.rawValue)")
