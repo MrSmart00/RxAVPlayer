@@ -17,7 +17,7 @@ protocol RxAVPlayerSkippable: RxAVPlayerControllable {
 extension RxAVPlayerSkippable {
     func skip() {
         if let p = player?.player, let time = p.currentItem?.duration {
-            let distanceTime = CMTimeMake(time.value - 1, time.timescale)
+            let distanceTime = CMTimeMake(value: time.value - 1, timescale: time.timescale)
             player?.seek(distance: distanceTime)
         }
     }

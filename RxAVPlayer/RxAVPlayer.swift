@@ -129,10 +129,10 @@ class RxAVPlayer: UIView {
     }
     
     private func registerNotifications() {
-        NotificationCenter.default.rx.notification(.AVAudioSessionInterruption).bind { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(AVAudioSession.interruptionNotification).bind { [weak self] (notify) in
             let status = self?.statusRelay.value
             if status == .playing {
-                guard let interruption = notify.userInfo?[AVAudioSessionInterruptionTypeKey] as? AVAudioSessionInterruptionType else { return }
+                guard let interruption = notify.userInfo?[AVAudioSessionInterruptionTypeKey] as? AVAudioSession.InterruptionType else { return }
                 switch interruption {
                 case .began:
                     self?.statusRelay.accept(.pause)
@@ -142,7 +142,7 @@ class RxAVPlayer: UIView {
             }
         }.disposed(by: disposebag)
         
-        NotificationCenter.default.rx.notification(.AVAudioSessionRouteChange).bind { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(AVAudioSession.routeChangeNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .playing {
                 self?.play()
             }
@@ -161,13 +161,13 @@ class RxAVPlayer: UIView {
             self?.statusRelay.accept(.stalled)
         }.disposed(by: disposebag)
 
-        NotificationCenter.default.rx.notification(.UIApplicationDidEnterBackground).bind { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(UIApplication.didEnterBackgroundNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .playing {
                 self?.pause()
             }
         }.disposed(by: disposebag)
         
-        NotificationCenter.default.rx.notification(.UIApplicationWillEnterForeground).bind { [weak self] (notify) in
+        NotificationCenter.default.rx.notification(UIApplication.willEnterForegroundNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .pause {
                 self?.play()
             }
@@ -206,7 +206,7 @@ class RxAVPlayer: UIView {
             item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
                 guard let weakSelf = self else { return }
                 if let item = weakSelf.player?.currentItem, !item.isPlaybackBufferFull {
-                    if !empty, weakSelf.player?.currentTime() != kCMTimeZero {
+                    if !empty, weakSelf.player?.currentTime() != CMTime.zero {
                         weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
                     }
                 }
@@ -283,7 +283,7 @@ class RxAVPlayer: UIView {
                             weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
                             weakSelf.controls?.forEach({ (view) in
                                 if let timecontrol = view as? RxAVPlayerTimeControllable {
-                                    timecontrol.updateDate(kCMTimeZero)
+                                    timecontrol.updateDate(CMTime.zero)
                                 }
                             })
                         }
@@ -334,14 +334,14 @@ class RxAVPlayer: UIView {
     func seek(_ percent: Float) {
         let totalInterval = totalDate.timeIntervalSince1970
         let target = totalInterval * TimeInterval(percent)
-        let time = CMTimeMakeWithSeconds(Float64(target), Int32(NSEC_PER_SEC))
+        let time = CMTimeMakeWithSeconds(Float64(target), preferredTimescale: Int32(NSEC_PER_SEC))
         seek(distance: time)
     }
     
     func seek(distance: CMTime) {
         statusRelay.accept(.seeking)
         if let pl = player {
-            pl.seek(to: distance, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero, completionHandler: { [weak self] (completion) in
+            pl.seek(to: distance, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: { [weak self] (completion) in
                 if completion {
                     self?.play()
                 }
@@ -353,7 +353,7 @@ class RxAVPlayer: UIView {
         if statusRelay.value == .deadend {
             statusRelay.accept(.prepare)
             if totalDate.compare(Date.distantPast) != .orderedSame {
-                let time = CMTimeMakeWithSeconds(0, 1)
+                let time = CMTimeMakeWithSeconds(0, preferredTimescale: 1)
                 seek(distance: time)
             }
         } else {

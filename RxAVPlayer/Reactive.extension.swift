@@ -14,8 +14,8 @@ import RxCocoa
 
 extension Reactive where Base: AVPlayer {
     
-    var status: Observable<AVPlayerStatus> {
-        return observe(AVPlayerStatus.self, #keyPath(AVPlayer.status)).map { $0 ?? .unknown }
+    var status: Observable<AVPlayer.Status> {
+        return observe(AVPlayer.Status.self, #keyPath(AVPlayer.status)).map { $0 ?? .unknown }
     }
     
     var mute: Observable<Bool> {
