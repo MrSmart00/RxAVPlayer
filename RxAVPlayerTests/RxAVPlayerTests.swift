@@ -93,7 +93,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testPause() {
@@ -124,7 +124,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 5, handler: nil)
     }
     
     func testSeek() {
@@ -165,7 +165,7 @@ class RxAVPlayerTests: XCTestCase {
     
     func testOffsetTimePlay() {
         let expection = expectation(description: "Player Offset Check")
-        player.offset = 0.9
+        player.offset = 0.95
         var seeked = false
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
             print(status.rawValue)
@@ -191,7 +191,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 30, handler: nil)
+        waitForExpectations(timeout: 60, handler: nil)
     }
 
     func testAllThrough() {
