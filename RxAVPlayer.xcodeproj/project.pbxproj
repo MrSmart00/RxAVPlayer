@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C4CDA3E7216BE75B0072639A /* TestAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */; };
 		C53F641D20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
 		C53F641E20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
 		C53F641F20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
@@ -100,6 +101,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TestAssets.xcassets; sourceTree = "<group>"; };
 		C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerControllable.swift; sourceTree = "<group>"; };
 		C53F642120EE01B8003E1C7E /* PauseControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseControlView.swift; sourceTree = "<group>"; };
 		C53F642820EE1287003E1C7E /* PlayControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayControlView.swift; sourceTree = "<group>"; };
@@ -236,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				C568CFAE20EC5F0500A5A78C /* RxAVPlayerTests.swift */,
+				C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */,
 				C568CFB020EC5F0500A5A78C /* Info.plist */,
 			);
 			path = RxAVPlayerTests;
@@ -482,6 +485,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4CDA3E7216BE75B0072639A /* TestAssets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

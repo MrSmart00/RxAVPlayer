@@ -14,48 +14,40 @@ import RxTest
 import RxBlocking
 import AVFoundation
 
-// TODO: [*] M3U8のURLから再生準備が完了できる
 // TODO: [*] 再生できる
 // TODO: [*] 自動再生できる
 // TODO: [*] 停止できる
 // TODO: [*] 指定時間までシーク移動できる
 // TODO: [*] 再生開始時間を指定できる
 // TODO: [*] 最後まで再生できる
-// TODO: [*] 自動で最後まで再生できる
 
 
 class RxAVPlayerTests: XCTestCase {
     
-    let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
     let disposebag = DisposeBag()
-    let testURL = URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
+    var videoURL: URL?
 
     override func setUp() {
         super.setUp()
         URLCache.shared.removeAllCachedResponses()
-        player.url = testURL
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        do {
+            if videoURL == nil {
+                let bundle = Bundle(for: type(of: self))
+                let asset = NSDataAsset(name: "SampleVideo", bundle: bundle)
+                let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("SampleVideo.mp4")
+                try asset!.data.write(to: url)
+                videoURL = url
+            }
+            player.url = videoURL
+        } catch let error {
+            XCTAssert(false, error.localizedDescription)
+        }
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
-    }
-    
-    func testDownloadM3U8() {
-        let expection = expectation(description: "M3U8 Download Check")
-        player.statusObservable.subscribe(onNext: { (status) in
-            if status == RxPlayerStatus.ready {
-                expection.fulfill()
-            }
-        }, onError: { (error) in
-            XCTAssertNotNil(error, error.localizedDescription)
-        }, onCompleted: {
-            XCTAssert(false, "** COMPLETED")
-        }, onDisposed: {
-            XCTAssert(false, "** DISPOSED")
-        }).disposed(by: disposebag)
-        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testStart() {
@@ -76,7 +68,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testAutoStart() {
@@ -93,7 +85,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testPause() {
@@ -124,7 +116,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 5, handler: nil)
+        waitForExpectations(timeout: 1, handler: nil)
     }
     
     func testSeek() {
@@ -160,12 +152,12 @@ class RxAVPlayerTests: XCTestCase {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
         
-        waitForExpectations(timeout: 30, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
     
     func testOffsetTimePlay() {
         let expection = expectation(description: "Player Offset Check")
-        player.offset = 0.95
+        player.offset = 0.9
         var seeked = false
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
             print(status.rawValue)
@@ -191,7 +183,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 60, handler: nil)
+        waitForExpectations(timeout: 3, handler: nil)
     }
 
     func testAllThrough() {
@@ -216,50 +208,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 150, handler: nil)
-    }
-    
-    func testAutoAllThrough() {
-        let expection = expectation(description: "Player Auto Through Check")
-        player.autoplay = true
-        player.statusObservable.subscribe(onNext: { (status) in
-            switch status {
-            case .deadend:
-                expection.fulfill()
-            case .stalled:
-                XCTAssert(false, "Stream Stalled..")
-            case .failed:
-                XCTAssert(false, "Player Failed..")
-            default:
-                break
-            }
-        }, onError: { (error) in
-            XCTAssertNotNil(error, error.localizedDescription)
-        }, onCompleted: {
-            XCTAssert(false, "** COMPLETED")
-        }, onDisposed: {
-            XCTAssert(false, "** DISPOSED")
-        }).disposed(by: disposebag)
-        waitForExpectations(timeout: 150, handler: nil)
-    }
-    
-    func testPerformanceDownloadM3U8() {
-        measure {
-            player.autoplay = false
-            let expection = expectation(description: "Player Performance Check")
-            player.statusObservable.subscribe(onNext: { (status) in
-                if status == RxPlayerStatus.ready {
-                    expection.fulfill()
-                }
-            }, onError: { (error) in
-                XCTAssertNotNil(error, error.localizedDescription)
-            }, onCompleted: {
-                XCTAssert(false, "** COMPLETED")
-            }, onDisposed: {
-                XCTAssert(false, "** DISPOSED")
-            }).disposed(by: disposebag)
-        }
         waitForExpectations(timeout: 10, handler: nil)
     }
-    
+
 }
