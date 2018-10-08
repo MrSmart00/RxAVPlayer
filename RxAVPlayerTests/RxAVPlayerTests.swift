@@ -68,7 +68,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
     
     func testAutoStart() {
@@ -85,7 +85,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
     
     func testPause() {
@@ -116,7 +116,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 1, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
     
     func testSeek() {
@@ -152,7 +152,7 @@ class RxAVPlayerTests: XCTestCase {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
         
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
     
     func testOffsetTimePlay() {
@@ -183,7 +183,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 3, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
     func testAllThrough() {
@@ -208,7 +208,7 @@ class RxAVPlayerTests: XCTestCase {
         }, onDisposed: {
             XCTAssert(false, "** DISPOSED")
         }).disposed(by: disposebag)
-        waitForExpectations(timeout: 10, handler: nil)
+        waitForExpectations(timeout: 100, handler: nil)
     }
 
 }
