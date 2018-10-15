@@ -976,7 +976,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -999,7 +999,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerApp";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1018,7 +1018,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Exam-RxAVPlayerApp";
 			};
@@ -1038,7 +1038,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Exam-RxAVPlayerApp";
 			};
@@ -1061,7 +1061,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1083,7 +1083,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.exam.Exam-RxAVPlayerAppTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

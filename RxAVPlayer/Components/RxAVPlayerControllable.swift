@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 struct PlayerControlCategory: OptionSet {
     typealias RawValue = Int
@@ -22,7 +24,22 @@ struct PlayerControlCategory: OptionSet {
     }
 }
 
+struct RxAVPlayerEvent {
+    enum EventType {
+        case none
+        case closed
+        case contentTapped
+    }
+    var type: EventType
+    var environment: Any?
+    init(type: EventType, env: Any? = nil) {
+        self.type = type
+        self.environment = env
+    }
+}
+
 protocol RxAVPlayerControllable {
     var category: PlayerControlCategory { get }
     var player: RxAVPlayer? { get set }
+    var eventObservable: Observable<RxAVPlayerEvent>? { get }
 }

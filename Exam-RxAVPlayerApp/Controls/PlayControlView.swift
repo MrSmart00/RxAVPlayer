@@ -12,6 +12,8 @@ import RxSwift
 import RxCocoa
 
 class PlayControlView: UIView, RxAVPlayerControllable, RxAVPlayerTimeControllable, RxAVPlayerSoundMutable, RxAVPlayerSkippable {
+    var eventObservable: Observable<RxAVPlayerEvent>?
+    
     var formatter: DateFormatter? = DateFormatter()
     
     var category: PlayerControlCategory = [.play]

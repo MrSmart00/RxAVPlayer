@@ -11,6 +11,12 @@ import RxSwift
 import RxCocoa
 
 class EndcardControlView: UIView, RxAVPlayerControllable {
+
+    let eventRelay = PublishRelay<RxAVPlayerEvent>()
+    var eventObservable: Observable<RxAVPlayerEvent>? {
+        return eventRelay.asObservable()
+    }
+    
     var category: PlayerControlCategory = [.finish]
     
     private let disposebag = DisposeBag()
@@ -26,19 +32,16 @@ class EndcardControlView: UIView, RxAVPlayerControllable {
     var muteButton: UIButton?
     
     var remainingTimeLabel: UILabel?
-    
-    var count: Int = 0
-    
+
     override func awakeFromNib() {
         guard let player = self.player else { return }
         playButton.rx.tap.bind(to: player.rx.play()).disposed(by: disposebag)
         
         closeButton?.rx.tap.subscribe(onNext: { [weak self] (_) in
-            self?.player?.customEventRelay.accept(["close": "hogehoge \(self?.count)"])
-            self?.count += 1
+            self?.eventRelay.accept(RxAVPlayerEvent(type: .closed))
         }).disposed(by: disposebag)
         contentButton?.rx.tap.subscribe(onNext: { [weak self] (_) in
-            self?.player?.customEventRelay.accept(["touch": "hugahugahuga"])
+            self?.eventRelay.accept(RxAVPlayerEvent(type: .contentTapped))
         }).disposed(by: disposebag)
 
     }

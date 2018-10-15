@@ -15,8 +15,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+//        try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
         return true
     }
 

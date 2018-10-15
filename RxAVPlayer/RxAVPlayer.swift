@@ -67,8 +67,8 @@ class RxAVPlayer: UIView {
         return seekRelay.asObservable()
     }
     
-    lazy var customEventRelay = PublishRelay<Any>()
-    
+    private(set) var eventObservable: Observable<RxAVPlayerEvent>?
+
     @IBOutlet var controls: [UIView]? {
         didSet {
             controls?.forEach({ (view) in
@@ -214,8 +214,12 @@ class RxAVPlayer: UIView {
 
             bindPlayable()
             
-            controls?.map { $0 as? RxAVPlayerControllable }.forEach { bindControlView($0) }
-            
+            var eventObservables = [Observable<RxAVPlayerEvent>]()
+            controls?.map { $0 as? RxAVPlayerControllable }.forEach { bindControlView($0, eventList: &eventObservables) }
+            if !eventObservables.isEmpty {
+                eventObservable = Observable.merge(eventObservables)
+            }
+
             pl.rx.rate.map { $0 > 0 }.bind { [weak self] (progressive) in
                 if progressive {
                     self?.statusRelay.accept(.playing)
@@ -301,7 +305,10 @@ class RxAVPlayer: UIView {
         }
     }
     
-    private func bindControlView(_ control: RxAVPlayerControllable?) {
+    private func bindControlView(_ control: RxAVPlayerControllable?, eventList: inout [Observable<RxAVPlayerEvent>]) {
+        if let event = control?.eventObservable {
+            eventList.append(event)
+        }
         if let timecontrol = control as? RxAVPlayerTimeControllable, let seek = timecontrol.seekBar {
             Observable.combineLatest(statusRelay, seekRelay, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
                 guard let weakSeak = seek else { return }

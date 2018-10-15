@@ -33,8 +33,8 @@ class ViewController: UIViewController {
         player.viewableObservable.bind { (_) in
             print("🍻🍻🍻🍻🍻")
         }.disposed(by: disposebag)
-        player.customEventRelay.subscribe(onNext: { (value) in
-            print(value)
+        player.eventObservable?.bind(onNext: { (event) in
+            print(event)
         }).disposed(by: disposebag)
     }
     
