@@ -67,12 +67,16 @@ import RxCocoa
     
     private(set) var eventObservable: Observable<RxAVPlayerEvent>?
 
-    @IBOutlet var controls: [UIView]? {
+    @IBOutlet var controlViews: [UIView]? {
         didSet {
             setPlayer()
         }
     }
-    
+
+    func convertControls<E>() -> [E] {
+        return controlViews?.map { $0 as? E }.filter { $0 != nil } as? [E] ?? []
+    }
+
     var url: URL? {
         didSet {
             statusRelay.accept(.prepare)
@@ -116,8 +120,8 @@ import RxCocoa
     }
     
     private func setPlayer() {
-        controls?.map { $0 as? RxAVPlayerControllable }
-            .forEach { $0?.player = self }
+        let list: [RxAVPlayerControllable] = convertControls()
+        list.forEach { $0.player = self }
     }
     
     private func registerNotifications() {
@@ -170,18 +174,9 @@ import RxCocoa
         periodicTimeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 10), queue: DispatchQueue.main) { [weak self] (time) in
             guard let weakSelf = self else { return }
             weakSelf.progressRelay.accept(time)
-            var hasSeekbar = false
-            if let controls = weakSelf.controls {
-                for view in controls where view is RxAVPlayerTimeControllable {
-                    if let control = view as? RxAVPlayerTimeControllable {
-                        control.updateDate(time)
-                        if control.seekBar != nil {
-                            hasSeekbar = true
-                        }
-                    }
-                }
-            }
-            if hasSeekbar {
+            let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
+            controls.forEach { $0.updateDate(time) }
+            if !controls.allSatisfy { $0.seekBar == nil } {
                 let date = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(time) ))
                 let totalInterval = weakSelf.totalDate.timeIntervalSince1970
                 let delta = round(weakSelf.totalDate.timeIntervalSince(date))
@@ -196,10 +191,9 @@ import RxCocoa
             bindStatus()
             
             item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
-                guard let weakSelf = self else { return }
-                if let item = weakSelf.player?.currentItem, !item.isPlaybackBufferFull {
-                    if !empty, weakSelf.player?.currentTime() != CMTime.zero {
-                        weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
+                if let item = self?.player?.currentItem, !item.isPlaybackBufferFull {
+                    if !empty, self?.player?.currentTime() != .zero, let value = self?.statusRelay.value {
+                        self?.statusRelay.accept(value)
                     }
                 }
             }.disposed(by: disposeBag)
@@ -207,7 +201,8 @@ import RxCocoa
             bindPlayable()
             
             var eventObservables = [Observable<RxAVPlayerEvent>]()
-            controls?.map { $0 as? RxAVPlayerControllable }.forEach { bindControlView($0, eventList: &eventObservables) }
+            let controls: [RxAVPlayerControllable] = convertControls()
+            controls.forEach { bindControlView($0, eventList: &eventObservables) }
             if !eventObservables.isEmpty {
                 eventObservable = Observable.merge(eventObservables)
             }
@@ -228,25 +223,8 @@ import RxCocoa
 
     private func bindStatus() {
         statusRelay.subscribe(onNext: { [weak self] (status) in
-            var category: PlayerControlCategory?
-            switch status {
-            case .prepare, .ready:
-                category = .initialize
-            case .playing:
-                category = .play
-            case .pause:
-                category = .pause
-            case .finished:
-                category = .finish
-            case .failed:
-                category = .failed
-            case .stalled:
-                category = .stall
-            default:
-                return
-            }
-            if let targetCategory = category {
-                self?.controls?.forEach({ (view) in
+            if let targetCategory = self?.convertStatus(status) {
+                self?.controlViews?.forEach({ (view) in
                     if let control = view as? RxAVPlayerControllable, control.category.contains(targetCategory) {
                         view.isHidden = false
                     } else {
@@ -257,43 +235,57 @@ import RxCocoa
         }).disposed(by: disposeBag)
     }
 
+    private func convertStatus(_ status: RxPlayerStatus) -> PlayerControlCategory? {
+        var category: PlayerControlCategory?
+        switch status {
+        case .prepare, .ready:
+            category = .initialize
+        case .playing:
+            category = .play
+        case .pause:
+            category = .pause
+        case .finished:
+            category = .finish
+        case .failed:
+            category = .failed
+        case .stalled:
+            category = .stall
+        default:
+            return nil
+        }
+        return category
+    }
+
     private func bindPlayable() {
         if let pl = player, let item = pl.currentItem {
-            let obs1 = item.rx.playbackLikelyToKeepUp
-            let obs2 = pl.rx.status.map { $0 == .readyToPlay }
-            Observable.combineLatest([obs1, obs2]).map { (list) -> Bool in
-                for result in list where !result {
-                    return false
-                }
-                return true
-            }.bind { [weak self] (playable) in
-                guard let weakSelf = self else { return }
-                if playable {
-                    let status = weakSelf.statusRelay.value
-                    if status == .prepare, weakSelf.offset == 0 {
-                        weakSelf.statusRelay.accept(.ready)
-                    }
-                    
-                    if let p = weakSelf.player {
-                        if let total = p.currentItem?.duration {
-                            weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
-                            weakSelf.controls?.forEach({ (view) in
-                                if let timecontrol = view as? RxAVPlayerTimeControllable {
-                                    timecontrol.updateDate(CMTime.zero)
-                                }
-                            })
-                        }
-                        if weakSelf.offset > 0 {
-                            weakSelf.seek(percent: weakSelf.offset)
-                            weakSelf.autoplay = false
-                            weakSelf.offset = 0
+            Observable.combineLatest([item.rx.playbackLikelyToKeepUp,
+                                      pl.rx.status.map { $0 == .readyToPlay }])
+                .map { $0.allSatisfy { $0 } }
+                .bind { [weak self] (playable) in
+                    guard let weakSelf = self else { return }
+                    if playable {
+                        let status = weakSelf.statusRelay.value
+                        if status == .prepare, weakSelf.offset == 0 {
                             weakSelf.statusRelay.accept(.ready)
-                        } else if weakSelf.autoplay, status != .finished {
-                            weakSelf.play()
+                        }
+
+                        if let p = weakSelf.player {
+                            if let total = p.currentItem?.duration {
+                                weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
+                                let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
+                                controls.forEach { $0.updateDate(.zero) }
+                            }
+                            if weakSelf.offset > 0 {
+                                weakSelf.seek(percent: weakSelf.offset)
+                                weakSelf.autoplay = false
+                                weakSelf.offset = 0
+                                weakSelf.statusRelay.accept(.ready)
+                            } else if weakSelf.autoplay, status != .finished {
+                                weakSelf.play()
+                            }
                         }
                     }
-                }
-            }.disposed(by: disposeBag)
+                }.disposed(by: disposeBag)
         }
     }
     
@@ -302,31 +294,29 @@ import RxCocoa
             eventList.append(event)
         }
         if let timecontrol = control as? RxAVPlayerTimeControllable, let seek = timecontrol.seekBar {
-            Observable.combineLatest(statusRelay, seekRelay, resultSelector: { ($0, $1) }).bind(onNext: { [weak seek] (status, value) in
-                guard let weakSeak = seek else { return }
-                if status != .seeking, !weakSeak.isTracking {
-                    weakSeak.value = value
-                }
-            }).disposed(by: disposeBag)
-            
-            seek.rx.controlEvent([.valueChanged]).bind { [weak self] in
-                guard let weakSelf = self else { return }
-                if let sbar = timecontrol.seekBar {
-                    weakSelf.seekRelay.accept(sbar.value)
-                    weakSelf.controls?.forEach({ (view) in
-                        if let timecontrol = view as? RxAVPlayerTimeControllable {
-                            timecontrol.updateDate(sbar.value)
-                        }
-                    })
-                }
-            }.disposed(by: disposeBag)
-            
-            seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
-                guard let weakSelf = self else { return }
-                if let sbar = timecontrol.seekBar, weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
-                    weakSelf.seek(percent: sbar.value)
-                }
-            }.disposed(by: disposeBag)
+            Observable.combineLatest(statusRelay, seekRelay)
+                .asDriver(onErrorDriveWith: .empty())
+                .drive(onNext: { [weak seek] (status, value) in
+                    if status != .seeking, seek?.isTracking == false {
+                        seek?.value = value
+                    }
+                }).disposed(by: disposeBag)
+            seek.rx.value
+                .asDriver(onErrorDriveWith: .empty())
+                .drive(onNext: { [weak self] (value) in
+                    if let sbar = timecontrol.seekBar {
+                        self?.seekRelay.accept(sbar.value)
+                        let controls: [RxAVPlayerTimeControllable]? = self?.convertControls()
+                        controls?.forEach { $0.updateDate(sbar.value) }
+                    }
+                }).disposed(by: disposeBag)
+            seek.rx.controlEvent([.touchUpInside, .touchUpOutside])
+                .asDriver(onErrorDriveWith: .empty())
+                .drive(onNext: { [weak self] (_) in
+                    if let sbar = timecontrol.seekBar, self?.totalDate.compare(.distantPast) != .orderedSame {
+                        self?.seek(percent: sbar.value)
+                    }
+                }).disposed(by: disposeBag)
         }
     }
     
@@ -340,7 +330,7 @@ import RxCocoa
     func seek(distance: CMTime) {
         statusRelay.accept(.seeking)
         if let pl = player {
-            pl.seek(to: distance, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero, completionHandler: { [weak self] (completion) in
+            pl.seek(to: distance, toleranceBefore: .zero, toleranceAfter: .zero, completionHandler: { [weak self] (completion) in
                 if completion {
                     self?.play()
                 }
@@ -351,7 +341,7 @@ import RxCocoa
     func play() {
         if statusRelay.value == .finished {
             statusRelay.accept(.prepare)
-            if totalDate.compare(Date.distantPast) != .orderedSame {
+            if totalDate.compare(.distantPast) != .orderedSame {
                 let time = CMTimeMakeWithSeconds(0, preferredTimescale: 1)
                 seek(distance: time)
             }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,20 +47,20 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYC-id-fxH">
-                                                <rect key="frame" x="63" y="477" width="142" height="31"/>
+                                                <rect key="frame" x="63" y="477.5" width="142" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3bV-oL-f3v">
-                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477.5" width="42" height="30"/>
                                                 <state key="normal" title="Pause"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WWn-Xa-0fS">
-                                                <rect key="frame" x="0.0" y="50" width="160" height="377"/>
+                                                <rect key="frame" x="0.0" y="50" width="160" height="377.5"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5nc-aY-bd0">
-                                                <rect key="frame" x="160" y="50" width="160" height="377"/>
+                                                <rect key="frame" x="160" y="50" width="160" height="377.5"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5i-U5-sPb">
-                                                <rect key="frame" x="280" y="397" width="30" height="30"/>
+                                                <rect key="frame" x="280" y="397.5" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
                                             </button>
                                         </subviews>
@@ -126,23 +126,23 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAi-WS-W62">
-                                                <rect key="frame" x="63" y="477" width="142" height="31"/>
+                                                <rect key="frame" x="63" y="477.5" width="142" height="31"/>
                                             </slider>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HO3-58-MDl">
-                                                <rect key="frame" x="268" y="477" width="42" height="30"/>
+                                                <rect key="frame" x="268" y="477.5" width="42" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="42" id="UfD-7P-rlB"/>
                                                 </constraints>
                                                 <state key="normal" title="Play"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fkt-f7-Jb6">
-                                                <rect key="frame" x="0.0" y="50" width="160" height="377"/>
+                                                <rect key="frame" x="0.0" y="50" width="160" height="377.5"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GQd-6F-A7y">
-                                                <rect key="frame" x="160" y="50" width="160" height="377"/>
+                                                <rect key="frame" x="160" y="50" width="160" height="377.5"/>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Khg-Qn-NzM">
-                                                <rect key="frame" x="280" y="397" width="30" height="30"/>
+                                                <rect key="frame" x="280" y="397.5" width="30" height="30"/>
                                                 <state key="normal" title="Skip"/>
                                             </button>
                                         </subviews>
@@ -238,9 +238,9 @@
                                 </constraints>
                                 <viewLayoutGuide key="safeArea" id="hV0-6f-6sV"/>
                                 <connections>
-                                    <outletCollection property="controls" destination="yNb-Gc-RzC" collectionClass="NSMutableArray" id="3Ho-UP-Uut"/>
-                                    <outletCollection property="controls" destination="1Qg-ZJ-SCp" collectionClass="NSMutableArray" id="eoN-Hn-4FG"/>
-                                    <outletCollection property="controls" destination="Nhk-CM-qxq" collectionClass="NSMutableArray" id="I3x-8C-x7k"/>
+                                    <outletCollection property="controlViews" destination="yNb-Gc-RzC" collectionClass="NSMutableArray" id="GuD-Jb-PUR"/>
+                                    <outletCollection property="controlViews" destination="1Qg-ZJ-SCp" collectionClass="NSMutableArray" id="hB9-vj-6sQ"/>
+                                    <outletCollection property="controlViews" destination="Nhk-CM-qxq" collectionClass="NSMutableArray" id="FvD-Ir-Kir"/>
                                 </connections>
                             </view>
                         </subviews>

@@ -19,6 +19,7 @@ import AVFoundation
 // TODO: [*] 指定時間までシーク移動できる
 // TODO: [*] 再生開始時間を指定できる
 // TODO: [*] 登録したコントローラViewにPlayerを渡す
+// TODO: [*] 登録したViewのリストをControlのリストに変換できる
 
 class RxAVPlayerTests: XCTestCase {
     
@@ -185,7 +186,15 @@ class RxAVPlayerTests: XCTestCase {
 
     func test_登録したコントローラViewにPlayerを渡す() {
         let result = MockControlableView()
-        player.controls = [result]
+        player.controlViews = [result]
         XCTAssertNotNil(result.player)
+    }
+
+    func test_登録したViewのリストをControlのリストに変換できる() {
+        let view = MockControlableView()
+        player.controlViews = [view]
+        let result: [RxAVPlayerControllable] = player.convertControls()
+        XCTAssertFalse(result.isEmpty)
+        XCTAssertTrue(type(of: result) == [RxAVPlayerControllable].self)
     }
 }

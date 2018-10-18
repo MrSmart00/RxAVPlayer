@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         super.viewDidAppear(animated)
         
         player.autoplay = true
-        player.userInfo = "あああああああああああああああああああああああああああああああああああ"
+        player.userInfo = ["title": "あああああああああああああああああああああああああああああああああああ"]
         player.mute = true
         player.url = URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
         
