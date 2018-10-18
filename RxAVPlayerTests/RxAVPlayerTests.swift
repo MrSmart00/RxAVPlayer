@@ -7,7 +7,6 @@
 //
 
 import XCTest
-@testable import RxAVPlayer
 import RxSwift
 import RxCocoa
 import RxTest
@@ -19,8 +18,7 @@ import AVFoundation
 // TODO: [*] 停止できる
 // TODO: [*] 指定時間までシーク移動できる
 // TODO: [*] 再生開始時間を指定できる
-// TODO: [*] 最後まで再生できる
-
+// TODO: [*] 登録したコントローラViewにPlayerを渡す
 
 class RxAVPlayerTests: XCTestCase {
     
@@ -45,24 +43,23 @@ class RxAVPlayerTests: XCTestCase {
         }
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testStart() {
-        let expection = expectation(description: "Player Start Check")
+    func test_再生できる() {
+        let expection = expectation(description: "Player Through Check")
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
             switch status {
             case .ready:
                 self?.player.play()
-            case .playing:
+            case .finished:
                 expection.fulfill()
+            case .stalled:
+                XCTAssert(false, "Stream Stalled..")
+            case .failed:
+                XCTAssert(false, "Player Failed..")
             default:
                 break
             }
         }, onError: { (error) in
-            XCTAssertNotNil(error, error.localizedDescription)
+                XCTAssertNotNil(error, error.localizedDescription)
         }, onCompleted: {
             XCTAssert(false, "** COMPLETED")
         }, onDisposed: {
@@ -70,8 +67,8 @@ class RxAVPlayerTests: XCTestCase {
         }).disposed(by: disposebag)
         waitForExpectations(timeout: 100, handler: nil)
     }
-    
-    func testAutoStart() {
+
+    func test_自動再生できる() {
         let expection = expectation(description: "Player Auto-Start Check")
         player.autoplay = true
         player.statusObservable.subscribe(onNext: { (status) in
@@ -88,7 +85,7 @@ class RxAVPlayerTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
     
-    func testPause() {
+    func test_停止できる() {
         let expection = expectation(description: "Player Pause Check")
         player.statusObservable.subscribe(onNext: { [weak self] (status) in
             switch status {
@@ -119,7 +116,7 @@ class RxAVPlayerTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
     
-    func testSeek() {
+    func test_指定時間までシーク移動できる() {
         let expection = expectation(description: "Player Seek Check")
         player.autoplay = true
         var seeked = false
@@ -128,12 +125,12 @@ class RxAVPlayerTests: XCTestCase {
             case .playing:
                 if !seeked {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                        self?.player.seek(0.9)
+                        self?.player.seek(percent: 0.9)
                     }
                 }
             case .seeking:
                 seeked = true
-            case .deadend:
+            case .finished:
                 XCTAssert(seeked, "Not Seek..")
                 expection.fulfill()
             case .stalled:
@@ -155,7 +152,7 @@ class RxAVPlayerTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
     
-    func testOffsetTimePlay() {
+    func test_再生開始時間を指定できる() {
         let expection = expectation(description: "Player Offset Check")
         player.offset = 0.9
         var seeked = false
@@ -166,7 +163,7 @@ class RxAVPlayerTests: XCTestCase {
                 self?.player.play()
             case .seeking:
                 seeked = true
-            case .deadend:
+            case .finished:
                 XCTAssert(seeked, "Not Seek..")
                 expection.fulfill()
             case .stalled:
@@ -186,29 +183,9 @@ class RxAVPlayerTests: XCTestCase {
         waitForExpectations(timeout: 100, handler: nil)
     }
 
-    func testAllThrough() {
-        let expection = expectation(description: "Player Through Check")
-        player.statusObservable.subscribe(onNext: { [weak self] (status) in
-            switch status {
-            case .ready:
-                self?.player.play()
-            case .deadend:
-                expection.fulfill()
-            case .stalled:
-                XCTAssert(false, "Stream Stalled..")
-            case .failed:
-                XCTAssert(false, "Player Failed..")
-            default:
-                break
-            }
-        }, onError: { (error) in
-            XCTAssertNotNil(error, error.localizedDescription)
-        }, onCompleted: {
-            XCTAssert(false, "** COMPLETED")
-        }, onDisposed: {
-            XCTAssert(false, "** DISPOSED")
-        }).disposed(by: disposebag)
-        waitForExpectations(timeout: 100, handler: nil)
+    func test_登録したコントローラViewにPlayerを渡す() {
+        let result = MockControlableView()
+        player.controls = [result]
+        XCTAssertNotNil(result.player)
     }
-
 }

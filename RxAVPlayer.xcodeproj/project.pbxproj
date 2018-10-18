@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C4CDA3E7216BE75B0072639A /* TestAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */; };
+		C5219616217893BC0083FEFA /* MockControlableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5219615217893BC0083FEFA /* MockControlableView.swift */; };
 		C53F641D20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
 		C53F641E20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
 		C53F641F20EDD0A0003E1C7E /* RxAVPlayerControllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */; };
@@ -102,6 +103,7 @@
 
 /* Begin PBXFileReference section */
 		C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = TestAssets.xcassets; sourceTree = "<group>"; };
+		C5219615217893BC0083FEFA /* MockControlableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockControlableView.swift; sourceTree = "<group>"; };
 		C53F641C20EDD0A0003E1C7E /* RxAVPlayerControllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxAVPlayerControllable.swift; sourceTree = "<group>"; };
 		C53F642120EE01B8003E1C7E /* PauseControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseControlView.swift; sourceTree = "<group>"; };
 		C53F642820EE1287003E1C7E /* PlayControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayControlView.swift; sourceTree = "<group>"; };
@@ -195,6 +197,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C5219614217893740083FEFA /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				C5219615217893BC0083FEFA /* MockControlableView.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
 		C568CF9620EC5F0500A5A78C = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +248,7 @@
 			isa = PBXGroup;
 			children = (
 				C568CFAE20EC5F0500A5A78C /* RxAVPlayerTests.swift */,
+				C5219614217893740083FEFA /* Mocks */,
 				C4CDA3E6216BE75B0072639A /* TestAssets.xcassets */,
 				C568CFB020EC5F0500A5A78C /* Info.plist */,
 			);
@@ -633,6 +644,7 @@
 				C5D214DA214115B100FC9174 /* RxAVPlayerSoundMutable.swift in Sources */,
 				C5C0819420ECA98400C7ACD0 /* Reactive.extension.swift in Sources */,
 				C5D214E42141205700FC9174 /* RxAVPlayerSkippable.swift in Sources */,
+				C5219616217893BC0083FEFA /* MockControlableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

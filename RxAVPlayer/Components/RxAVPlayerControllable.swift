@@ -38,7 +38,7 @@ struct RxAVPlayerEvent {
     }
 }
 
-protocol RxAVPlayerControllable {
+protocol RxAVPlayerControllable: class {
     var category: PlayerControlCategory { get }
     var player: RxAVPlayer? { get set }
     var eventObservable: Observable<RxAVPlayerEvent>? { get }

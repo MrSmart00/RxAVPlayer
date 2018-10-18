@@ -11,20 +11,18 @@ import AVFoundation
 import RxSwift
 import RxCocoa
 
-@objc
-enum RxPlayerStatus: Int {
+@objc enum RxPlayerStatus: Int {
     case prepare
     case ready
     case playing
     case pause
     case seeking
     case stalled
-    case deadend
+    case finished
     case failed
 }
 
-@objcMembers
-class RxAVPlayer: UIView {
+@objcMembers class RxAVPlayer: UIView {
     
     override class var layerClass: AnyClass {
         return AVPlayerLayer.self
@@ -51,7 +49,7 @@ class RxAVPlayer: UIView {
     }
     private(set) var totalDate = Date.distantPast
     
-    private let disposebag = DisposeBag()
+    private let disposeBag = DisposeBag()
     private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
     var statusObservable: Observable<RxPlayerStatus> {
         return statusRelay.asObservable()
@@ -71,11 +69,7 @@ class RxAVPlayer: UIView {
 
     @IBOutlet var controls: [UIView]? {
         didSet {
-            controls?.forEach({ (view) in
-                if view is RxAVPlayerControllable {
-                    setPlayer(controlView: view)
-                }
-            })
+            setPlayer()
         }
     }
     
@@ -121,11 +115,9 @@ class RxAVPlayer: UIView {
         super.removeFromSuperview()
     }
     
-    private func setPlayer(controlView: UIView?) {
-        var control = controlView as? RxAVPlayerControllable
-        if control != nil {
-            control?.player = self
-        }
+    private func setPlayer() {
+        controls?.map { $0 as? RxAVPlayerControllable }
+            .forEach { $0?.player = self }
     }
     
     private func registerNotifications() {
@@ -140,38 +132,38 @@ class RxAVPlayer: UIView {
                     self?.play()
                 }
             }
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(AVAudioSession.routeChangeNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .playing {
                 self?.play()
             }
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime).bind { [weak self] (notify) in
             guard let item = notify.object as? AVPlayerItem, item == self?.player?.currentItem else { return }
             self?.movieEndRelay.accept()
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(.AVPlayerItemFailedToPlayToEndTime).bind { [weak self] (notify) in
             self?.statusRelay.accept(.failed)
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(.AVPlayerItemPlaybackStalled).bind { [weak self] (notify) in
             self?.statusRelay.accept(.stalled)
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
 
         NotificationCenter.default.rx.notification(UIApplication.didEnterBackgroundNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .playing {
                 self?.pause()
             }
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(UIApplication.willEnterForegroundNotification).bind { [weak self] (notify) in
             if self?.statusRelay.value == .pause {
                 self?.play()
             }
-        }.disposed(by: disposebag)
+        }.disposed(by: disposeBag)
     }
     
     private func registerTimeObserver(_ player: AVPlayer) {
@@ -210,7 +202,7 @@ class RxAVPlayer: UIView {
                         weakSelf.statusRelay.accept(weakSelf.statusRelay.value)
                     }
                 }
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
 
             bindPlayable()
             
@@ -223,14 +215,14 @@ class RxAVPlayer: UIView {
             pl.rx.rate.map { $0 > 0 }.bind { [weak self] (progressive) in
                 if progressive {
                     self?.statusRelay.accept(.playing)
-                } else if self?.statusRelay.value != .deadend, self?.statusRelay.value != .prepare {
+                } else if self?.statusRelay.value != .finished, self?.statusRelay.value != .prepare {
                     self?.statusRelay.accept(.pause)
                 }
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
             
             movieEndRelay.subscribe(onNext: { [weak self] in
-                self?.statusRelay.accept(.deadend)
-            }).disposed(by: disposebag)
+                self?.statusRelay.accept(.finished)
+            }).disposed(by: disposeBag)
         }
     }
 
@@ -244,7 +236,7 @@ class RxAVPlayer: UIView {
                 category = .play
             case .pause:
                 category = .pause
-            case .deadend:
+            case .finished:
                 category = .finish
             case .failed:
                 category = .failed
@@ -262,7 +254,7 @@ class RxAVPlayer: UIView {
                     }
                 })
             }
-        }).disposed(by: disposebag)
+        }).disposed(by: disposeBag)
     }
 
     private func bindPlayable() {
@@ -292,16 +284,16 @@ class RxAVPlayer: UIView {
                             })
                         }
                         if weakSelf.offset > 0 {
-                            weakSelf.seek(weakSelf.offset)
+                            weakSelf.seek(percent: weakSelf.offset)
                             weakSelf.autoplay = false
                             weakSelf.offset = 0
                             weakSelf.statusRelay.accept(.ready)
-                        } else if weakSelf.autoplay, status != .deadend {
+                        } else if weakSelf.autoplay, status != .finished {
                             weakSelf.play()
                         }
                     }
                 }
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
         }
     }
     
@@ -315,7 +307,7 @@ class RxAVPlayer: UIView {
                 if status != .seeking, !weakSeak.isTracking {
                     weakSeak.value = value
                 }
-            }).disposed(by: disposebag)
+            }).disposed(by: disposeBag)
             
             seek.rx.controlEvent([.valueChanged]).bind { [weak self] in
                 guard let weakSelf = self else { return }
@@ -327,18 +319,18 @@ class RxAVPlayer: UIView {
                         }
                     })
                 }
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
             
             seek.rx.controlEvent([.touchUpInside, .touchUpOutside]).bind { [weak self] (_) in
                 guard let weakSelf = self else { return }
                 if let sbar = timecontrol.seekBar, weakSelf.totalDate.compare(Date.distantPast) != .orderedSame {
-                    weakSelf.seek(sbar.value)
+                    weakSelf.seek(percent: sbar.value)
                 }
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
         }
     }
     
-    func seek(_ percent: Float) {
+    func seek(percent: Float) {
         let totalInterval = totalDate.timeIntervalSince1970
         let target = totalInterval * TimeInterval(percent)
         let time = CMTimeMakeWithSeconds(Float64(target), preferredTimescale: Int32(NSEC_PER_SEC))
@@ -357,7 +349,7 @@ class RxAVPlayer: UIView {
     }
     
     func play() {
-        if statusRelay.value == .deadend {
+        if statusRelay.value == .finished {
             statusRelay.accept(.prepare)
             if totalDate.compare(Date.distantPast) != .orderedSame {
                 let time = CMTimeMakeWithSeconds(0, preferredTimescale: 1)
