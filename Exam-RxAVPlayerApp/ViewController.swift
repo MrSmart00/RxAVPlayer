@@ -18,12 +18,9 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        player.autoplay = true
-        player.userInfo = ["title": "あああああああああああああああああああああああああああああああああああ"]
-        player.mute = true
-        player.url = URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8")
-        
+        player.initialize(URL(string: "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8"),
+                          mute: true,
+                          autoPlay: true)
         player.statusObservable.bind { (status) in
             print("🍺  \(status.rawValue)")
         }.disposed(by: disposebag)

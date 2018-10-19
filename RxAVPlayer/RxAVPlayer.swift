@@ -27,7 +27,8 @@ import RxCocoa
     override class var layerClass: AnyClass {
         return AVPlayerLayer.self
     }
-    
+
+    var url: URL?
     var player: AVPlayer? {
         get {
             guard let pl = layer as? AVPlayerLayer else { return nil }
@@ -73,33 +74,6 @@ import RxCocoa
         }
     }
 
-    func convertControls<E>() -> [E] {
-        return controlViews?.map { $0 as? E }.filter { $0 != nil } as? [E] ?? []
-    }
-
-    var url: URL? {
-        didSet {
-            statusRelay.accept(.prepare)
-            guard let movieURL = url else {
-                statusRelay.accept(.failed)
-                return
-            }
-            if movieURL.isFileURL {
-                guard let check = try? movieURL.checkResourceIsReachable(), check else {
-                    statusRelay.accept(.failed)
-                    return
-                }
-            }
-            let asset = AVAsset(url: movieURL)
-            let item = AVPlayerItem(asset: asset)
-            let player = AVPlayer(playerItem: item)
-            registerTimeObserver(player)
-            player.isMuted = mute
-            self.player = player
-            bind()
-        }
-    }
-    
     var userInfo: Any?
     
     override init(frame: CGRect) {
@@ -118,7 +92,45 @@ import RxCocoa
         }
         super.removeFromSuperview()
     }
-    
+
+    func convertControls<E>() -> [E] {
+        return controlViews?.map { $0 as? E }.filter { $0 != nil } as? [E] ?? []
+    }
+
+    func initialize(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil) {
+        player = createPlayer(url)
+        if let soundMute = mute {
+            self.mute = soundMute
+        }
+        if let auto = autoPlay {
+            self.autoplay = auto
+        }
+        bind()
+    }
+
+    func createPlayer(_ url: URL?) -> AVPlayer? {
+        self.url = url
+        guard validate(url: url) else {
+            statusRelay.accept(.failed)
+            return nil
+        }
+        guard let movieUrl = url else { return nil }
+        statusRelay.accept(.prepare)
+        let asset = AVAsset(url: movieUrl)
+        let item = AVPlayerItem(asset: asset)
+        let player = AVPlayer(playerItem: item)
+        registerTimeObserver(player)
+        return player
+    }
+
+    func validate(url: URL?) -> Bool {
+        guard let movieURL = url else { return false }
+        if movieURL.isFileURL {
+            guard let check = try? movieURL.checkResourceIsReachable(), check else { return false }
+        }
+        return true
+    }
+
     private func setPlayer() {
         let list: [RxAVPlayerControllable] = convertControls()
         list.forEach { $0.player = self }
@@ -268,21 +280,18 @@ import RxCocoa
                         if status == .prepare, weakSelf.offset == 0 {
                             weakSelf.statusRelay.accept(.ready)
                         }
-
-                        if let p = weakSelf.player {
-                            if let total = p.currentItem?.duration {
-                                weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
-                                let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
-                                controls.forEach { $0.updateDate(.zero) }
-                            }
-                            if weakSelf.offset > 0 {
-                                weakSelf.seek(percent: weakSelf.offset)
-                                weakSelf.autoplay = false
-                                weakSelf.offset = 0
-                                weakSelf.statusRelay.accept(.ready)
-                            } else if weakSelf.autoplay, status != .finished {
-                                weakSelf.play()
-                            }
+                        if let total = weakSelf.player?.currentItem?.duration {
+                            weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
+                            let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
+                            controls.forEach { $0.updateDate(.zero) }
+                        }
+                        if weakSelf.offset > 0 {
+                            weakSelf.seek(percent: weakSelf.offset)
+                            weakSelf.autoplay = false
+                            weakSelf.offset = 0
+                            weakSelf.statusRelay.accept(.ready)
+                        } else if weakSelf.autoplay, status != .finished {
+                            weakSelf.play()
                         }
                     }
                 }.disposed(by: disposeBag)
