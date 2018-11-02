@@ -157,9 +157,6 @@ class RxAVPlayerTests: XCTestCase {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("SampleVideo2.mp4")
         try! asset!.data.write(to: url)
         player!.load(url, autoPlay: true, offset: 0.99)
-        player?.statusObservable.subscribe(onNext: { (status) in
-            print(status)
-        }).disposed(by: disposebag)
         let result = try? player?
             .statusObservable
             .take(5)
