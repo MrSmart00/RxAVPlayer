@@ -18,6 +18,7 @@ import AVFoundation
 // TODO: [*] 停止できる
 // TODO: [*] 指定時間までシーク移動できる
 // TODO: [*] 再生開始時間を指定できる
+// TODO: [*] リピート再生ができる
 // TODO: [*] 再生中に別のMP4の再生を開始できる
 // TODO: [*] 登録したコントローラViewにPlayerを渡す
 // TODO: [*] 登録したViewのリストをControlのリストに変換できる
@@ -30,14 +31,14 @@ class RxAVPlayerTests: XCTestCase {
         super.setUp()
     }
 
-    func createPlayer(autoplay: Bool) -> RxAVPlayer? {
+    func createPlayer(autoplay: Bool, offset: Float? = nil) -> RxAVPlayer? {
         do {
             let player = RxAVPlayer(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
             let bundle = Bundle(for: type(of: self))
             let asset = NSDataAsset(name: "SampleVideo", bundle: bundle)
             let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("SampleVideo.mp4")
             try asset!.data.write(to: url)
-            player.load(url, autoPlay: autoplay)
+            player.load(url, autoPlay: autoplay, offset: offset)
             return player
         } catch let error {
             XCTAssert(false, error.localizedDescription)
@@ -135,6 +136,33 @@ class RxAVPlayerTests: XCTestCase {
             .toBlocking(timeout: 3)
             .toArray()
         XCTAssertEqual([RxPlayerStatus.playing, RxPlayerStatus.finished],
+                       result)
+    }
+
+    func test_リピート再生ができる() {
+        let player = createPlayer(autoplay: true, offset: 0.9)
+        var result = try? player?
+            .statusObservable
+            .take(5)
+            .toBlocking(timeout: 3)
+            .toArray()
+        XCTAssertEqual([RxPlayerStatus.prepare, RxPlayerStatus.seeking, RxPlayerStatus.ready, RxPlayerStatus.playing, RxPlayerStatus.finished],
+                       result)
+        player?.seek(percent: 0)
+        result = try? player?
+            .statusObservable
+            .take(2)
+            .toBlocking(timeout: 3)
+            .toArray()
+        XCTAssertEqual([RxPlayerStatus.seeking, RxPlayerStatus.playing],
+                       result)
+        player?.seek(percent: 0.9)
+        result = try? player?
+            .statusObservable
+            .take(3)
+            .toBlocking(timeout: 3)
+            .toArray()
+        XCTAssertEqual([RxPlayerStatus.seeking, RxPlayerStatus.playing, RxPlayerStatus.finished],
                        result)
     }
 
