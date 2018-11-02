@@ -28,7 +28,7 @@ import RxCocoa
         return AVPlayerLayer.self
     }
 
-    var url: URL?
+    private(set) var url: URL?
     var player: AVPlayer? {
         get {
             guard let pl = layer as? AVPlayerLayer else { return nil }
@@ -97,7 +97,7 @@ import RxCocoa
         return controlViews?.map { $0 as? E }.filter { $0 != nil } as? [E] ?? []
     }
 
-    func initialize(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil) {
+    func load(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil) {
         player = createPlayer(url)
         if let soundMute = mute {
             self.mute = soundMute
@@ -223,7 +223,9 @@ import RxCocoa
                 if progressive {
                     self?.statusRelay.accept(.playing)
                 } else if self?.statusRelay.value != .finished, self?.statusRelay.value != .prepare {
-                    self?.statusRelay.accept(.pause)
+                    if self?.player?.currentTime() != self?.player?.currentItem?.duration {
+                        self?.statusRelay.accept(.pause)
+                    }
                 }
             }.disposed(by: disposeBag)
             
@@ -286,10 +288,13 @@ import RxCocoa
                             controls.forEach { $0.updateDate(.zero) }
                         }
                         if weakSelf.offset > 0 {
-                            weakSelf.seek(percent: weakSelf.offset)
-                            weakSelf.autoplay = false
-                            weakSelf.offset = 0
-                            weakSelf.statusRelay.accept(.ready)
+                            weakSelf.seek(percent: weakSelf.offset, { (completion) in
+                                weakSelf.statusRelay.accept(.ready)
+                                weakSelf.offset = 0
+                                if weakSelf.autoplay {
+                                    weakSelf.play()
+                                }
+                            })
                         } else if weakSelf.autoplay, status != .finished {
                             weakSelf.play()
                         }
@@ -297,7 +302,7 @@ import RxCocoa
                 }.disposed(by: disposeBag)
         }
     }
-    
+
     private func bindControlView(_ control: RxAVPlayerControllable?, eventList: inout [Observable<RxAVPlayerEvent>]) {
         if let event = control?.eventObservable {
             eventList.append(event)
@@ -329,19 +334,23 @@ import RxCocoa
         }
     }
     
-    func seek(percent: Float) {
+    func seek(percent: Float, _ completionHandler:((Bool) -> ())? = nil) {
         let totalInterval = totalDate.timeIntervalSince1970
         let target = totalInterval * TimeInterval(percent)
         let time = CMTimeMakeWithSeconds(Float64(target), preferredTimescale: Int32(NSEC_PER_SEC))
-        seek(distance: time)
+        seek(distance: time, completionHandler)
     }
     
-    func seek(distance: CMTime) {
+    func seek(distance: CMTime, _ completionHandler:((Bool) -> ())? = nil) {
         statusRelay.accept(.seeking)
         if let pl = player {
             pl.seek(to: distance, toleranceBefore: .zero, toleranceAfter: .zero, completionHandler: { [weak self] (completion) in
                 if completion {
-                    self?.play()
+                    if let handler = completionHandler {
+                        handler(completion)
+                    } else {
+                        self?.play()
+                    }
                 }
             })
         }
