@@ -51,16 +51,16 @@ import RxCocoa
     private(set) var totalDate = Date.distantPast
     
     private let disposeBag = DisposeBag()
-    private let statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
+    private var statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
     var statusObservable: Observable<RxPlayerStatus> {
         return statusRelay.asObservable()
     }
-    private let progressRelay = PublishRelay<CMTime>()
+    private var progressRelay = PublishRelay<CMTime>()
     var progressObservable: Observable<CMTime> {
         return progressRelay.asObservable()
     }
     
-    private let movieEndRelay = PublishRelay<Void>()
+    private var movieEndRelay = PublishRelay<Bool>()
     private lazy var seekRelay = BehaviorRelay<Float>(value: 0)
     var seekObservable: Observable<Float> {
         return seekRelay.asObservable()
@@ -97,13 +97,28 @@ import RxCocoa
         return controlViews?.map { $0 as? E }.filter { $0 != nil } as? [E] ?? []
     }
 
-    func load(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil) {
+    func load(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil, offset: Float? = nil) {
+
+        if let p = player {
+            if let observer = periodicTimeObserver {
+                p.removeTimeObserver(observer)
+                periodicTimeObserver = nil
+            }
+            statusRelay = BehaviorRelay<RxPlayerStatus>(value: .prepare)
+            progressRelay = PublishRelay<CMTime>()
+            movieEndRelay = PublishRelay<Bool>()
+            seekRelay = BehaviorRelay<Float>(value: 0)
+        }
+
         player = createPlayer(url)
         if let soundMute = mute {
             self.mute = soundMute
         }
         if let auto = autoPlay {
             self.autoplay = auto
+        }
+        if let timeOffsset = offset {
+            self.offset = timeOffsset
         }
         bind()
     }
@@ -115,7 +130,6 @@ import RxCocoa
             return nil
         }
         guard let movieUrl = url else { return nil }
-        statusRelay.accept(.prepare)
         let asset = AVAsset(url: movieUrl)
         let item = AVPlayerItem(asset: asset)
         let player = AVPlayer(playerItem: item)
@@ -158,7 +172,7 @@ import RxCocoa
         
         NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime).bind { [weak self] (notify) in
             guard let item = notify.object as? AVPlayerItem, item == self?.player?.currentItem else { return }
-            self?.movieEndRelay.accept()
+            self?.movieEndRelay.accept(true)
         }.disposed(by: disposeBag)
         
         NotificationCenter.default.rx.notification(.AVPlayerItemFailedToPlayToEndTime).bind { [weak self] (notify) in
@@ -228,8 +242,8 @@ import RxCocoa
                     }
                 }
             }.disposed(by: disposeBag)
-            
-            movieEndRelay.subscribe(onNext: { [weak self] in
+
+            movieEndRelay.subscribe(onNext: { [weak self] (completion) in
                 self?.statusRelay.accept(.finished)
             }).disposed(by: disposeBag)
         }
@@ -272,16 +286,15 @@ import RxCocoa
 
     private func bindPlayable() {
         if let pl = player, let item = pl.currentItem {
-            Observable.combineLatest([item.rx.playbackLikelyToKeepUp,
-                                      pl.rx.status.map { $0 == .readyToPlay }])
+            Observable
+                .combineLatest([item.rx.playbackLikelyToKeepUp,
+                                pl.rx.status.map { $0 == .readyToPlay }])
                 .map { $0.allSatisfy { $0 } }
                 .bind { [weak self] (playable) in
                     guard let weakSelf = self else { return }
                     if playable {
                         let status = weakSelf.statusRelay.value
-                        if status == .prepare, weakSelf.offset == 0 {
-                            weakSelf.statusRelay.accept(.ready)
-                        }
+                        guard status == .prepare else { return }
                         if let total = weakSelf.player?.currentItem?.duration {
                             weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
                             let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
@@ -295,8 +308,11 @@ import RxCocoa
                                     weakSelf.play()
                                 }
                             })
-                        } else if weakSelf.autoplay, status != .finished {
-                            weakSelf.play()
+                        } else {
+                            weakSelf.statusRelay.accept(.ready)
+                            if weakSelf.autoplay, status != .finished {
+                                weakSelf.play()
+                            }
                         }
                     }
                 }.disposed(by: disposeBag)
