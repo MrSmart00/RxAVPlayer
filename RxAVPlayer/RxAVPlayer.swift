@@ -100,6 +100,7 @@ import RxCocoa
     func load(_ url: URL?, mute: Bool? = nil, autoPlay: Bool? = nil, offset: Float? = nil) {
 
         if let p = player {
+            p.replaceCurrentItem(with: nil)
             if let observer = periodicTimeObserver {
                 p.removeTimeObserver(observer)
                 periodicTimeObserver = nil
@@ -218,7 +219,7 @@ import RxCocoa
             
             item.rx.playbackBufferEmpty.bind { [weak self] (empty) in
                 if let item = self?.player?.currentItem, !item.isPlaybackBufferFull {
-                    if !empty, self?.player?.currentTime() != .zero, let value = self?.statusRelay.value {
+                    if !empty, self?.player?.currentTime() != .zero, let value = self?.statusRelay.value, value != .prepare {
                         self?.statusRelay.accept(value)
                     }
                 }
@@ -290,11 +291,12 @@ import RxCocoa
                 .combineLatest([item.rx.playbackLikelyToKeepUp,
                                 pl.rx.status.map { $0 == .readyToPlay }])
                 .map { $0.allSatisfy { $0 } }
+                .skipWhile { !$0 }
+                .single()
                 .bind { [weak self] (playable) in
                     guard let weakSelf = self else { return }
                     if playable {
                         let status = weakSelf.statusRelay.value
-                        guard status == .prepare else { return }
                         if let total = weakSelf.player?.currentItem?.duration {
                             weakSelf.totalDate = Date(timeIntervalSince1970: TimeInterval( CMTimeGetSeconds(total) ))
                             let controls: [RxAVPlayerTimeControllable] = weakSelf.convertControls()
@@ -360,6 +362,7 @@ import RxCocoa
     func seek(distance: CMTime, _ completionHandler:((Bool) -> ())? = nil) {
         statusRelay.accept(.seeking)
         if let pl = player {
+            pl.currentItem?.cancelPendingSeeks()
             pl.seek(to: distance, toleranceBefore: .zero, toleranceAfter: .zero, completionHandler: { [weak self] (completion) in
                 if completion {
                     if let handler = completionHandler {

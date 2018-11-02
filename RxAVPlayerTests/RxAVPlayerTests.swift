@@ -18,7 +18,7 @@ import AVFoundation
 // TODO: [*] 停止できる
 // TODO: [*] 指定時間までシーク移動できる
 // TODO: [*] 再生開始時間を指定できる
-// TODO: [] 再生中に別のMP4の再生を開始できる
+// TODO: [*] 再生中に別のMP4の再生を開始できる
 // TODO: [*] 登録したコントローラViewにPlayerを渡す
 // TODO: [*] 登録したViewのリストをControlのリストに変換できる
 
@@ -157,6 +157,9 @@ class RxAVPlayerTests: XCTestCase {
         let url = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("SampleVideo2.mp4")
         try! asset!.data.write(to: url)
         player!.load(url, autoPlay: true, offset: 0.99)
+        player?.statusObservable.subscribe(onNext: { (status) in
+            print(status)
+        }).disposed(by: disposebag)
         let result = try? player?
             .statusObservable
             .take(5)
